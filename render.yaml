@@ -16,9 +16,9 @@ services:
       - key: JWT_SECRET
         value: UNI_POOL_SECRET_KEY_123
 
+staticSites:
   # Frontend Web App
-  - type: static
-    name: uni-pool-web
+  - name: uni-pool-web
     repo: https://github.com/ndlokesh/uni-pool
     branch: main
     rootDir: frontend
@@ -30,6 +30,6 @@ services:
         destination: /index.html
     envVars:
       - key: REACT_APP_API_URL
-        value: https://uni-pool.onrender.com/api
+        value: https://uni-pool-api.onrender.com/api
       - key: REACT_APP_GOOGLE_MAPS_API_KEY
         value: AIzaSyCmeqXzQgQgIsxxE-kBHv2jPnn9tF134AM
