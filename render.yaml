@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: uni-pool-api
+    runtime: node
+    repo: https://github.com/ndlokesh/uni-pool
+    branch: main
+    plan: free
+    region: singapore
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: node server.js
+    envVars:
+      - key: MONGO_URI
+        value: mongodb+srv://ndlokesh14_db_user:3NuX008xMzYQOpjO@unipool.8v6vlzz.mongodb.net/uni-pool?appName=unipool
+      - key: JWT_SECRET
+        value: UNI_POOL_SECRET_KEY_123
