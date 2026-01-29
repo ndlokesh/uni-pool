@@ -48,6 +48,6 @@
     ]
   },
   "devDependencies": {
-    "tailwind-scrollbar": "^4.0.2"
+    "tailwind-scrollbar": "^3.0.0"
   }
 }
