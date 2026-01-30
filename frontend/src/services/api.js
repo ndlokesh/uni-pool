@@ -1,7 +1,11 @@
 import axios from 'axios';
 
 const API = axios.create({
-    baseURL: process.env.REACT_APP_API_URL || 'http://localhost:5000/api',
+    // 1. If REACT_APP_API_URL is set (in .env or Vercel), use it.
+    // 2. Otherwise use '/api' (relative path), which works with:
+    //    - "proxy": "http://localhost:5000" in package.json (Local Dev)
+    //    - Vercel Rewrites (if configured)
+    baseURL: process.env.REACT_APP_API_URL || '/api',
 });
 
 // Add a request interceptor to include the token

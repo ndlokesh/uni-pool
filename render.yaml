@@ -1,0 +1,27 @@
+services:
+  # Backend Service (Node.js/Express)
+  - type: web
+    name: uni-pool-backend
+    env: node
+    plan: free
+    repo: https://github.com/ndlokesh/uni-pool
+    branch: main
+    
+    # Run from the root, but focus on backend directory
+    rootDir: backend
+    
+    # Build Command: Install backend dependencies
+    buildCommand: npm install
+    
+    # Start Command: Run the server
+    startCommand: npm start
+    
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: MONGO_URI
+        sync: false
+      - key: JWT_SECRET
+        sync: false

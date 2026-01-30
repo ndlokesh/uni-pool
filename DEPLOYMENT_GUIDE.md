@@ -1,74 +1,65 @@
-# Deployment Guide for Uni-Pool
+# 🚀 Ultimate Deployment Guide: Uni-Pool
 
-To make your application accessible to the world with an official link (like `https://unipool.onrender.com`), follow this guide to deploy your app to **Render** (a free and popular hosting provider).
+This guide allows you to deploy your project permanently with a professional split architecture:
+- **Frontend** on Vercel (Fast, Global CDN)
+- **Backend** on Render (Reliable API Hosting)
 
-## Prerequisites
+---
 
-1.  **GitHub Account**: You need a GitHub account to store your code.
-2.  **Render Account**: You need a free account at [render.com](https://render.com).
+## ✅ Phase 1: Deploy Backend (Render)
 
-## Step 1: Push Code to GitHub
-
-Since you are running this locally, you first need to put your code on GitHub.
-
-1.  **Initialize Git** (if not already done):
-    Open a new terminal in your project root (`c:\Users\Lokesh\OneDrive\Desktop\uni-pool-project`) and run:
+1.  **Push your latest code to GitHub** needed to contain the new `render.yaml` file.
     ```bash
-    git init
     git add .
-    git commit -m "Initial commit - Full Stack App"
+    git commit -m "Added deployment configs"
+    git push origin main
     ```
 
-2.  **Create a Repository on GitHub**:
-    *   Go to [GitHub.com](https://github.com/new).
-    *   Create a new repository name `uni-pool-project`.
-    *   Make it **Public** (or Private, Render supports both).
-    *   Do **NOT** initialize with README or .gitignore (you have these).
+2.  **Go to [Render Dashboard](https://dashboard.render.com/)**.
+3.  Click **New +** -> **Blueprint**.
+4.  Connect your `uni-pool` repository.
+5.  Render will automatically detect the `render.yaml` file.
+6.  It will ask for environment variables. Fill them in:
+    *   `MONGO_URI`: (Your full MongoDB Connection String)
+    *   `JWT_SECRET`: (Any secret password)
+7.  Click **Apply**.
+8.  **Wait** for the deployment to finish (~2-5 mins).
+9.  **Copy your Backend URL**. It will look like: `https://uni-pool-backend.onrender.com`.
 
-3.  **Push to GitHub**:
-    *   Copy the commands GitHub gives you under "…or push an existing repository from the command line". It looks like this:
-    ```bash
-    git branch -M main
-    git remote add origin https://github.com/YOUR_USERNAME/uni-pool-project.git
-    git push -u origin main
-    ```
+---
 
-## Step 2: Deploy to Render
+## ✅ Phase 2: Deploy Frontend (Vercel)
 
-1.  Log in to [Render Dashboard](https://dashboard.render.com/).
-2.  Click **New +** and select **Web Service**.
-3.  Connect your GitHub account and select your `uni-pool-project` repository.
-4.  Configure the service:
-    *   **Name**: `uni-pool` (or whatever you like)
-    *   **Region**: Choose the one closest to you (e.g., Singapore or Oregon).
-    *   **Branch**: `main`
-    *   **Root Directory**: Leave blank (it's the root).
-    *   **Runtime**: `Node`
-    *   **Build Command**: `npm run build`
-        *   *(This will run the script we added: installs backend/frontend deps and builds the React app)*
-    *   **Start Command**: `node backend/server.js`
-        *   *(Example: `node backend/server.js` starts the API which also serves the frontend)*
+1.  **Before you start**:
+    *   Open `frontend/vercel.json`.
+    *   Replace `https://uni-pool-backend.onrender.com` with **YOUR ACTUAL BACKEND URL** from Phase 1.
+    *   Commit and push this change:
+        ```bash
+        git add frontend/vercel.json
+        git commit -m "Update backend URL for production"
+        git push origin main
+        ```
 
+2.  **Go to [Vercel Dashboard](https://vercel.com/new)**.
+3.  **Import** your `uni-pool` repository.
+4.  **Configure Project**:
+    *   **Root Directory**: Click "Edit" and select `frontend`.
+    *   **Framework Preset**: Create React App (should be auto-detected).
+    *   **Build Command**: `npm run build` (default).
 5.  **Environment Variables**:
-    You MUST add your `.env` secrets here so the live server works.
-    Click **"Advanced"** or scroll to **"Environment Variables"** and add:
-    
-    | Key | Value |
-    | :--- | :--- |
-    | `NODE_ENV` | `production` |
-    | `MONGO_URI` | *Your actual MongoDB Connection String* |
-    | `JWT_SECRET` | `UNI_POOL_SECRET_KEY_123` (or a secure random string) |
-    | `REACT_APP_GOOGLE_MAPS_API_KEY` | *Your Google Maps API Key* |
+    *   Add `REACT_APP_API_URL` -> Set value to **YOUR BACKEND URL** (e.g., `https://uni-pool-backend.onrender.com/api`).
+        *(Note: `vercel.json` handles rewrites, but setting this variable ensures the code knows where to point cleanly).*
+6.  Click **Deploy**.
 
-6.  Click **Create Web Service**.
+---
 
-## Step 3: Success!
+## 🌍 Success!
+You now have two links:
+*   **The App**: `https://uni-pool-frontend.vercel.app` (Share this one!)
+*   **The API**: `https://uni-pool-backend.onrender.com`
 
-Render will now:
-1.  Clone your code.
-2.  Run `npm run build` (installing everything).
-3.  Start your server with `node backend/server.js`.
-
-Once complete, you will get a link like: **https://uni-pool.onrender.com**
-
-This link is permanent, secure (HTTPS), and accessible from anywhere in the world!
+### How Local Development Works Now
+*   **Run Backend**: `cd backend && npm run dev` (Port 5000)
+*   **Run Frontend**: `cd frontend && npm start` (Port 3000)
+    *   The frontend now proxies requests to Port 5000 automatically.
+    *   No more CORS errors!

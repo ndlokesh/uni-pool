@@ -2,6 +2,7 @@
   "name": "uni-pool-project",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://localhost:5000",
   "dependencies": {
     "@react-google-maps/api": "^2.20.8",
     "@testing-library/dom": "^10.4.1",
