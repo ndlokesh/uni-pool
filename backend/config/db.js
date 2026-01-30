@@ -1,12 +1,15 @@
 const dns = require('dns');
 const mongoose = require('mongoose');
 
-// Force Google DNS to bypass local network blocking
-try {
-    dns.setServers(['8.8.8.8', '8.8.4.4']);
-    console.log("Only using Google DNS (8.8.8.8) for resolution.");
-} catch (e) {
-    console.log("Could not set custom DNS servers:", e.message);
+// Force Google DNS to bypass local network blocking (ONLY in Development)
+// Render/Production environments have their own working DNS
+if (process.env.NODE_ENV !== 'production') {
+    try {
+        dns.setServers(['8.8.8.8', '8.8.4.4']);
+        console.log("Only using Google DNS (8.8.8.8) for resolution.");
+    } catch (e) {
+        console.log("Could not set custom DNS servers:", e.message);
+    }
 }
 
 const connectDB = async () => {
@@ -14,7 +17,9 @@ const connectDB = async () => {
         let uri = process.env.MONGO_URI || 'mongodb://localhost:27017/uni-pool';
 
         // Check if it's an SRV string (mongodb+srv://)
-        if (uri.startsWith('mongodb+srv://')) {
+        // Check if it's an SRV string (mongodb+srv://)
+        // Skip specialized resolution in Production (Render handles DNS correctly)
+        if (uri.startsWith('mongodb+srv://') && process.env.NODE_ENV !== 'production') {
             console.log("Detected SRV connection string. Attempting to resolve shards manually to bypass network blocks...");
 
             try {
