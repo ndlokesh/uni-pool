@@ -17,7 +17,7 @@ const server = http.createServer(app);
 // Initialize Socket.io
 const io = new Server(server, {
     cors: {
-        origin: ["http://localhost:3000", "http://192.168.1.5:3000"], // Allow local and network access
+        origin: "*", // Allow connections from Vercel and Localhost
         methods: ["GET", "POST"]
     }
 });
