@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import messageService from '../services/messageService';
 import authService from '../services/authService';
 
@@ -16,9 +16,9 @@ const ChatBox = ({ rideId, rideTitle }) => {
         // Poll for new messages every 3 seconds for near real-time feel
         const interval = setInterval(fetchMessages, 3000);
         return () => clearInterval(interval);
-    }, [rideId]);
+    }, [rideId, fetchMessages]);
 
-    const fetchMessages = async () => {
+    const fetchMessages = useCallback(async () => {
         try {
             if (!rideId) return;
             const data = await messageService.getMessages(rideId);
@@ -26,7 +26,7 @@ const ChatBox = ({ rideId, rideTitle }) => {
         } catch (error) {
             console.error("Error fetching messages", error);
         }
-    };
+    }, [rideId]);
 
     const scrollToBottom = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -74,8 +74,8 @@ const ChatBox = ({ rideId, rideTitle }) => {
                         return (
                             <div key={index} className={`flex ${isMe ? 'justify-end' : 'justify-start'}`}>
                                 <div className={`max-w-[80%] rounded-2xl px-4 py-2 shadow-sm ${isMe
-                                        ? 'bg-primary-600 text-white rounded-tr-none'
-                                        : 'bg-white text-gray-800 border border-gray-100 rounded-tl-none'
+                                    ? 'bg-primary-600 text-white rounded-tr-none'
+                                    : 'bg-white text-gray-800 border border-gray-100 rounded-tl-none'
                                     }`}>
                                     {!isMe && (
                                         <p className="text-[10px] text-gray-400 font-bold mb-1 block">

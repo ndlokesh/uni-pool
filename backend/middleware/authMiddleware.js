@@ -22,6 +22,11 @@ const protect = async (req, res, next) => {
                 return res.status(401).json({ message: 'User not found' });
             }
 
+            // Check if student account is active
+            if (req.user.isActiveStudent === false) {
+                return res.status(403).json({ message: 'Account deactivated. Access denied.' });
+            }
+
             return next();
         } catch (error) {
             console.log(error);

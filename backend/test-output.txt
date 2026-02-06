@@ -1,0 +1,8 @@
+=== Test Started ===
+2026-02-06T12:25:04.120Z: Connected to MongoDB
+2026-02-06T12:25:04.502Z: User found: siri, ID: 697b1d87a4548d5814903d16
+2026-02-06T12:25:04.504Z: isDriver: false
+2026-02-06T12:25:04.505Z: driverVerification exists: true
+2026-02-06T12:25:04.511Z: Attempting save...
+2026-02-06T12:25:04.624Z: SAVE SUCCESSFUL!
+2026-02-06T12:25:04.632Z: Disconnected

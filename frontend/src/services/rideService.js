@@ -5,8 +5,20 @@ const createRide = async (rideData) => {
     return response.data;
 };
 
-const getRides = async () => {
-    const response = await API.get('/rides');
+const getRides = async (filters = {}) => {
+    let query = '';
+    if (filters.active) query += '?active=true';
+    if (filters.searchQuery) query += `&searchQuery=${encodeURIComponent(filters.searchQuery)}`;
+
+    // Clean up query string start
+    if (query.startsWith('&')) query = '?' + query.substring(1);
+
+    const response = await API.get(`/rides${query}`);
+    return response.data;
+};
+
+const getRide = async (id) => {
+    const response = await API.get(`/rides/${id}`);
     return response.data;
 };
 
@@ -28,6 +40,7 @@ const respondToRequest = async (rideId, riderId, action) => {
 const rideService = {
     createRide,
     getRides,
+    getRide,
     joinRide,
     getRideEstimate,
     respondToRequest,

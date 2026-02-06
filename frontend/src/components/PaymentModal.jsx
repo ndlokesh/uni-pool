@@ -3,12 +3,10 @@ import paymentService from '../services/paymentService';
 
 const PaymentModal = ({ ride, onClose, onSuccess }) => {
     const [method, setMethod] = useState('card');
-    const [loading, setLoading] = useState(false);
     const [step, setStep] = useState('select'); // select, processing, success
     const [error, setError] = useState('');
 
     const handlePay = async () => {
-        setLoading(true);
         setError('');
         setStep('processing');
 
@@ -26,8 +24,6 @@ const PaymentModal = ({ ride, onClose, onSuccess }) => {
         } catch (err) {
             setError('Payment Failed. Try again.');
             setStep('select');
-        } finally {
-            setLoading(false);
         }
     };
 

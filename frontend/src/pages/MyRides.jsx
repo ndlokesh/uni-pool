@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import rideService from '../services/rideService';
 import authService from '../services/authService';
 import paymentService from '../services/paymentService';
@@ -14,8 +15,9 @@ const MyRides = () => {
     const [showPaymentModal, setShowPaymentModal] = useState(false);
     const [showReviewModal, setShowReviewModal] = useState(false);
     const currentUser = authService.getCurrentUser();
+    const navigate = useNavigate();
 
-    const fetchMyRides = async () => {
+    const fetchMyRides = useCallback(async () => {
         try {
             const allRides = await rideService.getRides();
 
@@ -36,13 +38,13 @@ const MyRides = () => {
         } catch (err) {
             console.error("Failed to fetch data", err);
         }
-    };
+    }, [currentUser.id]);
 
     useEffect(() => {
         if (currentUser?.id) {
             fetchMyRides();
         }
-    }, [currentUser?.id]);
+    }, [currentUser?.id, fetchMyRides]);
 
     const isPaid = (rideId) => {
         return payments.some(p => p.ride === rideId && p.status === 'completed');
@@ -168,6 +170,15 @@ const MyRides = () => {
                                                 <span className="flex items-center gap-1">
                                                     💬 Chat
                                                 </span>
+                                                <button
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        navigate(`/track/${ride._id}`);
+                                                    }}
+                                                    className="bg-black text-white px-3 py-1 rounded-lg text-xs font-bold hover:bg-gray-800 ml-auto flex items-center gap-2"
+                                                >
+                                                    <span className="animate-pulse text-green-400">●</span> Live Nav
+                                                </button>
                                             </div>
                                         </div>
                                     ))}
@@ -253,6 +264,19 @@ const MyRides = () => {
                                                             className="bg-white border text-gray-600 border-gray-200 px-4 py-2 rounded-lg text-sm font-bold hover:bg-gray-50 transition"
                                                         >
                                                             Rate Driver
+                                                        </button>
+                                                    )}
+
+                                                    {/* Live Track Button */}
+                                                    {!isPending && (
+                                                        <button
+                                                            onClick={(e) => {
+                                                                e.stopPropagation();
+                                                                navigate(`/track/${ride._id}`);
+                                                            }}
+                                                            className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-blue-700 transition shadow-md flex items-center gap-2"
+                                                        >
+                                                            <span className="animate-pulse">●</span> Live Track
                                                         </button>
                                                     )}
 

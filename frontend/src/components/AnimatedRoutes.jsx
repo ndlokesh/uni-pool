@@ -8,7 +8,9 @@ import CreateRide from '../pages/CreateRide';
 import SearchRide from '../pages/SearchRide';
 import DriverRides from '../pages/DriverRides';
 import DriverEarnings from '../pages/DriverEarnings';
+import DriverVerification from '../pages/DriverVerification';
 import MyRides from '../pages/MyRides';
+import RideTracking from '../pages/RideTracking';
 import PrivateRoute from './PrivateRoute';
 import authService from '../services/authService';
 import PageTransition from './PageTransition';
@@ -37,7 +39,10 @@ const AnimatedRoutes = () => {
                     <Route path="/search-ride" element={<PageTransition><SearchRide /></PageTransition>} />
                     <Route path="/driver-rides" element={<PageTransition><DriverRides /></PageTransition>} />
                     <Route path="/driver-earnings" element={<PageTransition><DriverEarnings /></PageTransition>} />
+                    <Route path="/driver-verification" element={<PageTransition><DriverVerification /></PageTransition>} />
+                    <Route path="/driver-verification" element={<PageTransition><DriverVerification /></PageTransition>} />
                     <Route path="/my-rides" element={<PageTransition><MyRides /></PageTransition>} />
+                    <Route path="/track/:rideId" element={<PageTransition><RideTracking /></PageTransition>} />
                 </Route>
 
                 <Route path="*" element={<Navigate to="/" />} />

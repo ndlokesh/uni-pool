@@ -29,9 +29,34 @@ const getRideEstimate = async (req, res) => {
 
 // @desc    Create a new ride
 // @route   POST /api/rides
-// @access  Private
+// @access  Private (Verified Drivers Only)
 const createRide = async (req, res) => {
     try {
+        // Security Check: Only verified drivers can create rides
+        const User = require('../models/User');
+        const user = await User.findById(req.user._id || req.user.id);
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        if (!user.isDriver) {
+            return res.status(403).json({
+                message: 'You must complete driver verification to offer rides',
+                requiresVerification: true
+            });
+        }
+
+        // Check if driver verification is complete
+        const verificationStatus = user.driverVerification?.status;
+        if (verificationStatus !== 'fully_verified' && verificationStatus !== 'license_approved') {
+            return res.status(403).json({
+                message: 'Your driver profile verification is incomplete. Please complete verification first.',
+                verificationStatus: verificationStatus || 'not_started',
+                requiresVerification: true
+            });
+        }
+
         const { source, destination, date, time, availableSeats, vehicleType, sourceLat, sourceLng, destLat, destLng } = req.body;
 
         if (!source || !destination || !date || !time || !availableSeats) {
@@ -87,13 +112,67 @@ const createRide = async (req, res) => {
 // @desc    Get all rides
 // @route   GET /api/rides
 // @access  Private
+// @desc    Get all rides (with optional filtering)
+// @route   GET /api/rides
+// @access  Private
 const getRides = async (req, res) => {
-    const rides = await Ride.find()
-        .populate('createdBy', 'name email phoneNumber')
-        .populate('pendingRiders', 'name email phoneNumber')
-        .populate('riders', 'name email phoneNumber')
-        .sort({ createdAt: -1 });
-    res.status(200).json(rides);
+    try {
+        const { active, searchQuery } = req.query;
+        let query = {};
+
+        if (active === 'true') {
+            const today = new Date();
+            today.setHours(0, 0, 0, 0); // Start of today
+
+            query = {
+                date: { $gte: today },
+                availableSeats: { $gt: 0 }, // Only show rides with seats
+                createdBy: { $ne: req.user.id }, // Don't show own rides in search
+                'riders': { $ne: req.user.id }, // Don't show rides already joined
+                'pendingRiders': { $ne: req.user.id } // Don't show rides with pending request
+            };
+        }
+
+        // Add text search if provided
+        if (searchQuery) {
+            query.$or = [
+                { source: { $regex: searchQuery, $options: 'i' } },
+                { destination: { $regex: searchQuery, $options: 'i' } }
+            ];
+        }
+
+        const rides = await Ride.find(query)
+            .populate('createdBy', 'name email phoneNumber averageRating vehicle driverVerification')
+            .populate('pendingRiders', 'name email phoneNumber')
+            .populate('riders', 'name email phoneNumber')
+            .sort(active === 'true' ? { date: 1, time: 1 } : { createdAt: -1 });
+
+        // Filter out past times if active is true
+        if (active === 'true') {
+            const now = new Date();
+            rides = rides.filter(ride => {
+                const rideDate = new Date(ride.date);
+                // Check if it's strictly future date
+                if (rideDate.setHours(0, 0, 0, 0) > now.setHours(0, 0, 0, 0)) return true;
+
+                // If it's today, check time
+                if (rideDate.getTime() === now.getTime()) {
+                    const [hours, minutes] = ride.time.split(':').map(Number);
+                    const currentHours = new Date().getHours();
+                    const currentMinutes = new Date().getMinutes();
+
+                    if (hours > currentHours) return true;
+                    if (hours === currentHours && minutes >= currentMinutes) return true;
+                    return false;
+                }
+                return false;
+            });
+        }
+
+        res.status(200).json(rides);
+    } catch (error) {
+        res.status(500).json({ message: 'Server Error', error: error.message });
+    }
 };
 
 // @desc    Request to join a ride
@@ -291,6 +370,26 @@ const deleteRide = async (req, res) => {
     }
 };
 
+// @desc    Get single ride by ID
+// @route   GET /api/rides/:id
+// @access  Private
+const getRideById = async (req, res) => {
+    try {
+        const ride = await Ride.findById(req.params.id)
+            .populate('createdBy', 'name phoneNumber averageRating vehicle driverVerification')
+            .populate('riders', 'name phoneNumber')
+            .populate('pendingRiders', 'name phoneNumber');
+
+        if (ride) {
+            res.json(ride);
+        } else {
+            res.status(404).json({ message: 'Ride not found' });
+        }
+    } catch (error) {
+        res.status(500).json({ message: 'Server Error' });
+    }
+};
+
 module.exports = {
     createRide,
     getRides,
@@ -298,5 +397,6 @@ module.exports = {
     getRideEstimate,
     getDriverStats,
     deleteRide,
-    respondToRideRequest
+    respondToRideRequest,
+    getRideById
 };

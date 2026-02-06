@@ -8,15 +8,55 @@ dotenv.config();
 
 const port = process.env.PORT || 5000;
 
+const http = require('http');
+const { Server } = require('socket.io');
+
 const app = express();
+const server = http.createServer(app);
+
+// Initialize Socket.io
+const io = new Server(server, {
+    cors: {
+        origin: ["http://localhost:3000", "http://192.168.1.5:3000"], // Allow local and network access
+        methods: ["GET", "POST"]
+    }
+});
 
 // Connect to MongoDB
 const connectDB = require('./config/db');
 connectDB();
 
 app.use(cors());
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: false, limit: '10mb' }));
+
+// Socket.IO Connection Logic
+io.on('connection', (socket) => {
+    console.log(`New client connected: ${socket.id}`);
+
+    // Join a specific ride room for live tracking
+    socket.on('join_ride', (rideId) => {
+        socket.join(rideId);
+        console.log(`User ${socket.id} joined ride: ${rideId}`);
+    });
+
+    // Handle Location Updates (Driver or Rider)
+    // Data: { rideId, userId, lat, lng, heading }
+    socket.on('update_location', (data) => {
+        // Broadcast to everyone in the ride room EXCEPT the sender
+        socket.to(data.rideId).emit('receive_location', data);
+    });
+
+    socket.on('disconnect', () => {
+        console.log('Client disconnected', socket.id);
+    });
+});
+
+// Make io accessible in routes if needed (req.io)
+app.use((req, res, next) => {
+    req.io = io;
+    next();
+});
 
 // API Routes
 app.use('/api', require('./routes/authRoutes'));
@@ -25,11 +65,9 @@ app.use('/api/notifications', require('./routes/notificationRoutes'));
 app.use('/api/messages', require('./routes/messageRoutes'));
 app.use('/api/payments', require('./routes/paymentRoutes'));
 app.use('/api/reviews', require('./routes/reviewRoutes'));
+app.use('/api/driver-verification', require('./routes/driverVerificationRoutes'));
 
 // Serve Frontend (Client Build)
-// Ensure "npm run build" was run in frontend folder
-// Serve Frontend (Client Build)
-// Ensure "npm run build" was run in frontend folder
 const frontendBuildPath = path.join(__dirname, '../frontend/build');
 app.use(express.static(frontendBuildPath));
 
@@ -38,4 +76,4 @@ app.get(/.*/, (req, res) => {
     res.sendFile(path.resolve(frontendBuildPath, 'index.html'));
 });
 
-app.listen(port, () => console.log(`Server started on port ${port}`));
+server.listen(port, () => console.log(`Server started on port ${port}`));

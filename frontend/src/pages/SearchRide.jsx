@@ -23,7 +23,8 @@ const SearchRide = () => {
     useEffect(() => {
         const fetchRides = async () => {
             try {
-                const data = await rideService.getRides();
+                // Fetch only active (future/available) rides
+                const data = await rideService.getRides({ active: true });
                 setRides(data);
                 setFilteredRides(data);
             } catch (err) {
@@ -107,7 +108,7 @@ const SearchRide = () => {
             fire(0.1, { spread: 120, startVelocity: 25, decay: 0.92, scalar: 1.2 });
             fire(0.1, { spread: 120, startVelocity: 45 });
             // Refresh rides in background
-            const data = await rideService.getRides();
+            const data = await rideService.getRides({ active: true });
             setRides(data);
             setFilteredRides(data);
 

@@ -118,6 +118,26 @@ const Dashboard = () => {
                             </svg>
                         </span>
                     </div>
+
+                    <div
+                        className="bg-white/80 backdrop-blur-xl p-10 rounded-[2rem] shadow-sm border border-white/50 hover:shadow-2xl hover:border-cyan-100 transition-all duration-300 group cursor-pointer h-full md:col-span-2"
+                        onClick={() => window.location.href = '/driver-verification'}
+                    >
+                        <div className="w-16 h-16 bg-gradient-to-br from-cyan-400 to-blue-600 rounded-2xl text-white flex items-center justify-center mb-6 shadow-lg shadow-cyan-500/30 group-hover:scale-110 transition-transform duration-300">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                            </svg>
+                        </div>
+                        <h2 className="text-3xl font-bold mb-4 text-gray-900 group-hover:text-cyan-600 transition-colors">Driver Verification</h2>
+                        <p className="text-gray-500 mb-8 leading-relaxed text-lg">
+                            Complete your driver profile by uploading your driving license and vehicle details. Get verified to start offering rides.
+                        </p>
+                        <span className="inline-flex items-center justify-center w-12 h-12 rounded-full border border-gray-200 text-gray-400 group-hover:bg-cyan-600 group-hover:text-white group-hover:border-transparent transition-all duration-300">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd" />
+                            </svg>
+                        </span>
+                    </div>
                 </div>
             </div>
         </div>
