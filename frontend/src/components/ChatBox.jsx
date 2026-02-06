@@ -8,16 +8,6 @@ const ChatBox = ({ rideId, rideTitle }) => {
     const [currentUser, setCurrentUser] = useState(null);
     const messagesEndRef = useRef(null);
 
-    useEffect(() => {
-        const user = authService.getCurrentUser();
-        setCurrentUser(user);
-        fetchMessages();
-
-        // Poll for new messages every 3 seconds for near real-time feel
-        const interval = setInterval(fetchMessages, 3000);
-        return () => clearInterval(interval);
-    }, [rideId, fetchMessages]);
-
     const fetchMessages = useCallback(async () => {
         try {
             if (!rideId) return;
@@ -27,6 +17,16 @@ const ChatBox = ({ rideId, rideTitle }) => {
             console.error("Error fetching messages", error);
         }
     }, [rideId]);
+
+    useEffect(() => {
+        const user = authService.getCurrentUser();
+        setCurrentUser(user);
+        fetchMessages();
+
+        // Poll for new messages every 3 seconds for near real-time feel
+        const interval = setInterval(fetchMessages, 3000);
+        return () => clearInterval(interval);
+    }, [rideId, fetchMessages]);
 
     const scrollToBottom = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });

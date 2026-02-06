@@ -34,10 +34,12 @@ export const fileToBase64 = (file) => {
     });
 };
 
-export default {
+const driverVerificationService = {
     getVerificationStatus,
     uploadDrivingLicense,
     uploadVehicleDetails,
     getDriverProfile,
     fileToBase64
 };
+
+export default driverVerificationService;
