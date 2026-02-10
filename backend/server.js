@@ -3,6 +3,8 @@ const dotenv = require('dotenv');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const path = require('path');
+const helmet = require('helmet');
+const rateLimit = require('express-rate-limit');
 
 dotenv.config();
 
@@ -26,7 +28,31 @@ const io = new Server(server, {
 const connectDB = require('./config/db');
 connectDB();
 
-app.use(cors());
+app.use(cors({
+    origin: process.env.NODE_ENV === 'production' ? 'https://your-frontend-domain.com' : '*', // Restrict in production
+    credentials: true
+}));
+
+// Security Middleware
+app.use(helmet({
+    contentSecurityPolicy: {
+        directives: {
+            defaultSrc: ["'self'"],
+            scriptSrc: ["'self'", "'unsafe-inline'", "https://*.googleapis.com", "https://*.gstatic.com"], // Allow Google Maps scripts if ever needed
+            imgSrc: ["'self'", "data:", "https://*.openstreetmap.org", "https://*.cartocdn.com", "https://*.flaticon.com", "https://*.githubusercontent.com"], // Allow map tiles & icons
+            connectSrc: ["'self'", "ws:", "wss:", "https://*.googleapis.com", "http://router.project-osrm.org"], // Allow WebSockets & OSRM
+        },
+    },
+}));
+
+// Rate Limiting (Prevent Brute Force)
+const limiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 100, // limit each IP to 100 requests per windowMs
+    message: "Too many requests from this IP, please try again later."
+});
+app.use('/api/', limiter);
+
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: false, limit: '10mb' }));
 

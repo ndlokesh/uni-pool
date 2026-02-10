@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import authService from '../services/authService';
 
 import NotificationDropdown from './NotificationDropdown';
+import Logo from './Logo';
 
 const Navbar = () => {
     const navigate = useNavigate();
@@ -17,8 +18,8 @@ const Navbar = () => {
         <nav className="sticky top-4 z-50 mx-4 md:mx-auto max-w-7xl animate-fade-in-up">
             <div className="glass rounded-full px-6 py-3 flex justify-between items-center shadow-sm">
                 <Link to="/" className="text-2xl font-bold text-primary-600 flex items-center gap-2 tracking-tight">
-                    <div className="w-8 h-8 bg-primary-600 text-white rounded-lg flex items-center justify-center text-sm font-bold shadow-md">
-                        UP
+                    <div className="w-10 h-10 flex items-center justify-center">
+                        <Logo className="w-full h-full object-contain" />
                     </div>
                     <span>UNI POOL</span>
                 </Link>

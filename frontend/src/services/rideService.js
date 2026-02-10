@@ -37,6 +37,11 @@ const respondToRequest = async (rideId, riderId, action) => {
     return response.data;
 };
 
+const verifyOTP = async (rideId, otp) => {
+    const response = await API.post('/rides/verify-otp', { rideId, otp });
+    return response.data;
+};
+
 const rideService = {
     createRide,
     getRides,
@@ -44,6 +49,7 @@ const rideService = {
     joinRide,
     getRideEstimate,
     respondToRequest,
+    verifyOTP,
 };
 
 export default rideService;

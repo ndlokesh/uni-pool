@@ -11,20 +11,70 @@ const PaymentModal = ({ ride, onClose, onSuccess }) => {
         setStep('processing');
 
         try {
-            await paymentService.processPayment({
-                rideId: ride._id,
-                amount: ride.price,
-                method
-            });
-            setStep('success');
-            setTimeout(() => {
-                onSuccess();
-                onClose();
-            }, 2000);
+            if (method === 'cash') {
+                // Cash Payment Logic
+                await paymentService.recordCashPayment({
+                    rideId: ride._id,
+                    amount: ride.price
+                });
+                completeSuccess();
+            } else {
+                // Razorpay Online Payment Logic
+                const orderData = await paymentService.createOrder(ride.price);
+
+                const options = {
+                    key: orderData.key, // Key returned from backend
+                    amount: orderData.amount,
+                    currency: orderData.currency,
+                    name: "Uni Pool",
+                    description: "Ride Sharing Payment",
+                    image: "/logo192.png",
+                    order_id: orderData.id,
+                    handler: async function (response) {
+                        try {
+                            await paymentService.verifyPayment({
+                                ...response,
+                                rideId: ride._id,
+                                amount: ride.price,
+                                method: method // 'card' or 'upi'
+                            });
+                            completeSuccess();
+                        } catch (verifyError) {
+                            setError('Payment Verification Failed');
+                            setStep('select');
+                        }
+                    },
+                    prefill: {
+                        name: "Student User", // We could pass actual user name here if available
+                        email: "student@example.com",
+                        contact: "9999999999"
+                    },
+                    theme: {
+                        color: "#6366f1"
+                    }
+                };
+
+                const rzp1 = new window.Razorpay(options);
+                rzp1.on('payment.failed', function (response) {
+                    setError(response.error.description);
+                    setStep('select');
+                });
+                rzp1.open();
+            }
+
         } catch (err) {
-            setError('Payment Failed. Try again.');
+            console.error(err);
+            setError('Payment Initiation Failed. Try again.');
             setStep('select');
         }
+    };
+
+    const completeSuccess = () => {
+        setStep('success');
+        setTimeout(() => {
+            onSuccess();
+            onClose();
+        }, 2000);
     };
 
     return (

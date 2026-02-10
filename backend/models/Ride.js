@@ -44,10 +44,28 @@ const rideSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
     }],
+    passengers: [{
+        rider: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User'
+        },
+        otp: {
+            type: String
+        },
+        status: {
+            type: String,
+            enum: ['pending', 'confirmed', 'onboard', 'dropped', 'cancelled'],
+            default: 'pending'
+        },
+        pickupTime: Date,
+        dropTime: Date
+    }],
     distanceKm: { type: Number },
     durationMin: { type: Number },
     price: { type: Number },
     driverEarnings: { type: Number },
 }, { timestamps: true });
+
+rideSchema.index({ createdBy: 1, date: -1 });
 
 module.exports = mongoose.model('Ride', rideSchema);

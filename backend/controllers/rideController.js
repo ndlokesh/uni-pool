@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const Ride = require('../models/Ride');
 const Notification = require('../models/Notification');
 const { getRoadRouting } = require('../utils/distance');
@@ -246,16 +247,27 @@ const respondToRideRequest = async (req, res) => {
                 return res.status(400).json({ message: 'No seats available to accept' });
             }
 
+            // Generate 4-digit OTP
+            const otp = Math.floor(1000 + Math.random() * 9000).toString();
+
             // Move from pending to accepted
             ride.pendingRiders = ride.pendingRiders.filter(id => id.toString() !== riderId);
             ride.riders.push(riderId);
+
+            // Add to passengers array with OTP
+            ride.passengers.push({
+                rider: riderId,
+                otp: otp,
+                status: 'confirmed'
+            });
+
             ride.availableSeats -= 1;
             await ride.save();
 
-            // Notify Rider
+            // Notify Rider with OTP
             await Notification.create({
                 user: riderId,
-                message: `Your ride request for ${ride.source} to ${ride.destination} was ACCEPTED!`,
+                message: `Ride Accepted! Your OTP is ${otp}. Please share this with the driver upon pickup.`,
                 type: 'booking',
                 relatedRide: ride._id
             });
@@ -293,55 +305,100 @@ const respondToRideRequest = async (req, res) => {
 // @access  Private
 const getDriverStats = async (req, res) => {
     try {
-        const userId = req.user.id;
+        const userId = new mongoose.Types.ObjectId(req.user.id);
+        const { includeRides } = req.query;
 
-        const rides = await Ride.find({ createdBy: userId });
+        // Parallel execution
+        const statsPromise = Ride.aggregate([
+            { $match: { createdBy: userId } },
+            {
+                $facet: {
+                    totals: [
+                        {
+                            $group: {
+                                _id: null,
+                                totalRides: { $sum: 1 },
+                                totalEarnings: { $sum: "$driverEarnings" }
+                            }
+                        }
+                    ],
+                    daily: [
+                        {
+                            $group: {
+                                _id: { $dateToString: { format: "%Y-%m-%d", date: "$date" } },
+                                earnings: { $sum: "$driverEarnings" }
+                            }
+                        }
+                    ],
+                    weekly: [
+                        {
+                            $group: {
+                                _id: {
+                                    year: { $year: "$date" },
+                                    week: { $isoWeek: "$date" }
+                                },
+                                earnings: { $sum: "$driverEarnings" }
+                            }
+                        }
+                    ],
+                    monthly: [
+                        {
+                            $group: {
+                                _id: { $dateToString: { format: "%Y-%m", date: "$date" } },
+                                earnings: { $sum: "$driverEarnings" }
+                            }
+                        }
+                    ]
+                }
+            }
+        ]);
 
-        const totalRides = rides.length;
-        let totalEarnings = 0;
+        // Optimize Rides Query: Use .lean(), select specific fields, and apply a reasonable limit (e.g., 50)
+        // For a full history page, we should implement pagination, but initially limiting usually solves 'slow' loading.
+        const ridesPromise = includeRides === 'true'
+            ? Ride.find({ createdBy: userId })
+                .sort({ date: -1 })
+                .select('source destination date time availableSeats vehicleType driverEarnings distanceKm durationMin status')
+                .limit(100) // Prevent fetching thousands of records at once
+                .lean()
+            : Promise.resolve(null);
 
-        // Grouping data
+        const [statsResult, rides] = await Promise.all([statsPromise, ridesPromise]);
+
+        const result = statsResult[0];
+        const totalRides = result.totals && result.totals[0] ? result.totals[0].totalRides : 0;
+        const totalEarnings = result.totals && result.totals[0] ? result.totals[0].totalEarnings : 0;
+
+        // Transform Aggregation Results
         const dailyStats = {};
+        result.daily.forEach(item => dailyStats[item._id] = item.earnings);
+
         const weeklyStats = {};
-        const monthlyStats = {};
-
-        rides.forEach(ride => {
-            const earnings = ride.driverEarnings || 0;
-            totalEarnings += earnings;
-
-            const date = new Date(ride.date);
-
-            // Daily Key: YYYY-MM-DD
-            const dayKey = date.toISOString().split('T')[0];
-            if (!dailyStats[dayKey]) dailyStats[dayKey] = 0;
-            dailyStats[dayKey] += earnings;
-
-            // Monthly Key: YYYY-MM
-            const monthKey = dayKey.substring(0, 7);
-            if (!monthlyStats[monthKey]) monthlyStats[monthKey] = 0;
-            monthlyStats[monthKey] += earnings;
-
-            // Simple Weekly logic (ISO Week number could be complex, using simple approach)
-            // For now, let's just use the start of the week logic or ISO string
-            const fw = new Date(date.getFullYear(), 0, 1);
-            const days = Math.floor((date - fw) / (24 * 60 * 60 * 1000));
-            const weekNum = Math.ceil((date.getDay() + 1 + days) / 7);
-            const weekKey = `${date.getFullYear()}-W${weekNum}`;
-
-            if (!weeklyStats[weekKey]) weeklyStats[weekKey] = 0;
-            weeklyStats[weekKey] += earnings;
+        result.weekly.forEach(item => {
+            const weekStr = item._id.week.toString().padStart(2, '0');
+            const key = `${item._id.year}-W${weekStr}`;
+            weeklyStats[key] = item.earnings;
         });
 
-        res.status(200).json({
-            totalRides,
+        const monthlyStats = {};
+        result.monthly.forEach(item => monthlyStats[item._id] = item.earnings);
+
+        const response = {
+            totalRides, // Total count from aggregation (correct even if rides list is limited)
             totalEarnings,
             dailyStats,
             weeklyStats,
-            monthlyStats,
-            rides // Include the list of rides
-        });
+            monthlyStats
+        };
+
+        if (rides) {
+            response.rides = rides;
+        }
+
+        res.status(200).json(response);
 
     } catch (error) {
+        console.error("Error in getDriverStats:", error);
         res.status(500).json({ message: 'Server Error', error: error.message });
     }
 };
@@ -378,7 +435,8 @@ const getRideById = async (req, res) => {
         const ride = await Ride.findById(req.params.id)
             .populate('createdBy', 'name phoneNumber averageRating vehicle driverVerification')
             .populate('riders', 'name phoneNumber')
-            .populate('pendingRiders', 'name phoneNumber');
+            .populate('pendingRiders', 'name phoneNumber')
+            .populate('passengers.rider', 'name phoneNumber');
 
         if (ride) {
             res.json(ride);
@@ -386,6 +444,50 @@ const getRideById = async (req, res) => {
             res.status(404).json({ message: 'Ride not found' });
         }
     } catch (error) {
+        res.status(500).json({ message: 'Server Error' });
+    }
+};
+
+// @desc    Verify Passenger OTP (Start Ride for Passenger)
+// @route   POST /api/rides/verify-otp
+// @access  Private (Driver)
+const verifyRideOTP = async (req, res) => {
+    try {
+        const { rideId, otp } = req.body;
+
+        const ride = await Ride.findById(rideId);
+        if (!ride) return res.status(404).json({ message: 'Ride not found' });
+
+        // Ensure current user is the driver
+        if (ride.createdBy.toString() !== req.user.id) {
+            return res.status(401).json({ message: 'Only driver can verify OTP' });
+        }
+
+        // Find the passenger with this OTP
+        const passengerIndex = ride.passengers.findIndex(p => p.otp === otp && p.status === 'confirmed');
+
+        if (passengerIndex === -1) {
+            return res.status(400).json({ message: 'Invalid OTP or passenger already onboard' });
+        }
+
+        // Update status to onboard
+        ride.passengers[passengerIndex].status = 'onboard';
+        ride.passengers[passengerIndex].pickupTime = new Date();
+        await ride.save();
+
+        // Notify Passenger
+        const passengerId = ride.passengers[passengerIndex].rider;
+        await Notification.create({
+            user: passengerId,
+            message: `OTP Verified! Enjoy your ride to ${ride.destination}.`,
+            type: 'system',
+            relatedRide: ride._id
+        });
+
+        res.status(200).json({ message: 'Passenger confirmed!', ride });
+
+    } catch (error) {
+        console.error("OTP Verification Error:", error);
         res.status(500).json({ message: 'Server Error' });
     }
 };
@@ -398,5 +500,6 @@ module.exports = {
     getDriverStats,
     deleteRide,
     respondToRideRequest,
-    getRideById
+    getRideById,
+    verifyRideOTP
 };

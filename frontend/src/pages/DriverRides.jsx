@@ -24,7 +24,7 @@ const DriverRides = () => {
                     },
                 };
 
-                const response = await axios.get('/api/rides/stats', config);
+                const response = await axios.get('/api/rides/stats?includeRides=true', config);
                 setStats(response.data);
                 setLoading(false);
             } catch (error) {

@@ -8,7 +8,8 @@ const {
     getDriverStats,
     deleteRide,
     respondToRideRequest,
-    getRideById
+    getRideById,
+    verifyRideOTP
 } = require('../controllers/rideController');
 const { protect } = require('../middleware/authMiddleware');
 
@@ -17,6 +18,7 @@ router.route('/stats').get(protect, getDriverStats);
 router.route('/estimate').post(protect, getRideEstimate);
 router.route('/join/:id').put(protect, joinRide);
 router.route('/respond').put(protect, respondToRideRequest);
+router.route('/verify-otp').post(protect, verifyRideOTP);
 router.route('/:id').get(protect, getRideById).delete(protect, deleteRide);
 
 module.exports = router;
