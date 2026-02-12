@@ -11,7 +11,8 @@ export const searchLocation = async (query) => {
                 q: query,
                 format: 'json',
                 addressdetails: 1,
-                limit: 5
+                limit: 5,
+                countrycodes: 'in' // Restrict to India
             }
         });
         return response.data;

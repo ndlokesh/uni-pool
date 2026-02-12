@@ -130,6 +130,8 @@ const loginUser = async (req, res) => {
             phoneNumber: user.phoneNumber,
             expectedGraduationYear: user.expectedGraduationYear,
             isActiveStudent: user.isActiveStudent,
+            isDriver: user.isDriver,
+            driverVerificationStatus: user.driverVerification?.status,
             token: generateToken(user._id),
         });
     } else {

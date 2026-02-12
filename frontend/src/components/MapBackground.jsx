@@ -97,6 +97,8 @@ const MapBackground = ({ center, markers = [], routeGeometry, onMapClick, classN
                 zoom={13}
                 style={{ height: '100%', width: '100%' }}
                 zoomControl={false}
+                maxBounds={[[6.0, 68.0], [36.0, 98.0]]} // Restrict to India
+                minZoom={4}
             >
                 {/* Dark Mode Style for OSM - High contrast for 'Uber' feel */}
                 <TileLayer

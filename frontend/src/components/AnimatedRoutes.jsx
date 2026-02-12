@@ -11,6 +11,7 @@ import DriverEarnings from '../pages/DriverEarnings';
 import DriverVerification from '../pages/DriverVerification';
 import MyRides from '../pages/MyRides';
 import RideTracking from '../pages/RideTracking';
+import DriverProfile from '../pages/DriverProfile';
 import PrivateRoute from './PrivateRoute';
 import authService from '../services/authService';
 import PageTransition from './PageTransition';
@@ -40,7 +41,7 @@ const AnimatedRoutes = () => {
                     <Route path="/driver-rides" element={<PageTransition><DriverRides /></PageTransition>} />
                     <Route path="/driver-earnings" element={<PageTransition><DriverEarnings /></PageTransition>} />
                     <Route path="/driver-verification" element={<PageTransition><DriverVerification /></PageTransition>} />
-                    <Route path="/driver-verification" element={<PageTransition><DriverVerification /></PageTransition>} />
+                    <Route path="/driver-profile" element={<PageTransition><DriverProfile /></PageTransition>} />
                     <Route path="/my-rides" element={<PageTransition><MyRides /></PageTransition>} />
                     <Route path="/track/:rideId" element={<PageTransition><RideTracking /></PageTransition>} />
                 </Route>

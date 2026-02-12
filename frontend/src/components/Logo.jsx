@@ -2,30 +2,49 @@ import React from 'react';
 
 const Logo = ({ className }) => (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none" className={className}>
-        {/* Hexagon Container */}
-        <path d="M50 5 L93.3 30 V80 L50 95 L6.7 80 V30 Z" stroke="#2563EB" strokeWidth="4" fill="white" />
+        {/* -- Main Pin Shape -- */}
+        {/* Teardrop Pin */}
+        <path d="M50 5 C30 5 15 20 15 40 C15 65 50 85 50 85 C50 85 85 65 85 40 C85 20 70 5 50 5 Z" fill="#2563EB" />
 
-        {/* Stylized U (Left side) */}
-        <path d="M25 35 V60 C25 70 30 75 40 75" stroke="#2563EB" strokeWidth="6" strokeLinecap="round" />
+        {/* -- Leaf Inside Pin -- */}
+        {/* White leaf shape */}
+        <path d="M50 20 C50 20 65 20 68 35 C70 48 55 60 50 63 C45 60 30 48 32 35 C35 20 50 20 50 20 Z" fill="white" />
+        {/* Leaf veins */}
+        <path d="M50 20 Q 52 40 50 63" stroke="#2563EB" strokeWidth="2" strokeLinecap="round" fill="none" />
+        <path d="M50 35 L 58 30" stroke="#2563EB" strokeWidth="2" strokeLinecap="round" />
+        <path d="M50 48 L 42 42" stroke="#2563EB" strokeWidth="2" strokeLinecap="round" />
 
-        {/* Stylized P (Right side) */}
-        <path d="M60 75 V35 H70 C80 35 80 55 70 55 H60" stroke="#2563EB" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" />
+        {/* -- Bottom Loop / Container -- */}
+        {/* Left 'C' bracket for Car */}
+        <path d="M48 85 H 30 C 20 85 15 80 15 70 C 15 60 20 55 25 55" stroke="#2563EB" strokeWidth="3" strokeLinecap="round" fill="none" />
+        {/* Right 'C' bracket for Bike */}
+        <path d="M52 85 H 70 C 80 85 85 80 85 70 C 85 60 80 55 75 55" stroke="#2563EB" strokeWidth="3" strokeLinecap="round" fill="none" />
 
-        {/* Connection Nodes (Tech feel) */}
-        <circle cx="25" cy="35" r="3" fill="#2563EB" />
-        <circle cx="40" cy="75" r="3" fill="#2563EB" />
-        <circle cx="60" cy="35" r="3" fill="#2563EB" />
-        <circle cx="60" cy="75" r="3" fill="#2563EB" />
-        <circle cx="80" cy="45" r="3" fill="#2563EB" />
+        {/* Center connection node */}
+        <circle cx="50" cy="85" r="4" fill="white" stroke="#2563EB" strokeWidth="3" />
+        <circle cx="50" cy="85" r="2" fill="#2563EB" />
 
-        {/* Connection Lines */}
-        <line x1="25" y1="35" x2="40" y2="25" stroke="#60A5FA" strokeWidth="2" />
-        <circle cx="40" cy="25" r="2" fill="#60A5FA" />
+        {/* -- Side Leaves (Sprouting from the loop) -- */}
+        {/* Left Sprout */}
+        <path d="M25 55 Q 20 45 15 45 Q 15 55 25 55 Z" fill="#2563EB" />
+        {/* Right Sprout */}
+        <path d="M75 55 Q 80 45 85 45 Q 85 55 75 55 Z" fill="#2563EB" />
 
-        <line x1="60" y1="35" x2="75" y2="25" stroke="#60A5FA" strokeWidth="2" />
-        <circle cx="75" cy="25" r="2" fill="#60A5FA" />
+        {/* -- Icons -- */}
+        {/* Car Icon (Left) */}
+        <g transform="translate(22, 62) scale(0.6)">
+            <path d="M3 12 L5 6 H19 L21 12 V18 H3 V12 M5 18 V20 M19 18 V20" stroke="#2563EB" strokeWidth="2" fill="none" />
+            <line x1="6" y1="14" x2="8" y2="14" stroke="#2563EB" strokeWidth="2" />
+            <line x1="16" y1="14" x2="18" y2="14" stroke="#2563EB" strokeWidth="2" />
+        </g>
 
-        <line x1="40" y1="75" x2="60" y2="75" stroke="#60A5FA" strokeWidth="2" strokeDasharray="4 2" />
+        {/* Bike Icon (Right) */}
+        <g transform="translate(62, 63) scale(0.6)">
+            <circle cx="5" cy="15" r="4" stroke="#2563EB" strokeWidth="2" />
+            <circle cx="19" cy="15" r="4" stroke="#2563EB" strokeWidth="2" />
+            <path d="M5 15 L9 8 L14 15 L19 15 M12 8 H16" stroke="#2563EB" strokeWidth="2" strokeLinecap="round" fill="none" />
+            <circle cx="15" cy="15" r="1.5" fill="#2563EB" />
+        </g>
     </svg>
 );
 
