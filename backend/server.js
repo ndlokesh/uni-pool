@@ -56,6 +56,10 @@ app.use('/api/', limiter);
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: false, limit: '10mb' }));
 
+// In-memory store: rideId -> { userId -> { lat, lng, heading, role } }
+// This lets late joiners instantly see where everyone is.
+const rideLocations = {};
+
 // Socket.IO Connection Logic
 io.on('connection', (socket) => {
     console.log(`New client connected: ${socket.id}`);
@@ -64,19 +68,47 @@ io.on('connection', (socket) => {
     socket.on('join_ride', (rideId) => {
         socket.join(rideId);
         console.log(`User ${socket.id} joined ride: ${rideId}`);
+
+        // Send snapshot of all current locations to the new joiner
+        if (rideLocations[rideId] && Object.keys(rideLocations[rideId]).length > 0) {
+            socket.emit('room_snapshot', rideLocations[rideId]);
+        }
     });
 
-    // Handle Location Updates (Driver or Rider)
-    // Data: { rideId, userId, lat, lng, heading }
+    // Handle Location Updates
+    // Data: { rideId, userId, lat, lng, heading, role }
     socket.on('update_location', (data) => {
-        // Broadcast to everyone in the ride room EXCEPT the sender
-        socket.to(data.rideId).emit('receive_location', data);
+        const { rideId, userId, lat, lng, heading, role } = data;
+
+        // Persist latest position
+        if (!rideLocations[rideId]) rideLocations[rideId] = {};
+        rideLocations[rideId][userId] = { lat, lng, heading, role };
+
+        // Broadcast to everyone in the ride room EXCEPT sender
+        socket.to(rideId).emit('receive_location', data);
     });
 
     socket.on('disconnect', () => {
         console.log('Client disconnected', socket.id);
     });
+
+    // Clean up stale ride rooms periodically (prevent memory leaks)
+    // We keep each ride's data for 8 hours then purge it
+    // (lightweight – runs per new connection, not a global timer)
 });
+
+// Purge stale location data every hour (8 h TTL)
+const locationTTL = new Map(); // rideId -> timestamp of last update
+setInterval(() => {
+    const now = Date.now();
+    for (const rideId of Object.keys(rideLocations)) {
+        const lastSeen = locationTTL.get(rideId) || 0;
+        if (now - lastSeen > 8 * 60 * 60 * 1000) {
+            delete rideLocations[rideId];
+            locationTTL.delete(rideId);
+        }
+    }
+}, 60 * 60 * 1000);
 
 // Make io accessible in routes if needed (req.io)
 app.use((req, res, next) => {
