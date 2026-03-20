@@ -1,0 +1,2498 @@
+﻿node.exe : FAIL 
+src/__tests__/MapBackground.test.jsx
+At line:1 char:1
++ & "C:\Program Files\nodejs/node.exe" 
+"C:\Users\Lokesh\AppData\Roaming ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (F 
+   AIL src/__test...ground.test.jsx:String) [  
+  ], RemoteException
+    + FullyQualifiedErrorId : NativeCommandErr 
+   or
+ 
+  ΓùÅ MapBackground ΓÇ║ rendering ΓÇ║ renders 
+without crashing with default props
+
+    TypeError: Cannot read properties of 
+undefined (reading 'setView')
+
+    [0m [90m 199 |[39m     useEffect(() 
+[33m=>[39m {
+     [90m 200 |[39m         [36mif[39m 
+([33m![39mapplied[33m.[39mcurrent 
+[33m&&[39m center [33m&&[39m 
+center[[35m0[39m] [33m&&[39m 
+center[[35m1[39m]) {
+    [31m[1m>[22m[39m[90m 201 |[39m       
+      map[33m.[39msetView(center[33m,[39m 
+[35m14[39m)[33m;[39m
+     [90m     |[39m                 
+[31m[1m^[22m[39m
+     [90m 202 |[39m             
+applied[33m.[39mapplied [33m=[39m 
+[36mtrue[39m[33m;[39m
+     [90m 203 |[39m         }
+     [90m 204 |[39m     }[33m,[39m 
+[center[33m,[39m map])[33m;[39m[0m
+
+      at 
+src/components/MapBackground.jsx:201:17
+      at Object.react_stack_bottom_frame (node_
+modules/react-dom/cjs/react-dom-client.developm
+ent.js:25989:20)
+      at runWithFiberInDEV (node_modules/react-
+dom/cjs/react-dom-client.development.js:874:13)
+      at commitHookEffectListMount (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:13249:29)
+      at commitHookPassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:13336:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15484:13)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15718:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15476:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15718:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15476:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15519:11)
+      at flushPassiveEffects (node_modules/reac
+t-dom/cjs/react-dom-client.development.js:18432
+:9)
+      at node_modules/react-dom/cjs/react-dom-c
+lient.development.js:17923:15
+      at flushActQueue (node_modules/react/cjs/
+react.development.js:590:34)
+      at Object.<anonymous>.process.env.NODE_EN
+V.exports.act (node_modules/react/cjs/react.dev
+elopment.js:884:10)
+      at node_modules/@testing-library/react/di
+st/act-compat.js:46:25
+      at renderRoot (node_modules/@testing-libr
+ary/react/dist/pure.js:189:26)
+      at render (node_modules/@testing-library/
+react/dist/pure.js:291:10)
+      at Object.<anonymous> 
+(src/__tests__/MapBackground.test.jsx:106:33)
+
+  ΓùÅ MapBackground ΓÇ║ rendering ΓÇ║ renders 
+the MapContainer
+
+    TypeError: Cannot read properties of 
+undefined (reading 'setView')
+
+    [0m [90m 199 |[39m     useEffect(() 
+[33m=>[39m {
+     [90m 200 |[39m         [36mif[39m 
+([33m![39mapplied[33m.[39mcurrent 
+[33m&&[39m center [33m&&[39m 
+center[[35m0[39m] [33m&&[39m 
+center[[35m1[39m]) {
+    [31m[1m>[22m[39m[90m 201 |[39m       
+      map[33m.[39msetView(center[33m,[39m 
+[35m14[39m)[33m;[39m
+     [90m     |[39m                 
+[31m[1m^[22m[39m
+     [90m 202 |[39m             
+applied[33m.[39mapplied [33m=[39m 
+[36mtrue[39m[33m;[39m
+     [90m 203 |[39m         }
+     [90m 204 |[39m     }[33m,[39m 
+[center[33m,[39m map])[33m;[39m[0m
+
+      at 
+src/components/MapBackground.jsx:201:17
+      at Object.react_stack_bottom_frame (node_
+modules/react-dom/cjs/react-dom-client.developm
+ent.js:25989:20)
+      at runWithFiberInDEV (node_modules/react-
+dom/cjs/react-dom-client.development.js:874:13)
+      at commitHookEffectListMount (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:13249:29)
+      at commitHookPassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:13336:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15484:13)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15718:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15476:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15718:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15476:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15519:11)
+      at flushPassiveEffects (node_modules/reac
+t-dom/cjs/react-dom-client.development.js:18432
+:9)
+      at node_modules/react-dom/cjs/react-dom-c
+lient.development.js:17923:15
+      at flushActQueue (node_modules/react/cjs/
+react.development.js:590:34)
+      at Object.<anonymous>.process.env.NODE_EN
+V.exports.act (node_modules/react/cjs/react.dev
+elopment.js:884:10)
+      at node_modules/@testing-library/react/di
+st/act-compat.js:46:25
+      at renderRoot (node_modules/@testing-libr
+ary/react/dist/pure.js:189:26)
+      at render (node_modules/@testing-library/
+react/dist/pure.js:291:10)
+      at Object.<anonymous> 
+(src/__tests__/MapBackground.test.jsx:111:11)
+
+  ΓùÅ MapBackground ΓÇ║ rendering ΓÇ║ renders 
+the TileLayer
+
+    TypeError: Cannot read properties of 
+undefined (reading 'setView')
+
+    [0m [90m 199 |[39m     useEffect(() 
+[33m=>[39m {
+     [90m 200 |[39m         [36mif[39m 
+([33m![39mapplied[33m.[39mcurrent 
+[33m&&[39m center [33m&&[39m 
+center[[35m0[39m] [33m&&[39m 
+center[[35m1[39m]) {
+    [31m[1m>[22m[39m[90m 201 |[39m       
+      map[33m.[39msetView(center[33m,[39m 
+[35m14[39m)[33m;[39m
+     [90m     |[39m                 
+[31m[1m^[22m[39m
+     [90m 202 |[39m             
+applied[33m.[39mapplied [33m=[39m 
+[36mtrue[39m[33m;[39m
+     [90m 203 |[39m         }
+     [90m 204 |[39m     }[33m,[39m 
+[center[33m,[39m map])[33m;[39m[0m
+
+      at 
+src/components/MapBackground.jsx:201:17
+      at Object.react_stack_bottom_frame (node_
+modules/react-dom/cjs/react-dom-client.developm
+ent.js:25989:20)
+      at runWithFiberInDEV (node_modules/react-
+dom/cjs/react-dom-client.development.js:874:13)
+      at commitHookEffectListMount (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:13249:29)
+      at commitHookPassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:13336:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15484:13)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15718:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15476:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15718:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15476:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15519:11)
+      at flushPassiveEffects (node_modules/reac
+t-dom/cjs/react-dom-client.development.js:18432
+:9)
+      at node_modules/react-dom/cjs/react-dom-c
+lient.development.js:17923:15
+      at flushActQueue (node_modules/react/cjs/
+react.development.js:590:34)
+      at Object.<anonymous>.process.env.NODE_EN
+V.exports.act (node_modules/react/cjs/react.dev
+elopment.js:884:10)
+      at node_modules/@testing-library/react/di
+st/act-compat.js:46:25
+      at renderRoot (node_modules/@testing-libr
+ary/react/dist/pure.js:189:26)
+      at render (node_modules/@testing-library/
+react/dist/pure.js:291:10)
+      at Object.<anonymous> 
+(src/__tests__/MapBackground.test.jsx:116:11)
+
+  ΓùÅ MapBackground ΓÇ║ rendering ΓÇ║ applies 
+default className when none provided
+
+    TypeError: Cannot read properties of 
+undefined (reading 'setView')
+
+    [0m [90m 199 |[39m     useEffect(() 
+[33m=>[39m {
+     [90m 200 |[39m         [36mif[39m 
+([33m![39mapplied[33m.[39mcurrent 
+[33m&&[39m center [33m&&[39m 
+center[[35m0[39m] [33m&&[39m 
+center[[35m1[39m]) {
+    [31m[1m>[22m[39m[90m 201 |[39m       
+      map[33m.[39msetView(center[33m,[39m 
+[35m14[39m)[33m;[39m
+     [90m     |[39m                 
+[31m[1m^[22m[39m
+     [90m 202 |[39m             
+applied[33m.[39mapplied [33m=[39m 
+[36mtrue[39m[33m;[39m
+     [90m 203 |[39m         }
+     [90m 204 |[39m     }[33m,[39m 
+[center[33m,[39m map])[33m;[39m[0m
+
+      at 
+src/components/MapBackground.jsx:201:17
+      at Object.react_stack_bottom_frame (node_
+modules/react-dom/cjs/react-dom-client.developm
+ent.js:25989:20)
+      at runWithFiberInDEV (node_modules/react-
+dom/cjs/react-dom-client.development.js:874:13)
+      at commitHookEffectListMount (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:13249:29)
+      at commitHookPassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:13336:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15484:13)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15718:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15476:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15718:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15476:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15519:11)
+      at flushPassiveEffects (node_modules/reac
+t-dom/cjs/react-dom-client.development.js:18432
+:9)
+      at node_modules/react-dom/cjs/react-dom-c
+lient.development.js:17923:15
+      at flushActQueue (node_modules/react/cjs/
+react.development.js:590:34)
+      at Object.<anonymous>.process.env.NODE_EN
+V.exports.act (node_modules/react/cjs/react.dev
+elopment.js:884:10)
+      at node_modules/@testing-library/react/di
+st/act-compat.js:46:25
+      at renderRoot (node_modules/@testing-libr
+ary/react/dist/pure.js:189:26)
+      at render (node_modules/@testing-library/
+react/dist/pure.js:291:10)
+      at Object.<anonymous> 
+(src/__tests__/MapBackground.test.jsx:121:33)
+
+  ΓùÅ MapBackground ΓÇ║ rendering ΓÇ║ applies 
+custom className when provided
+
+    TypeError: Cannot read properties of 
+undefined (reading 'setView')
+
+    [0m [90m 199 |[39m     useEffect(() 
+[33m=>[39m {
+     [90m 200 |[39m         [36mif[39m 
+([33m![39mapplied[33m.[39mcurrent 
+[33m&&[39m center [33m&&[39m 
+center[[35m0[39m] [33m&&[39m 
+center[[35m1[39m]) {
+    [31m[1m>[22m[39m[90m 201 |[39m       
+      map[33m.[39msetView(center[33m,[39m 
+[35m14[39m)[33m;[39m
+     [90m     |[39m                 
+[31m[1m^[22m[39m
+     [90m 202 |[39m             
+applied[33m.[39mapplied [33m=[39m 
+[36mtrue[39m[33m;[39m
+     [90m 203 |[39m         }
+     [90m 204 |[39m     }[33m,[39m 
+[center[33m,[39m map])[33m;[39m[0m
+
+      at 
+src/components/MapBackground.jsx:201:17
+      at Object.react_stack_bottom_frame (node_
+modules/react-dom/cjs/react-dom-client.developm
+ent.js:25989:20)
+      at runWithFiberInDEV (node_modules/react-
+dom/cjs/react-dom-client.development.js:874:13)
+      at commitHookEffectListMount (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:13249:29)
+      at commitHookPassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:13336:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15484:13)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15718:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15476:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15718:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15476:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15519:11)
+      at flushPassiveEffects (node_modules/reac
+t-dom/cjs/react-dom-client.development.js:18432
+:9)
+      at node_modules/react-dom/cjs/react-dom-c
+lient.development.js:17923:15
+      at flushActQueue (node_modules/react/cjs/
+react.development.js:590:34)
+      at Object.<anonymous>.process.env.NODE_EN
+V.exports.act (node_modules/react/cjs/react.dev
+elopment.js:884:10)
+      at node_modules/@testing-library/react/di
+st/act-compat.js:46:25
+      at renderRoot (node_modules/@testing-libr
+ary/react/dist/pure.js:189:26)
+      at render (node_modules/@testing-library/
+react/dist/pure.js:291:10)
+      at Object.<anonymous> 
+(src/__tests__/MapBackground.test.jsx:128:33)
+
+  ΓùÅ MapBackground ΓÇ║ rendering ΓÇ║ renders 
+top gradient overlay
+
+    TypeError: Cannot read properties of 
+undefined (reading 'setView')
+
+    [0m [90m 199 |[39m     useEffect(() 
+[33m=>[39m {
+     [90m 200 |[39m         [36mif[39m 
+([33m![39mapplied[33m.[39mcurrent 
+[33m&&[39m center [33m&&[39m 
+center[[35m0[39m] [33m&&[39m 
+center[[35m1[39m]) {
+    [31m[1m>[22m[39m[90m 201 |[39m       
+      map[33m.[39msetView(center[33m,[39m 
+[35m14[39m)[33m;[39m
+     [90m     |[39m                 
+[31m[1m^[22m[39m
+     [90m 202 |[39m             
+applied[33m.[39mapplied [33m=[39m 
+[36mtrue[39m[33m;[39m
+     [90m 203 |[39m         }
+     [90m 204 |[39m     }[33m,[39m 
+[center[33m,[39m map])[33m;[39m[0m
+
+      at 
+src/components/MapBackground.jsx:201:17
+      at Object.react_stack_bottom_frame (node_
+modules/react-dom/cjs/react-dom-client.developm
+ent.js:25989:20)
+      at runWithFiberInDEV (node_modules/react-
+dom/cjs/react-dom-client.development.js:874:13)
+      at commitHookEffectListMount (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:13249:29)
+      at commitHookPassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:13336:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15484:13)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15718:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15476:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15718:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15476:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15519:11)
+      at flushPassiveEffects (node_modules/reac
+t-dom/cjs/react-dom-client.development.js:18432
+:9)
+      at node_modules/react-dom/cjs/react-dom-c
+lient.development.js:17923:15
+      at flushActQueue (node_modules/react/cjs/
+react.development.js:590:34)
+      at Object.<anonymous>.process.env.NODE_EN
+V.exports.act (node_modules/react/cjs/react.dev
+elopment.js:884:10)
+      at node_modules/@testing-library/react/di
+st/act-compat.js:46:25
+      at renderRoot (node_modules/@testing-libr
+ary/react/dist/pure.js:189:26)
+      at render (node_modules/@testing-library/
+react/dist/pure.js:291:10)
+      at Object.<anonymous> 
+(src/__tests__/MapBackground.test.jsx:133:33)
+
+  ΓùÅ MapBackground ΓÇ║ markers ΓÇ║ renders no 
+markers when markers array is empty
+
+    TypeError: Cannot read properties of 
+undefined (reading 'setView')
+
+    [0m [90m 199 |[39m     useEffect(() 
+[33m=>[39m {
+     [90m 200 |[39m         [36mif[39m 
+([33m![39mapplied[33m.[39mcurrent 
+[33m&&[39m center [33m&&[39m 
+center[[35m0[39m] [33m&&[39m 
+center[[35m1[39m]) {
+    [31m[1m>[22m[39m[90m 201 |[39m       
+      map[33m.[39msetView(center[33m,[39m 
+[35m14[39m)[33m;[39m
+     [90m     |[39m                 
+[31m[1m^[22m[39m
+     [90m 202 |[39m             
+applied[33m.[39mapplied [33m=[39m 
+[36mtrue[39m[33m;[39m
+     [90m 203 |[39m         }
+     [90m 204 |[39m     }[33m,[39m 
+[center[33m,[39m map])[33m;[39m[0m
+
+      at 
+src/components/MapBackground.jsx:201:17
+      at Object.react_stack_bottom_frame (node_
+modules/react-dom/cjs/react-dom-client.developm
+ent.js:25989:20)
+      at runWithFiberInDEV (node_modules/react-
+dom/cjs/react-dom-client.development.js:874:13)
+      at commitHookEffectListMount (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:13249:29)
+      at commitHookPassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:13336:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15484:13)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15718:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15476:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15718:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15476:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15519:11)
+      at flushPassiveEffects (node_modules/reac
+t-dom/cjs/react-dom-client.development.js:18432
+:9)
+      at node_modules/react-dom/cjs/react-dom-c
+lient.development.js:17923:15
+      at flushActQueue (node_modules/react/cjs/
+react.development.js:590:34)
+      at Object.<anonymous>.process.env.NODE_EN
+V.exports.act (node_modules/react/cjs/react.dev
+elopment.js:884:10)
+      at node_modules/@testing-library/react/di
+st/act-compat.js:46:25
+      at renderRoot (node_modules/@testing-libr
+ary/react/dist/pure.js:189:26)
+      at render (node_modules/@testing-library/
+react/dist/pure.js:291:10)
+      at Object.<anonymous> 
+(src/__tests__/MapBackground.test.jsx:145:11)
+
+  ΓùÅ MapBackground ΓÇ║ markers ΓÇ║ renders 
+correct number of markers
+
+    TypeError: Cannot read properties of 
+undefined (reading 'setView')
+
+    [0m [90m 199 |[39m     useEffect(() 
+[33m=>[39m {
+     [90m 200 |[39m         [36mif[39m 
+([33m![39mapplied[33m.[39mcurrent 
+[33m&&[39m center [33m&&[39m 
+center[[35m0[39m] [33m&&[39m 
+center[[35m1[39m]) {
+    [31m[1m>[22m[39m[90m 201 |[39m       
+      map[33m.[39msetView(center[33m,[39m 
+[35m14[39m)[33m;[39m
+     [90m     |[39m                 
+[31m[1m^[22m[39m
+     [90m 202 |[39m             
+applied[33m.[39mapplied [33m=[39m 
+[36mtrue[39m[33m;[39m
+     [90m 203 |[39m         }
+     [90m 204 |[39m     }[33m,[39m 
+[center[33m,[39m map])[33m;[39m[0m
+
+      at 
+src/components/MapBackground.jsx:201:17
+      at Object.react_stack_bottom_frame (node_
+modules/react-dom/cjs/react-dom-client.developm
+ent.js:25989:20)
+      at runWithFiberInDEV (node_modules/react-
+dom/cjs/react-dom-client.development.js:874:13)
+      at commitHookEffectListMount (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:13249:29)
+      at commitHookPassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:13336:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15484:13)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15718:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15476:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15718:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15476:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15519:11)
+      at flushPassiveEffects (node_modules/reac
+t-dom/cjs/react-dom-client.development.js:18432
+:9)
+      at node_modules/react-dom/cjs/react-dom-c
+lient.development.js:17923:15
+      at flushActQueue (node_modules/react/cjs/
+react.development.js:590:34)
+      at Object.<anonymous>.process.env.NODE_EN
+V.exports.act (node_modules/react/cjs/react.dev
+elopment.js:884:10)
+      at node_modules/@testing-library/react/di
+st/act-compat.js:46:25
+      at renderRoot (node_modules/@testing-libr
+ary/react/dist/pure.js:189:26)
+      at render (node_modules/@testing-library/
+react/dist/pure.js:291:10)
+      at Object.<anonymous> 
+(src/__tests__/MapBackground.test.jsx:150:11)
+
+  ΓùÅ MapBackground ΓÇ║ markers ΓÇ║ renders a 
+single car marker
+
+    TypeError: Cannot read properties of 
+undefined (reading 'setView')
+
+    [0m [90m 199 |[39m     useEffect(() 
+[33m=>[39m {
+     [90m 200 |[39m         [36mif[39m 
+([33m![39mapplied[33m.[39mcurrent 
+[33m&&[39m center [33m&&[39m 
+center[[35m0[39m] [33m&&[39m 
+center[[35m1[39m]) {
+    [31m[1m>[22m[39m[90m 201 |[39m       
+      map[33m.[39msetView(center[33m,[39m 
+[35m14[39m)[33m;[39m
+     [90m     |[39m                 
+[31m[1m^[22m[39m
+     [90m 202 |[39m             
+applied[33m.[39mapplied [33m=[39m 
+[36mtrue[39m[33m;[39m
+     [90m 203 |[39m         }
+     [90m 204 |[39m     }[33m,[39m 
+[center[33m,[39m map])[33m;[39m[0m
+
+      at 
+src/components/MapBackground.jsx:201:17
+      at Object.react_stack_bottom_frame (node_
+modules/react-dom/cjs/react-dom-client.developm
+ent.js:25989:20)
+      at runWithFiberInDEV (node_modules/react-
+dom/cjs/react-dom-client.development.js:874:13)
+      at commitHookEffectListMount (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:13249:29)
+      at commitHookPassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:13336:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15484:13)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15718:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15476:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15718:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15476:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15519:11)
+      at flushPassiveEffects (node_modules/reac
+t-dom/cjs/react-dom-client.development.js:18432
+:9)
+      at node_modules/react-dom/cjs/react-dom-c
+lient.development.js:17923:15
+      at flushActQueue (node_modules/react/cjs/
+react.development.js:590:34)
+      at Object.<anonymous>.process.env.NODE_EN
+V.exports.act (node_modules/react/cjs/react.dev
+elopment.js:884:10)
+      at node_modules/@testing-library/react/di
+st/act-compat.js:46:25
+      at renderRoot (node_modules/@testing-libr
+ary/react/dist/pure.js:189:26)
+      at render (node_modules/@testing-library/
+react/dist/pure.js:291:10)
+      at Object.<anonymous> 
+(src/__tests__/MapBackground.test.jsx:155:11)
+
+  ΓùÅ MapBackground ΓÇ║ markers ΓÇ║ renders 
+correct position for marker via data attributes
+
+    TypeError: Cannot read properties of 
+undefined (reading 'setView')
+
+    [0m [90m 199 |[39m     useEffect(() 
+[33m=>[39m {
+     [90m 200 |[39m         [36mif[39m 
+([33m![39mapplied[33m.[39mcurrent 
+[33m&&[39m center [33m&&[39m 
+center[[35m0[39m] [33m&&[39m 
+center[[35m1[39m]) {
+    [31m[1m>[22m[39m[90m 201 |[39m       
+      map[33m.[39msetView(center[33m,[39m 
+[35m14[39m)[33m;[39m
+     [90m     |[39m                 
+[31m[1m^[22m[39m
+     [90m 202 |[39m             
+applied[33m.[39mapplied [33m=[39m 
+[36mtrue[39m[33m;[39m
+     [90m 203 |[39m         }
+     [90m 204 |[39m     }[33m,[39m 
+[center[33m,[39m map])[33m;[39m[0m
+
+      at 
+src/components/MapBackground.jsx:201:17
+      at Object.react_stack_bottom_frame (node_
+modules/react-dom/cjs/react-dom-client.developm
+ent.js:25989:20)
+      at runWithFiberInDEV (node_modules/react-
+dom/cjs/react-dom-client.development.js:874:13)
+      at commitHookEffectListMount (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:13249:29)
+      at commitHookPassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:13336:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15484:13)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15718:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15476:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15718:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15476:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15519:11)
+      at flushPassiveEffects (node_modules/reac
+t-dom/cjs/react-dom-client.development.js:18432
+:9)
+      at node_modules/react-dom/cjs/react-dom-c
+lient.development.js:17923:15
+      at flushActQueue (node_modules/react/cjs/
+react.development.js:590:34)
+      at Object.<anonymous>.process.env.NODE_EN
+V.exports.act (node_modules/react/cjs/react.dev
+elopment.js:884:10)
+      at node_modules/@testing-library/react/di
+st/act-compat.js:46:25
+      at renderRoot (node_modules/@testing-libr
+ary/react/dist/pure.js:189:26)
+      at render (node_modules/@testing-library/
+react/dist/pure.js:291:10)
+      at Object.<anonymous> 
+(src/__tests__/MapBackground.test.jsx:160:11)
+
+  ΓùÅ MapBackground ΓÇ║ markers ΓÇ║ renders 
+popup with car label
+
+    TypeError: Cannot read properties of 
+undefined (reading 'setView')
+
+    [0m [90m 199 |[39m     useEffect(() 
+[33m=>[39m {
+     [90m 200 |[39m         [36mif[39m 
+([33m![39mapplied[33m.[39mcurrent 
+[33m&&[39m center [33m&&[39m 
+center[[35m0[39m] [33m&&[39m 
+center[[35m1[39m]) {
+    [31m[1m>[22m[39m[90m 201 |[39m       
+      map[33m.[39msetView(center[33m,[39m 
+[35m14[39m)[33m;[39m
+     [90m     |[39m                 
+[31m[1m^[22m[39m
+     [90m 202 |[39m             
+applied[33m.[39mapplied [33m=[39m 
+[36mtrue[39m[33m;[39m
+     [90m 203 |[39m         }
+     [90m 204 |[39m     }[33m,[39m 
+[center[33m,[39m map])[33m;[39m[0m
+
+      at 
+src/components/MapBackground.jsx:201:17
+      at Object.react_stack_bottom_frame (node_
+modules/react-dom/cjs/react-dom-client.developm
+ent.js:25989:20)
+      at runWithFiberInDEV (node_modules/react-
+dom/cjs/react-dom-client.development.js:874:13)
+      at commitHookEffectListMount (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:13249:29)
+      at commitHookPassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:13336:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15484:13)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15718:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15476:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15718:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15476:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15519:11)
+      at flushPassiveEffects (node_modules/reac
+t-dom/cjs/react-dom-client.development.js:18432
+:9)
+      at node_modules/react-dom/cjs/react-dom-c
+lient.development.js:17923:15
+      at flushActQueue (node_modules/react/cjs/
+react.development.js:590:34)
+      at Object.<anonymous>.process.env.NODE_EN
+V.exports.act (node_modules/react/cjs/react.dev
+elopment.js:884:10)
+      at node_modules/@testing-library/react/di
+st/act-compat.js:46:25
+      at renderRoot (node_modules/@testing-libr
+ary/react/dist/pure.js:189:26)
+      at render (node_modules/@testing-library/
+react/dist/pure.js:291:10)
+      at Object.<anonymous> 
+(src/__tests__/MapBackground.test.jsx:167:11)
+
+  ΓùÅ MapBackground ΓÇ║ markers ΓÇ║ renders 
+popup with passenger label
+
+    TypeError: Cannot read properties of 
+undefined (reading 'setView')
+
+    [0m [90m 199 |[39m     useEffect(() 
+[33m=>[39m {
+     [90m 200 |[39m         [36mif[39m 
+([33m![39mapplied[33m.[39mcurrent 
+[33m&&[39m center [33m&&[39m 
+center[[35m0[39m] [33m&&[39m 
+center[[35m1[39m]) {
+    [31m[1m>[22m[39m[90m 201 |[39m       
+      map[33m.[39msetView(center[33m,[39m 
+[35m14[39m)[33m;[39m
+     [90m     |[39m                 
+[31m[1m^[22m[39m
+     [90m 202 |[39m             
+applied[33m.[39mapplied [33m=[39m 
+[36mtrue[39m[33m;[39m
+     [90m 203 |[39m         }
+     [90m 204 |[39m     }[33m,[39m 
+[center[33m,[39m map])[33m;[39m[0m
+
+      at 
+src/components/MapBackground.jsx:201:17
+      at Object.react_stack_bottom_frame (node_
+modules/react-dom/cjs/react-dom-client.developm
+ent.js:25989:20)
+      at runWithFiberInDEV (node_modules/react-
+dom/cjs/react-dom-client.development.js:874:13)
+      at commitHookEffectListMount (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:13249:29)
+      at commitHookPassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:13336:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15484:13)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15718:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15476:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15718:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15476:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15519:11)
+      at flushPassiveEffects (node_modules/reac
+t-dom/cjs/react-dom-client.development.js:18432
+:9)
+      at node_modules/react-dom/cjs/react-dom-c
+lient.development.js:17923:15
+      at flushActQueue (node_modules/react/cjs/
+react.development.js:590:34)
+      at Object.<anonymous>.process.env.NODE_EN
+V.exports.act (node_modules/react/cjs/react.dev
+elopment.js:884:10)
+      at node_modules/@testing-library/react/di
+st/act-compat.js:46:25
+      at renderRoot (node_modules/@testing-libr
+ary/react/dist/pure.js:189:26)
+      at render (node_modules/@testing-library/
+react/dist/pure.js:291:10)
+      at Object.<anonymous> 
+(src/__tests__/MapBackground.test.jsx:172:11)
+
+  ΓùÅ MapBackground ΓÇ║ markers ΓÇ║ renders 
+popup with location label
+
+    TypeError: Cannot read properties of 
+undefined (reading 'setView')
+
+    [0m [90m 199 |[39m     useEffect(() 
+[33m=>[39m {
+     [90m 200 |[39m         [36mif[39m 
+([33m![39mapplied[33m.[39mcurrent 
+[33m&&[39m center [33m&&[39m 
+center[[35m0[39m] [33m&&[39m 
+center[[35m1[39m]) {
+    [31m[1m>[22m[39m[90m 201 |[39m       
+      map[33m.[39msetView(center[33m,[39m 
+[35m14[39m)[33m;[39m
+     [90m     |[39m                 
+[31m[1m^[22m[39m
+     [90m 202 |[39m             
+applied[33m.[39mapplied [33m=[39m 
+[36mtrue[39m[33m;[39m
+     [90m 203 |[39m         }
+     [90m 204 |[39m     }[33m,[39m 
+[center[33m,[39m map])[33m;[39m[0m
+
+      at 
+src/components/MapBackground.jsx:201:17
+      at Object.react_stack_bottom_frame (node_
+modules/react-dom/cjs/react-dom-client.developm
+ent.js:25989:20)
+      at runWithFiberInDEV (node_modules/react-
+dom/cjs/react-dom-client.development.js:874:13)
+      at commitHookEffectListMount (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:13249:29)
+      at commitHookPassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:13336:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15484:13)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15718:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15476:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15718:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15476:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15519:11)
+      at flushPassiveEffects (node_modules/reac
+t-dom/cjs/react-dom-client.development.js:18432
+:9)
+      at node_modules/react-dom/cjs/react-dom-c
+lient.development.js:17923:15
+      at flushActQueue (node_modules/react/cjs/
+react.development.js:590:34)
+      at Object.<anonymous>.process.env.NODE_EN
+V.exports.act (node_modules/react/cjs/react.dev
+elopment.js:884:10)
+      at node_modules/@testing-library/react/di
+st/act-compat.js:46:25
+      at renderRoot (node_modules/@testing-libr
+ary/react/dist/pure.js:189:26)
+      at render (node_modules/@testing-library/
+react/dist/pure.js:291:10)
+      at Object.<anonymous> 
+(src/__tests__/MapBackground.test.jsx:177:11)
+
+  ΓùÅ MapBackground ΓÇ║ markers ΓÇ║ renders 
+Navigate Here link for car marker
+
+    TypeError: Cannot read properties of 
+undefined (reading 'setView')
+
+    [0m [90m 199 |[39m     useEffect(() 
+[33m=>[39m {
+     [90m 200 |[39m         [36mif[39m 
+([33m![39mapplied[33m.[39mcurrent 
+[33m&&[39m center [33m&&[39m 
+center[[35m0[39m] [33m&&[39m 
+center[[35m1[39m]) {
+    [31m[1m>[22m[39m[90m 201 |[39m       
+      map[33m.[39msetView(center[33m,[39m 
+[35m14[39m)[33m;[39m
+     [90m     |[39m                 
+[31m[1m^[22m[39m
+     [90m 202 |[39m             
+applied[33m.[39mapplied [33m=[39m 
+[36mtrue[39m[33m;[39m
+     [90m 203 |[39m         }
+     [90m 204 |[39m     }[33m,[39m 
+[center[33m,[39m map])[33m;[39m[0m
+
+      at 
+src/components/MapBackground.jsx:201:17
+      at Object.react_stack_bottom_frame (node_
+modules/react-dom/cjs/react-dom-client.developm
+ent.js:25989:20)
+      at runWithFiberInDEV (node_modules/react-
+dom/cjs/react-dom-client.development.js:874:13)
+      at commitHookEffectListMount (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:13249:29)
+      at commitHookPassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:13336:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15484:13)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15718:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15476:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15718:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15476:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15519:11)
+      at flushPassiveEffects (node_modules/reac
+t-dom/cjs/react-dom-client.development.js:18432
+:9)
+      at node_modules/react-dom/cjs/react-dom-c
+lient.development.js:17923:15
+      at flushActQueue (node_modules/react/cjs/
+react.development.js:590:34)
+      at Object.<anonymous>.process.env.NODE_EN
+V.exports.act (node_modules/react/cjs/react.dev
+elopment.js:884:10)
+      at node_modules/@testing-library/react/di
+st/act-compat.js:46:25
+      at renderRoot (node_modules/@testing-libr
+ary/react/dist/pure.js:189:26)
+      at render (node_modules/@testing-library/
+react/dist/pure.js:291:10)
+      at Object.<anonymous> 
+(src/__tests__/MapBackground.test.jsx:182:11)
+
+  ΓùÅ MapBackground ΓÇ║ markers ΓÇ║ renders 
+Navigate Here link for person marker
+
+    TypeError: Cannot read properties of 
+undefined (reading 'setView')
+
+    [0m [90m 199 |[39m     useEffect(() 
+[33m=>[39m {
+     [90m 200 |[39m         [36mif[39m 
+([33m![39mapplied[33m.[39mcurrent 
+[33m&&[39m center [33m&&[39m 
+center[[35m0[39m] [33m&&[39m 
+center[[35m1[39m]) {
+    [31m[1m>[22m[39m[90m 201 |[39m       
+      map[33m.[39msetView(center[33m,[39m 
+[35m14[39m)[33m;[39m
+     [90m     |[39m                 
+[31m[1m^[22m[39m
+     [90m 202 |[39m             
+applied[33m.[39mapplied [33m=[39m 
+[36mtrue[39m[33m;[39m
+     [90m 203 |[39m         }
+     [90m 204 |[39m     }[33m,[39m 
+[center[33m,[39m map])[33m;[39m[0m
+
+      at 
+src/components/MapBackground.jsx:201:17
+      at Object.react_stack_bottom_frame (node_
+modules/react-dom/cjs/react-dom-client.developm
+ent.js:25989:20)
+      at runWithFiberInDEV (node_modules/react-
+dom/cjs/react-dom-client.development.js:874:13)
+      at commitHookEffectListMount (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:13249:29)
+      at commitHookPassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:13336:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15484:13)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15718:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15476:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15718:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15476:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15519:11)
+      at flushPassiveEffects (node_modules/reac
+t-dom/cjs/react-dom-client.development.js:18432
+:9)
+      at node_modules/react-dom/cjs/react-dom-c
+lient.development.js:17923:15
+      at flushActQueue (node_modules/react/cjs/
+react.development.js:590:34)
+      at Object.<anonymous>.process.env.NODE_EN
+V.exports.act (node_modules/react/cjs/react.dev
+elopment.js:884:10)
+      at node_modules/@testing-library/react/di
+st/act-compat.js:46:25
+      at renderRoot (node_modules/@testing-libr
+ary/react/dist/pure.js:189:26)
+      at render (node_modules/@testing-library/
+react/dist/pure.js:291:10)
+      at Object.<anonymous> 
+(src/__tests__/MapBackground.test.jsx:190:11)
+
+  ΓùÅ MapBackground ΓÇ║ markers ΓÇ║ does NOT 
+render Navigate Here link for location marker
+
+    TypeError: Cannot read properties of 
+undefined (reading 'setView')
+
+    [0m [90m 199 |[39m     useEffect(() 
+[33m=>[39m {
+     [90m 200 |[39m         [36mif[39m 
+([33m![39mapplied[33m.[39mcurrent 
+[33m&&[39m center [33m&&[39m 
+center[[35m0[39m] [33m&&[39m 
+center[[35m1[39m]) {
+    [31m[1m>[22m[39m[90m 201 |[39m       
+      map[33m.[39msetView(center[33m,[39m 
+[35m14[39m)[33m;[39m
+     [90m     |[39m                 
+[31m[1m^[22m[39m
+     [90m 202 |[39m             
+applied[33m.[39mapplied [33m=[39m 
+[36mtrue[39m[33m;[39m
+     [90m 203 |[39m         }
+     [90m 204 |[39m     }[33m,[39m 
+[center[33m,[39m map])[33m;[39m[0m
+
+      at 
+src/components/MapBackground.jsx:201:17
+      at Object.react_stack_bottom_frame (node_
+modules/react-dom/cjs/react-dom-client.developm
+ent.js:25989:20)
+      at runWithFiberInDEV (node_modules/react-
+dom/cjs/react-dom-client.development.js:874:13)
+      at commitHookEffectListMount (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:13249:29)
+      at commitHookPassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:13336:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15484:13)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15718:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15476:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15718:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15476:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15519:11)
+      at flushPassiveEffects (node_modules/reac
+t-dom/cjs/react-dom-client.development.js:18432
+:9)
+      at node_modules/react-dom/cjs/react-dom-c
+lient.development.js:17923:15
+      at flushActQueue (node_modules/react/cjs/
+react.development.js:590:34)
+      at Object.<anonymous>.process.env.NODE_EN
+V.exports.act (node_modules/react/cjs/react.dev
+elopment.js:884:10)
+      at node_modules/@testing-library/react/di
+st/act-compat.js:46:25
+      at renderRoot (node_modules/@testing-libr
+ary/react/dist/pure.js:189:26)
+      at render (node_modules/@testing-library/
+react/dist/pure.js:291:10)
+      at Object.<anonymous> 
+(src/__tests__/MapBackground.test.jsx:195:11)
+
+  ΓùÅ MapBackground ΓÇ║ markers ΓÇ║ renders 
+correct emoji for car marker
+
+    TypeError: Cannot read properties of 
+undefined (reading 'setView')
+
+    [0m [90m 199 |[39m     useEffect(() 
+[33m=>[39m {
+     [90m 200 |[39m         [36mif[39m 
+([33m![39mapplied[33m.[39mcurrent 
+[33m&&[39m center [33m&&[39m 
+center[[35m0[39m] [33m&&[39m 
+center[[35m1[39m]) {
+    [31m[1m>[22m[39m[90m 201 |[39m       
+      map[33m.[39msetView(center[33m,[39m 
+[35m14[39m)[33m;[39m
+     [90m     |[39m                 
+[31m[1m^[22m[39m
+     [90m 202 |[39m             
+applied[33m.[39mapplied [33m=[39m 
+[36mtrue[39m[33m;[39m
+     [90m 203 |[39m         }
+     [90m 204 |[39m     }[33m,[39m 
+[center[33m,[39m map])[33m;[39m[0m
+
+      at 
+src/components/MapBackground.jsx:201:17
+      at Object.react_stack_bottom_frame (node_
+modules/react-dom/cjs/react-dom-client.developm
+ent.js:25989:20)
+      at runWithFiberInDEV (node_modules/react-
+dom/cjs/react-dom-client.development.js:874:13)
+      at commitHookEffectListMount (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:13249:29)
+      at commitHookPassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:13336:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15484:13)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15718:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15476:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15718:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15476:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15519:11)
+      at flushPassiveEffects (node_modules/reac
+t-dom/cjs/react-dom-client.development.js:18432
+:9)
+      at node_modules/react-dom/cjs/react-dom-c
+lient.development.js:17923:15
+      at flushActQueue (node_modules/react/cjs/
+react.development.js:590:34)
+      at Object.<anonymous>.process.env.NODE_EN
+V.exports.act (node_modules/react/cjs/react.dev
+elopment.js:884:10)
+      at node_modules/@testing-library/react/di
+st/act-compat.js:46:25
+      at renderRoot (node_modules/@testing-libr
+ary/react/dist/pure.js:189:26)
+      at render (node_modules/@testing-library/
+react/dist/pure.js:291:10)
+      at Object.<anonymous> 
+(src/__tests__/MapBackground.test.jsx:200:11)
+
+  ΓùÅ MapBackground ΓÇ║ markers ΓÇ║ renders 
+correct emoji for person marker
+
+    TypeError: Cannot read properties of 
+undefined (reading 'setView')
+
+    [0m [90m 199 |[39m     useEffect(() 
+[33m=>[39m {
+     [90m 200 |[39m         [36mif[39m 
+([33m![39mapplied[33m.[39mcurrent 
+[33m&&[39m center [33m&&[39m 
+center[[35m0[39m] [33m&&[39m 
+center[[35m1[39m]) {
+    [31m[1m>[22m[39m[90m 201 |[39m       
+      map[33m.[39msetView(center[33m,[39m 
+[35m14[39m)[33m;[39m
+     [90m     |[39m                 
+[31m[1m^[22m[39m
+     [90m 202 |[39m             
+applied[33m.[39mapplied [33m=[39m 
+[36mtrue[39m[33m;[39m
+     [90m 203 |[39m         }
+     [90m 204 |[39m     }[33m,[39m 
+[center[33m,[39m map])[33m;[39m[0m
+
+      at 
+src/components/MapBackground.jsx:201:17
+      at Object.react_stack_bottom_frame (node_
+modules/react-dom/cjs/react-dom-client.developm
+ent.js:25989:20)
+      at runWithFiberInDEV (node_modules/react-
+dom/cjs/react-dom-client.development.js:874:13)
+      at commitHookEffectListMount (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:13249:29)
+      at commitHookPassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:13336:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15484:13)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15718:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15476:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15718:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15476:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15519:11)
+      at flushPassiveEffects (node_modules/reac
+t-dom/cjs/react-dom-client.development.js:18432
+:9)
+      at node_modules/react-dom/cjs/react-dom-c
+lient.development.js:17923:15
+      at flushActQueue (node_modules/react/cjs/
+react.development.js:590:34)
+      at Object.<anonymous>.process.env.NODE_EN
+V.exports.act (node_modules/react/cjs/react.dev
+elopment.js:884:10)
+      at node_modules/@testing-library/react/di
+st/act-compat.js:46:25
+      at renderRoot (node_modules/@testing-libr
+ary/react/dist/pure.js:189:26)
+      at render (node_modules/@testing-library/
+react/dist/pure.js:291:10)
+      at Object.<anonymous> 
+(src/__tests__/MapBackground.test.jsx:205:11)
+
+  ΓùÅ MapBackground ΓÇ║ markers ΓÇ║ renders 
+correct emoji for location marker
+
+    TypeError: Cannot read properties of 
+undefined (reading 'setView')
+
+    [0m [90m 199 |[39m     useEffect(() 
+[33m=>[39m {
+     [90m 200 |[39m         [36mif[39m 
+([33m![39mapplied[33m.[39mcurrent 
+[33m&&[39m center [33m&&[39m 
+center[[35m0[39m] [33m&&[39m 
+center[[35m1[39m]) {
+    [31m[1m>[22m[39m[90m 201 |[39m       
+      map[33m.[39msetView(center[33m,[39m 
+[35m14[39m)[33m;[39m
+     [90m     |[39m                 
+[31m[1m^[22m[39m
+     [90m 202 |[39m             
+applied[33m.[39mapplied [33m=[39m 
+[36mtrue[39m[33m;[39m
+     [90m 203 |[39m         }
+     [90m 204 |[39m     }[33m,[39m 
+[center[33m,[39m map])[33m;[39m[0m
+
+      at 
+src/components/MapBackground.jsx:201:17
+      at Object.react_stack_bottom_frame (node_
+modules/react-dom/cjs/react-dom-client.developm
+ent.js:25989:20)
+      at runWithFiberInDEV (node_modules/react-
+dom/cjs/react-dom-client.development.js:874:13)
+      at commitHookEffectListMount (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:13249:29)
+      at commitHookPassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:13336:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15484:13)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15718:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15476:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15718:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15476:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15519:11)
+      at flushPassiveEffects (node_modules/reac
+t-dom/cjs/react-dom-client.development.js:18432
+:9)
+      at node_modules/react-dom/cjs/react-dom-c
+lient.development.js:17923:15
+      at flushActQueue (node_modules/react/cjs/
+react.development.js:590:34)
+      at Object.<anonymous>.process.env.NODE_EN
+V.exports.act (node_modules/react/cjs/react.dev
+elopment.js:884:10)
+      at node_modules/@testing-library/react/di
+st/act-compat.js:46:25
+      at renderRoot (node_modules/@testing-libr
+ary/react/dist/pure.js:189:26)
+      at render (node_modules/@testing-library/
+react/dist/pure.js:291:10)
+      at Object.<anonymous> 
+(src/__tests__/MapBackground.test.jsx:210:11)
+
+  ΓùÅ MapBackground ΓÇ║ markers ΓÇ║ renders 
+default label "Location" when marker has no 
+label
+
+    TypeError: Cannot read properties of 
+undefined (reading 'setView')
+
+    [0m [90m 199 |[39m     useEffect(() 
+[33m=>[39m {
+     [90m 200 |[39m         [36mif[39m 
+([33m![39mapplied[33m.[39mcurrent 
+[33m&&[39m center [33m&&[39m 
+center[[35m0[39m] [33m&&[39m 
+center[[35m1[39m]) {
+    [31m[1m>[22m[39m[90m 201 |[39m       
+      map[33m.[39msetView(center[33m,[39m 
+[35m14[39m)[33m;[39m
+     [90m     |[39m                 
+[31m[1m^[22m[39m
+     [90m 202 |[39m             
+applied[33m.[39mapplied [33m=[39m 
+[36mtrue[39m[33m;[39m
+     [90m 203 |[39m         }
+     [90m 204 |[39m     }[33m,[39m 
+[center[33m,[39m map])[33m;[39m[0m
+
+      at 
+src/components/MapBackground.jsx:201:17
+      at Object.react_stack_bottom_frame (node_
+modules/react-dom/cjs/react-dom-client.developm
+ent.js:25989:20)
+      at runWithFiberInDEV (node_modules/react-
+dom/cjs/react-dom-client.development.js:874:13)
+      at commitHookEffectListMount (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:13249:29)
+      at commitHookPassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:13336:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15484:13)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15718:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15476:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15718:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15476:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15519:11)
+      at flushPassiveEffects (node_modules/reac
+t-dom/cjs/react-dom-client.development.js:18432
+:9)
+      at node_modules/react-dom/cjs/react-dom-c
+lient.development.js:17923:15
+      at flushActQueue (node_modules/react/cjs/
+react.development.js:590:34)
+      at Object.<anonymous>.process.env.NODE_EN
+V.exports.act (node_modules/react/cjs/react.dev
+elopment.js:884:10)
+      at node_modules/@testing-library/react/di
+st/act-compat.js:46:25
+      at renderRoot (node_modules/@testing-libr
+ary/react/dist/pure.js:189:26)
+      at render (node_modules/@testing-library/
+react/dist/pure.js:291:10)
+      at Object.<anonymous> 
+(src/__tests__/MapBackground.test.jsx:216:11)
+
+  ΓùÅ MapBackground ΓÇ║ markers ΓÇ║ Navigate 
+Here link has correct lat/lng in href
+
+    TypeError: Cannot read properties of 
+undefined (reading 'setView')
+
+    [0m [90m 199 |[39m     useEffect(() 
+[33m=>[39m {
+     [90m 200 |[39m         [36mif[39m 
+([33m![39mapplied[33m.[39mcurrent 
+[33m&&[39m center [33m&&[39m 
+center[[35m0[39m] [33m&&[39m 
+center[[35m1[39m]) {
+    [31m[1m>[22m[39m[90m 201 |[39m       
+      map[33m.[39msetView(center[33m,[39m 
+[35m14[39m)[33m;[39m
+     [90m     |[39m                 
+[31m[1m^[22m[39m
+     [90m 202 |[39m             
+applied[33m.[39mapplied [33m=[39m 
+[36mtrue[39m[33m;[39m
+     [90m 203 |[39m         }
+     [90m 204 |[39m     }[33m,[39m 
+[center[33m,[39m map])[33m;[39m[0m
+
+      at 
+src/components/MapBackground.jsx:201:17
+      at Object.react_stack_bottom_frame (node_
+modules/react-dom/cjs/react-dom-client.developm
+ent.js:25989:20)
+      at runWithFiberInDEV (node_modules/react-
+dom/cjs/react-dom-client.development.js:874:13)
+      at commitHookEffectListMount (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:13249:29)
+      at commitHookPassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:13336:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15484:13)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15718:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15476:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15718:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15476:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15519:11)
+      at flushPassiveEffects (node_modules/reac
+t-dom/cjs/react-dom-client.development.js:18432
+:9)
+      at node_modules/react-dom/cjs/react-dom-c
+lient.development.js:17923:15
+      at flushActQueue (node_modules/react/cjs/
+react.development.js:590:34)
+      at Object.<anonymous>.process.env.NODE_EN
+V.exports.act (node_modules/react/cjs/react.dev
+elopment.js:884:10)
+      at node_modules/@testing-library/react/di
+st/act-compat.js:46:25
+      at renderRoot (node_modules/@testing-libr
+ary/react/dist/pure.js:189:26)
+      at render (node_modules/@testing-library/
+react/dist/pure.js:291:10)
+      at Object.<anonymous> 
+(src/__tests__/MapBackground.test.jsx:221:11)
+
+  ΓùÅ MapBackground ΓÇ║ center prop ΓÇ║ uses 
+provided center coordinates
+
+    TypeError: Cannot read properties of 
+undefined (reading 'setView')
+
+    [0m [90m 199 |[39m     useEffect(() 
+[33m=>[39m {
+     [90m 200 |[39m         [36mif[39m 
+([33m![39mapplied[33m.[39mcurrent 
+[33m&&[39m center [33m&&[39m 
+center[[35m0[39m] [33m&&[39m 
+center[[35m1[39m]) {
+    [31m[1m>[22m[39m[90m 201 |[39m       
+      map[33m.[39msetView(center[33m,[39m 
+[35m14[39m)[33m;[39m
+     [90m     |[39m                 
+[31m[1m^[22m[39m
+     [90m 202 |[39m             
+applied[33m.[39mapplied [33m=[39m 
+[36mtrue[39m[33m;[39m
+     [90m 203 |[39m         }
+     [90m 204 |[39m     }[33m,[39m 
+[center[33m,[39m map])[33m;[39m[0m
+
+      at 
+src/components/MapBackground.jsx:201:17
+      at Object.react_stack_bottom_frame (node_
+modules/react-dom/cjs/react-dom-client.developm
+ent.js:25989:20)
+      at runWithFiberInDEV (node_modules/react-
+dom/cjs/react-dom-client.development.js:874:13)
+      at commitHookEffectListMount (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:13249:29)
+      at commitHookPassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:13336:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15484:13)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15718:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15476:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15718:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15476:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15519:11)
+      at flushPassiveEffects (node_modules/reac
+t-dom/cjs/react-dom-client.development.js:18432
+:9)
+      at node_modules/react-dom/cjs/react-dom-c
+lient.development.js:17923:15
+      at flushActQueue (node_modules/react/cjs/
+react.development.js:590:34)
+      at Object.<anonymous>.process.env.NODE_EN
+V.exports.act (node_modules/react/cjs/react.dev
+elopment.js:884:10)
+      at node_modules/@testing-library/react/di
+st/act-compat.js:46:25
+      at renderRoot (node_modules/@testing-libr
+ary/react/dist/pure.js:189:26)
+      at render (node_modules/@testing-library/
+react/dist/pure.js:291:10)
+      at Object.<anonymous> 
+(src/__tests__/MapBackground.test.jsx:233:35)
+
+  ΓùÅ MapBackground ΓÇ║ center prop ΓÇ║ falls 
+back to default center [17.4447, 78.65] when 
+no center provided
+
+    TypeError: Cannot read properties of 
+undefined (reading 'setView')
+
+    [0m [90m 199 |[39m     useEffect(() 
+[33m=>[39m {
+     [90m 200 |[39m         [36mif[39m 
+([33m![39mapplied[33m.[39mcurrent 
+[33m&&[39m center [33m&&[39m 
+center[[35m0[39m] [33m&&[39m 
+center[[35m1[39m]) {
+    [31m[1m>[22m[39m[90m 201 |[39m       
+      map[33m.[39msetView(center[33m,[39m 
+[35m14[39m)[33m;[39m
+     [90m     |[39m                 
+[31m[1m^[22m[39m
+     [90m 202 |[39m             
+applied[33m.[39mapplied [33m=[39m 
+[36mtrue[39m[33m;[39m
+     [90m 203 |[39m         }
+     [90m 204 |[39m     }[33m,[39m 
+[center[33m,[39m map])[33m;[39m[0m
+
+      at 
+src/components/MapBackground.jsx:201:17
+      at Object.react_stack_bottom_frame (node_
+modules/react-dom/cjs/react-dom-client.developm
+ent.js:25989:20)
+      at runWithFiberInDEV (node_modules/react-
+dom/cjs/react-dom-client.development.js:874:13)
+      at commitHookEffectListMount (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:13249:29)
+      at commitHookPassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:13336:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15484:13)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15718:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15476:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15718:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15476:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15519:11)
+      at flushPassiveEffects (node_modules/reac
+t-dom/cjs/react-dom-client.development.js:18432
+:9)
+      at node_modules/react-dom/cjs/react-dom-c
+lient.development.js:17923:15
+      at flushActQueue (node_modules/react/cjs/
+react.development.js:590:34)
+      at Object.<anonymous>.process.env.NODE_EN
+V.exports.act (node_modules/react/cjs/react.dev
+elopment.js:884:10)
+      at node_modules/@testing-library/react/di
+st/act-compat.js:46:25
+      at renderRoot (node_modules/@testing-libr
+ary/react/dist/pure.js:189:26)
+      at render (node_modules/@testing-library/
+react/dist/pure.js:291:10)
+      at Object.<anonymous> 
+(src/__tests__/MapBackground.test.jsx:239:11)
+
+  ΓùÅ MapBackground ΓÇ║ center prop ΓÇ║ falls 
+back to default center when center has falsy 
+lat
+
+    TypeError: Cannot read properties of 
+undefined (reading 'setView')
+
+    [0m [90m 199 |[39m     useEffect(() 
+[33m=>[39m {
+     [90m 200 |[39m         [36mif[39m 
+([33m![39mapplied[33m.[39mcurrent 
+[33m&&[39m center [33m&&[39m 
+center[[35m0[39m] [33m&&[39m 
+center[[35m1[39m]) {
+    [31m[1m>[22m[39m[90m 201 |[39m       
+      map[33m.[39msetView(center[33m,[39m 
+[35m14[39m)[33m;[39m
+     [90m     |[39m                 
+[31m[1m^[22m[39m
+     [90m 202 |[39m             
+applied[33m.[39mapplied [33m=[39m 
+[36mtrue[39m[33m;[39m
+     [90m 203 |[39m         }
+     [90m 204 |[39m     }[33m,[39m 
+[center[33m,[39m map])[33m;[39m[0m
+
+      at 
+src/components/MapBackground.jsx:201:17
+      at Object.react_stack_bottom_frame (node_
+modules/react-dom/cjs/react-dom-client.developm
+ent.js:25989:20)
+      at runWithFiberInDEV (node_modules/react-
+dom/cjs/react-dom-client.development.js:874:13)
+      at commitHookEffectListMount (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:13249:29)
+      at commitHookPassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:13336:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15484:13)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15718:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15476:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15718:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15476:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15519:11)
+      at flushPassiveEffects (node_modules/reac
+t-dom/cjs/react-dom-client.development.js:18432
+:9)
+      at node_modules/react-dom/cjs/react-dom-c
+lient.development.js:17923:15
+      at flushActQueue (node_modules/react/cjs/
+react.development.js:590:34)
+      at Object.<anonymous>.process.env.NODE_EN
+V.exports.act (node_modules/react/cjs/react.dev
+elopment.js:884:10)
+      at node_modules/@testing-library/react/di
+st/act-compat.js:46:25
+      at renderRoot (node_modules/@testing-libr
+ary/react/dist/pure.js:189:26)
+      at render (node_modules/@testing-library/
+react/dist/pure.js:291:10)
+      at Object.<anonymous> 
+(src/__tests__/MapBackground.test.jsx:244:11)
+
+  ΓùÅ MapBackground ΓÇ║ multiple markers ΓÇ║ 
+renders all three marker types together
+
+    TypeError: Cannot read properties of 
+undefined (reading 'setView')
+
+    [0m [90m 199 |[39m     useEffect(() 
+[33m=>[39m {
+     [90m 200 |[39m         [36mif[39m 
+([33m![39mapplied[33m.[39mcurrent 
+[33m&&[39m center [33m&&[39m 
+center[[35m0[39m] [33m&&[39m 
+center[[35m1[39m]) {
+    [31m[1m>[22m[39m[90m 201 |[39m       
+      map[33m.[39msetView(center[33m,[39m 
+[35m14[39m)[33m;[39m
+     [90m     |[39m                 
+[31m[1m^[22m[39m
+     [90m 202 |[39m             
+applied[33m.[39mapplied [33m=[39m 
+[36mtrue[39m[33m;[39m
+     [90m 203 |[39m         }
+     [90m 204 |[39m     }[33m,[39m 
+[center[33m,[39m map])[33m;[39m[0m
+
+      at 
+src/components/MapBackground.jsx:201:17
+      at Object.react_stack_bottom_frame (node_
+modules/react-dom/cjs/react-dom-client.developm
+ent.js:25989:20)
+      at runWithFiberInDEV (node_modules/react-
+dom/cjs/react-dom-client.development.js:874:13)
+      at commitHookEffectListMount (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:13249:29)
+      at commitHookPassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:13336:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15484:13)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15718:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15476:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15718:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15476:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15519:11)
+      at flushPassiveEffects (node_modules/reac
+t-dom/cjs/react-dom-client.development.js:18432
+:9)
+      at node_modules/react-dom/cjs/react-dom-c
+lient.development.js:17923:15
+      at flushActQueue (node_modules/react/cjs/
+react.development.js:590:34)
+      at Object.<anonymous>.process.env.NODE_EN
+V.exports.act (node_modules/react/cjs/react.dev
+elopment.js:884:10)
+      at node_modules/@testing-library/react/di
+st/act-compat.js:46:25
+      at renderRoot (node_modules/@testing-libr
+ary/react/dist/pure.js:189:26)
+      at render (node_modules/@testing-library/
+react/dist/pure.js:291:10)
+      at Object.<anonymous> 
+(src/__tests__/MapBackground.test.jsx:254:11)
+
+  ΓùÅ MapBackground ΓÇ║ multiple markers ΓÇ║ 
+renders two Navigate Here links (car + 
+person), not for location
+
+    TypeError: Cannot read properties of 
+undefined (reading 'setView')
+
+    [0m [90m 199 |[39m     useEffect(() 
+[33m=>[39m {
+     [90m 200 |[39m         [36mif[39m 
+([33m![39mapplied[33m.[39mcurrent 
+[33m&&[39m center [33m&&[39m 
+center[[35m0[39m] [33m&&[39m 
+center[[35m1[39m]) {
+    [31m[1m>[22m[39m[90m 201 |[39m       
+      map[33m.[39msetView(center[33m,[39m 
+[35m14[39m)[33m;[39m
+     [90m     |[39m                 
+[31m[1m^[22m[39m
+     [90m 202 |[39m             
+applied[33m.[39mapplied [33m=[39m 
+[36mtrue[39m[33m;[39m
+     [90m 203 |[39m         }
+     [90m 204 |[39m     }[33m,[39m 
+[center[33m,[39m map])[33m;[39m[0m
+
+      at 
+src/components/MapBackground.jsx:201:17
+      at Object.react_stack_bottom_frame (node_
+modules/react-dom/cjs/react-dom-client.developm
+ent.js:25989:20)
+      at runWithFiberInDEV (node_modules/react-
+dom/cjs/react-dom-client.development.js:874:13)
+      at commitHookEffectListMount (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:13249:29)
+      at commitHookPassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:13336:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15484:13)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15718:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15476:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15718:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15476:11)
+      at 
+recursivelyTraversePassiveMountEffects (node_mo
+dules/react-dom/cjs/react-dom-client.developmen
+t.js:15439:11)
+      at commitPassiveMountOnFiber (node_module
+s/react-dom/cjs/react-dom-client.development.js
+:15519:11)
+      at flushPassiveEffects (node_modules/reac
+t-dom/cjs/react-dom-client.development.js:18432
+:9)
+      at node_modules/react-dom/cjs/react-dom-c
+lient.development.js:17923:15
+      at flushActQueue (node_modules/react/cjs/
+react.development.js:590:34)
+      at Object.<anonymous>.process.env.NODE_EN
+V.exports.act (node_modules/react/cjs/react.dev
+elopment.js:884:10)
+      at node_modules/@testing-library/react/di
+st/act-compat.js:46:25
+      at renderRoot (node_modules/@testing-libr
+ary/react/dist/pure.js:189:26)
+      at render (node_modules/@testing-library/
+react/dist/pure.js:291:10)
+      at Object.<anonymous> 
+(src/__tests__/MapBackground.test.jsx:263:11)
+
+PASS src/__tests__/mapService.test.js
+
+Test Suites: 1 failed, 1 passed, 2 total
+Tests:       26 failed, 16 passed, 42 total
+Snapshots:   0 total
+Time:        6.539 s
+Ran all test suites.
+Force exiting Jest: Have you considered using 
+`--detectOpenHandles` to detect async 
+operations that kept running after all tests 
+finished?

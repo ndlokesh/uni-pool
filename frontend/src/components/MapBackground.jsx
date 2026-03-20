@@ -197,9 +197,10 @@ const SetInitialView = ({ center }) => {
     const map = useMap();
     const applied = useRef(false);
     useEffect(() => {
+        if (!map) return;
         if (!applied.current && center && center[0] && center[1]) {
             map.setView(center, 14);
-            applied.applied = true;
+            applied.current = true;
         }
     }, [center, map]);
     return null;

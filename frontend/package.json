@@ -52,5 +52,14 @@
   },
   "devDependencies": {
     "tailwind-scrollbar": "^3.0.0"
+  },
+  "jest": {
+    "transformIgnorePatterns": [
+      "/node_modules/(?!(axios|leaflet|react-leaflet|@react-leaflet|leaflet-ant-path)/)"
+    ],
+    "moduleNameMapper": {
+      "\\.(css|less|scss|sass)$": "<rootDir>/src/__mocks__/fileMock.js",
+      "\\.(png|jpg|jpeg|gif|svg|webp)$": "<rootDir>/src/__mocks__/fileMock.js"
+    }
   }
 }

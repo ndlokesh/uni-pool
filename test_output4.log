@@ -1,0 +1,104 @@
+﻿node.exe : PASS 
+src/__tests__/mapService.test.js
+At line:1 char:1
++ & "C:\Program Files\nodejs/node.exe" 
+"C:\Users\Lokesh\AppData\Roaming ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (P 
+   ASS src/__tests__/mapService.test.js:Strin  
+  g) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandErr 
+   or
+ 
+  mapService ΓÇ║ searchLocation
+    ΓêÜ returns empty array when query is 
+undefined (3 ms)
+    ΓêÜ returns empty array when query is null 
+(1 ms)
+    ΓêÜ returns empty array when query is 
+empty string (1 ms)
+    ΓêÜ returns empty array when query has 
+fewer than 3 characters (1 ms)
+    ΓêÜ returns empty array when query is 
+exactly 2 characters
+    ΓêÜ calls Nominatim API with correct 
+params for valid query (1 ms)
+    ΓêÜ returns API data on successful response
+    ΓêÜ returns results for exactly 
+3-character query (boundary value)
+    ΓêÜ restricts search to India 
+(countrycodes = in)
+    ΓêÜ limits results to 5 (limit param) (1 
+ms)
+    ΓêÜ requests json format
+    ΓêÜ returns empty array when API returns 
+empty array
+    ΓêÜ returns empty array on network error 
+(1 ms)
+    ΓêÜ logs error to console on failure
+    ΓêÜ returns empty array on 500 server error
+    ΓêÜ handles special characters in query (1 
+ms)
+
+PASS src/__tests__/MapBackground.test.jsx
+  MapBackground ΓÇ║ rendering
+    ΓêÜ renders without crashing with default 
+props (24 ms)
+    ΓêÜ renders the MapContainer (14 ms)
+    ΓêÜ renders the TileLayer (4 ms)
+    ΓêÜ applies default className when none 
+provided (4 ms)
+    ΓêÜ applies custom className when provided 
+(4 ms)
+    ΓêÜ renders top gradient overlay (4 ms)
+  MapBackground ΓÇ║ markers
+    ΓêÜ renders no markers when markers array 
+is empty (3 ms)
+    ΓêÜ renders correct number of markers (10 
+ms)
+    ΓêÜ renders a single car marker (5 ms)
+    ΓêÜ renders correct position for marker 
+via data attributes (5 ms)
+    ΓêÜ renders popup with car label (8 ms)
+    ΓêÜ renders popup with passenger label (4 
+ms)
+    ΓêÜ renders popup with location label (3 
+ms)
+    ΓêÜ renders Navigate Here link for car 
+marker (5 ms)
+    ΓêÜ renders Navigate Here link for person 
+marker (5 ms)
+    ΓêÜ does NOT render Navigate Here link for 
+location marker (3 ms)
+    ΓêÜ renders correct emoji for car marker 
+(4 ms)
+    ΓêÜ renders correct emoji for person 
+marker (3 ms)
+    ΓêÜ renders correct emoji for location 
+marker (3 ms)
+    ΓêÜ renders default label "Location" when 
+marker has no label (4 ms)
+    ΓêÜ Navigate Here link has correct lat/lng 
+in href (5 ms)
+  MapBackground ΓÇ║ center prop
+    ΓêÜ uses provided center coordinates (2 ms)
+    ΓêÜ falls back to default center [17.4447, 
+78.65] when no center provided (2 ms)
+    ΓêÜ falls back to default center when 
+center has falsy lat (2 ms)
+  MapBackground ΓÇ║ multiple markers
+    ΓêÜ renders all three marker types 
+together (4 ms)
+    ΓêÜ renders two Navigate Here links (car + 
+person), not for location (5 ms)
+
+Test Suites: 2 passed, 2 total
+Tests:       42 passed, 42 total
+Snapshots:   0 total
+Time:        4.761 s, estimated 5 s
+Ran all test suites.
+Force exiting Jest: Have you considered using 
+`--detectOpenHandles` to detect async 
+operations that kept running after all tests 
+finished?

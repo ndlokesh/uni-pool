@@ -1,0 +1,100 @@
+﻿node.exe : FAIL 
+src/__tests__/mapService.test.js
+At line:1 char:1
++ & "C:\Program Files\nodejs/node.exe" 
+"C:\Users\Lokesh\AppData\Roaming ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (F 
+   AIL src/__tests__/mapService.test.js:Strin  
+  g) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandErr 
+   or
+ 
+  ΓùÅ Test suite failed to run
+
+    Jest encountered an unexpected token
+
+    Jest failed to parse a file. This happens 
+e.g. when your code or its dependencies use 
+non-standard JavaScript syntax, or when Jest 
+is not configured to support such syntax.
+
+    Out of the box Jest supports Babel, which 
+will be used to transform your files into 
+valid JS based on your Babel configuration.
+
+    By default "node_modules" folder is 
+ignored by transformers.
+
+    Here's what you can do:
+     ΓÇó If you are trying to use ECMAScript 
+Modules, see 
+https://jestjs.io/docs/ecmascript-modules for 
+how to enable it.
+     ΓÇó If you are trying to use TypeScript, 
+see https://jestjs.io/docs/getting-started#usin
+g-typescript
+     ΓÇó To have some of your "node_modules" 
+files transformed, you can specify a custom 
+"transformIgnorePatterns" in your config.
+     ΓÇó If you need a custom transformation 
+specify a "transform" option in your config.
+     ΓÇó If you simply want to mock your 
+non-JS modules (e.g. binary assets) you can 
+stub them out with the "moduleNameMapper" 
+config option.
+
+    You'll find more details and examples of 
+these config options in the docs:
+    https://jestjs.io/docs/configuration
+    For information about custom 
+transformations, see:
+    https://jestjs.io/docs/code-transformation
+
+    Details:
+
+    C:\Users\Lokesh\OneDrive\Desktop\uni-pool-p
+roject\frontend\node_modules\axios\index.js:1
+    ({"Object.<anonymous>":function(module,expo
+rts,require,__dirname,__filename,jest){import 
+axios from './lib/axios.js';
+                                               
+                                       ^^^^^^
+
+    SyntaxError: Cannot use import statement 
+outside a module
+
+    [0m[31m[1m>[22m[39m[90m 1 |[39m 
+[36mimport[39m axios [36mfrom[39m 
+[32m'axios'[39m[33m;[39m
+     [90m   |[39m [31m[1m^[22m[39m
+     [90m 2 |[39m [36mimport[39m { 
+searchLocation } [36mfrom[39m 
+[32m'../services/mapService'[39m[33m;[39m
+     [90m 3 |[39m
+     [90m 4 |[39m [90m// Mock axios so no 
+real HTTP requests are made[39m[0m
+
+      at Runtime.createScriptFromCode (node_mod
+ules/jest-runtime/build/index.js:1728:14)
+      at Object.<anonymous> 
+(src/__tests__/mapService.test.js:1:1)
+      at TestScheduler.scheduleTests (node_modu
+les/@jest/core/build/TestScheduler.js:333:13)
+      at runJest (node_modules/@jest/core/build
+/runJest.js:404:19)
+      at _run10000 (node_modules/@jest/core/bui
+ld/cli/index.js:320:7)
+      at runCLI (node_modules/@jest/core/build/
+cli/index.js:173:3)
+
+Test Suites: 1 failed, 1 total
+Tests:       0 total
+Snapshots:   0 total
+Time:        2.293 s
+Ran all test suites matching /mapService/i.
+Force exiting Jest: Have you considered using 
+`--detectOpenHandles` to detect async 
+operations that kept running after all tests 
+finished?
