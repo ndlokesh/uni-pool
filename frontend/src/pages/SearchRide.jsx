@@ -1,433 +1,423 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 import confetti from 'canvas-confetti';
 import rideService from '../services/rideService';
-import { searchLocation } from '../services/mapService';
+import { searchLocation, reverseGeocode } from '../services/mapService';
 import authService from '../services/authService';
 import Navbar from '../components/Navbar';
 import MapBackground from '../components/MapBackground';
 
+const EDU_KWORDS = ['university', 'college', 'institute', 'school', 'campus', 'iit', 'nit', 'bits'];
+const isEdu = (place) => {
+    const t = (place.type || '').toLowerCase();
+    const n = (place.display_name || '').toLowerCase();
+    return EDU_KWORDS.some(k => t.includes(k) || n.includes(k));
+};
+
+const VEHICLE_ICON = { Car: '🚗', Bike: '🏍️', Auto: '🛺' };
+const VEHICLE_COLOR = { Car: 'bg-blue-100 text-blue-700', Bike: 'bg-orange-100 text-orange-700', Auto: 'bg-green-100 text-green-700' };
+
+// ── Small star rating bar ────────────────────────────────────────────────────
+const Stars = ({ rating = 0 }) => (
+    <span className="text-yellow-400 text-xs">
+        {[1,2,3,4,5].map(s => <span key={s}>{s <= Math.round(rating) ? '★' : '☆'}</span>)}
+        <span className="text-gray-400 ml-1">{rating ? rating.toFixed(1) : 'New'}</span>
+    </span>
+);
+
 const SearchRide = () => {
-    const [rides, setRides] = useState([]);
-    const [filteredRides, setFilteredRides] = useState([]);
-    const [filter, setFilter] = useState({ source: '', destination: '' });
     const currentUser = authService.getCurrentUser();
-    const [mapCenter, setMapCenter] = useState([28.5457, 77.2732]);
-    const [suggestions, setSuggestions] = useState([]);
-    const [showSuggestions, setShowSuggestions] = useState(null);
+
+    // ── All rides from DB ─────────────────────────────────────────────────────
+    const [rides, setRides]               = useState([]);
+    const [filteredRides, setFilteredRides] = useState([]);
+
+    // ── Search / Location ─────────────────────────────────────────────────────
+    const [searchText, setSearchText]     = useState('');
+    const [suggestions, setSuggestions]   = useState([]);
     const [searchLoading, setSearchLoading] = useState(false);
+    const [searchFocused, setSearchFocused] = useState(false);
+    const [destCoords, setDestCoords]     = useState(null); // {lat, lng}
+    const [mapCenter, setMapCenter]       = useState([17.385, 78.4867]); // Hyderabad default
+    const [mapMarkers, setMapMarkers]     = useState([]);
 
-    // Booking Modal States
+    // ── Panel & Modal ─────────────────────────────────────────────────────────
+    const [panelOpen, setPanelOpen]       = useState(false);
     const [selectedRide, setSelectedRide] = useState(null);
-    const [isBooking, setIsBooking] = useState(false);
+    const [isBooking, setIsBooking]       = useState(false);
     const [bookingSuccess, setBookingSuccess] = useState(false);
+    const [bookingError, setBookingError] = useState('');
 
-    useEffect(() => {
-        const fetchRides = async () => {
-            try {
-                const data = await rideService.getRides({ active: true });
-                setRides(data);
-                setFilteredRides(data);
-            } catch (err) {
-                console.error('Failed to fetch rides');
-            }
-        };
-        fetchRides();
-    }, []);
+    const debounceRef = useRef(null);
+    const searchRef   = useRef(null);
 
-    const handleFilterChange = async (e) => {
-        const { name, value } = e.target;
-        setFilter({ ...filter, [name]: value });
-        setShowSuggestions(name);
-
-        if (value.length >= 2) {
-            setSearchLoading(true);
-            const results = await searchLocation(value);
-            setSuggestions(results);
-            setSearchLoading(false);
-        } else {
-            setSuggestions([]);
-        }
-
-        const nextFilter = { ...filter, [name]: value };
-        const filtered = rides.filter(ride =>
-            ride.source.toLowerCase().includes(nextFilter.source.toLowerCase()) &&
-            ride.destination.toLowerCase().includes(nextFilter.destination.toLowerCase())
-        );
-        setFilteredRides(filtered);
-    };
-
-    const handleSelectSuggestion = (suggestion, type) => {
-        const displayName = suggestion.display_name.split(',')[0];
-        setFilter(prev => {
-            const newFilter = { ...prev, [type]: displayName };
-            const filtered = rides.filter(ride =>
-                ride.source.toLowerCase().includes(newFilter.source.toLowerCase()) &&
-                ride.destination.toLowerCase().includes(newFilter.destination.toLowerCase())
-            );
-            setFilteredRides(filtered);
-            return newFilter;
-        });
-
-        if (suggestion.lat && suggestion.lon) {
-            setMapCenter([parseFloat(suggestion.lat), parseFloat(suggestion.lon)]);
-        }
-
-        setSuggestions([]);
-        setShowSuggestions(null);
-    };
-
-    // Open Modal
-    const handleJoinClick = (ride) => {
-        setSelectedRide(ride);
-        setBookingSuccess(false);
-    };
-
-    // Confirm Booking API Call
-    const confirmBooking = async () => {
-        if (!selectedRide) return;
-        setIsBooking(true);
+    // ── Fetch rides ───────────────────────────────────────────────────────────
+    const fetchRides = useCallback(async () => {
         try {
-            await rideService.joinRide(selectedRide._id);
-            setBookingSuccess(true);
-
-            // Fire Confetti!
-            const count = 200;
-            const defaults = {
-                origin: { y: 0.7 }
-            };
-
-            function fire(particleRatio, opts) {
-                confetti({
-                    ...defaults,
-                    ...opts,
-                    particleCount: Math.floor(count * particleRatio)
-                });
-            }
-
-            fire(0.25, { spread: 26, startVelocity: 55 });
-            fire(0.2, { spread: 60 });
-            fire(0.35, { spread: 100, decay: 0.91, scalar: 0.8 });
-            fire(0.1, { spread: 120, startVelocity: 25, decay: 0.92, scalar: 1.2 });
-            fire(0.1, { spread: 120, startVelocity: 45 });
-            // Refresh rides in background
             const data = await rideService.getRides({ active: true });
             setRides(data);
             setFilteredRides(data);
+            // Show all ride source pins on map
+            setMapMarkers(data.filter(r => r.sourceLat).map(r => ({
+                id: r._id, lat: r.sourceLat, lng: r.sourceLng,
+                label: `${r.vehicleType} · ₹${r.price || 0}`, type: 'car',
+            })));
+        } catch { /* silent */ }
+    }, []);
 
-            // Close modal after delay
-            setTimeout(() => {
-                setSelectedRide(null);
-                setIsBooking(false);
-                setBookingSuccess(false);
-            }, 2000);
+    useEffect(() => { fetchRides(); }, [fetchRides]);
+
+    // ── Debounced search suggestions ──────────────────────────────────────────
+    const handleSearchInput = useCallback(async (e) => {
+        const val = e.target.value;
+        setSearchText(val);
+        setSearchFocused(true);
+
+        if (debounceRef.current) clearTimeout(debounceRef.current);
+        if (val.length < 2) { setSuggestions([]); return; }
+
+        setSearchLoading(true);
+        debounceRef.current = setTimeout(async () => {
+            const results = await searchLocation(val);
+            setSuggestions(results);
+            setSearchLoading(false);
+        }, 280);
+    }, []);
+
+    // ── Pick a destination from suggestions ───────────────────────────────────
+    const handlePickDestination = useCallback((place) => {
+        const lat  = parseFloat(place.lat);
+        const lng  = parseFloat(place.lon);
+        const name = place.display_name.split(',').slice(0, 2).join(', ');
+
+        setSearchText(name);
+        setDestCoords({ lat, lng });
+        setMapCenter([lat, lng]);
+        setSuggestions([]);
+        setSearchFocused(false);
+        setPanelOpen(true);
+
+        // Filter rides by destination text similarity
+        const lower = name.toLowerCase();
+        const filtered = rides.filter(r =>
+            r.destination?.toLowerCase().includes(lower.split(',')[0].toLowerCase()) ||
+            r.source?.toLowerCase().includes(lower.split(',')[0].toLowerCase())
+        );
+        setFilteredRides(filtered.length > 0 ? filtered : rides);
+
+        // Add destination pin to map
+        setMapMarkers(prev => [
+            ...prev.filter(m => m.id !== '__dest__'),
+            { id: '__dest__', lat, lng, label: name, type: 'location' }
+        ]);
+    }, [rides]);
+
+    // ── Map click ─────────────────────────────────────────────────────────────
+    const handleMapClick = useCallback(async (latlng) => {
+        const { lat, lng } = latlng;
+        setMapMarkers(prev => [...prev.filter(m => m.id !== '__dest__'), { id: '__dest__', lat, lng, label: 'Destination', type: 'location' }]);
+        const name = await reverseGeocode(lat, lng);
+        const displayName = name || `${lat.toFixed(4)}, ${lng.toFixed(4)}`;
+        setSearchText(displayName);
+        setDestCoords({ lat, lng });
+        setPanelOpen(true);
+        setFilteredRides(rides);
+    }, [rides]);
+
+    // ── Select a ride card ────────────────────────────────────────────────────
+    const handleSelectRide = (ride) => {
+        setSelectedRide(ride);
+        setBookingSuccess(false);
+        setBookingError('');
+        if (ride.sourceLat) {
+            setMapCenter([ride.sourceLat, ride.sourceLng]);
+            setMapMarkers(prev => [
+                ...prev.filter(m => m.id === '__dest__'),
+                { id: ride._id, lat: ride.sourceLat, lng: ride.sourceLng, label: `Pickup: ${ride.source}`, type: 'location' },
+                ...(ride.destLat ? [{ id: `${ride._id}_dest`, lat: ride.destLat, lng: ride.destLng, label: `Drop: ${ride.destination}`, type: 'location' }] : [])
+            ]);
+        }
+    };
+
+    // ── Confirm Booking ───────────────────────────────────────────────────────
+    const confirmBooking = async () => {
+        if (!selectedRide) return;
+        setIsBooking(true);
+        setBookingError('');
+        try {
+            await rideService.joinRide(selectedRide._id);
+            setBookingSuccess(true);
+            // Confetti 🎉
+            const fire = (ratio, opts) => confetti({ origin: { y: 0.7 }, particleCount: Math.floor(200 * ratio), ...opts });
+            fire(0.25, { spread: 26, startVelocity: 55 });
+            fire(0.2,  { spread: 60 });
+            fire(0.35, { spread: 100, decay: 0.91, scalar: 0.8 });
+            fire(0.1,  { spread: 120, startVelocity: 25 });
+
+            await fetchRides();
+            setTimeout(() => { setSelectedRide(null); setIsBooking(false); setBookingSuccess(false); }, 2500);
         } catch (err) {
-            alert(err.response?.data?.message || 'Failed to join ride');
+            setBookingError(err.response?.data?.message || 'Failed to join ride. Try again.');
             setIsBooking(false);
         }
     };
 
-    const markers = filteredRides
-        .filter(r => r.sourceLat && r.sourceLng)
-        .map(r => ({
-            lat: r.sourceLat,
-            lng: r.sourceLng,
-            label: `Ride from ${r.source}`,
-            id: r._id
-        }));
+    // ── Close suggestions on outside click ───────────────────────────────────
+    useEffect(() => {
+        const h = (e) => { if (!searchRef.current?.contains(e.target)) setSearchFocused(false); };
+        document.addEventListener('mousedown', h);
+        return () => document.removeEventListener('mousedown', h);
+    }, []);
 
+    const canJoin = (ride) =>
+        ride.availableSeats > 0 &&
+        ride.createdBy?._id !== currentUser?._id &&
+        !ride.riders?.includes(currentUser?._id) &&
+        !ride.pendingRiders?.includes(currentUser?._id);
+
+    // ─────────────────────────────────────────────────────────────────────────
     return (
-        <div className="relative min-h-screen overflow-hidden">
+        <div className="relative min-h-screen overflow-hidden bg-gray-100">
+
+            {/* ── Full-screen map ── */}
             <MapBackground
                 center={mapCenter}
-                markers={markers}
-                className="fixed top-0 left-0 w-full h-full -z-10"
+                markers={mapMarkers}
+                onMapClick={handleMapClick}
+                className="fixed top-0 left-0 w-full h-full z-0"
             />
 
+            {/* ── Overlay ── */}
             <div className="relative z-10 flex flex-col h-screen pointer-events-none">
                 <Navbar />
 
-                <div className="flex-grow flex flex-col md:flex-row pointer-events-none overflow-hidden">
-                    {/* Floating Panel */}
-                    <div className="w-full md:w-[450px] md:ml-6 md:mb-6 flex flex-col pointer-events-auto h-full md:h-auto">
-                        <div className="bg-white/95 backdrop-blur-md h-full md:h-[calc(100vh-100px)] rounded-3xl shadow-2xl border border-white/50 flex flex-col overflow-hidden">
-
-                            {/* Search Header */}
-                            <div className="p-6 border-b border-gray-100 bg-white/50">
-                                <h2 className="text-2xl font-bold text-gray-800 mb-1">Find a Ride</h2>
-                                <p className="text-xs text-green-600 font-bold mb-4 flex items-center gap-1">
-                                    <span className="w-1.5 h-1.5 bg-green-600 rounded-full animate-pulse"></span> Live Map Active
-                                </p>
-                                <div className="space-y-3">
-                                    <div className="relative">
-                                        <div className="absolute left-3 top-3 w-2 h-2 rounded-full bg-blue-500"></div>
-                                        <input
-                                            type="text"
-                                            name="source"
-                                            placeholder="From"
-                                            className="w-full pl-8 pr-4 py-2 bg-gray-50 border-none rounded-lg focus:ring-2 focus:ring-black/5 text-sm font-medium"
-                                            value={filter.source}
-                                            onChange={handleFilterChange}
-                                            onFocus={() => setShowSuggestions('source')}
-                                        />
-                                        {/* Suggestions */}
-                                        {showSuggestions === 'source' && (
-                                            <div className="absolute top-full left-0 w-full bg-white rounded-xl shadow-2xl z-50 mt-1 border border-gray-100 overflow-hidden">
-                                                {searchLoading && (
-                                                    <div className="px-4 py-3 flex items-center gap-2 text-gray-400 text-sm">
-                                                        <div className="w-4 h-4 border-2 border-indigo-400 border-t-transparent rounded-full animate-spin" />
-                                                        Searching…
-                                                    </div>
-                                                )}
-                                                {!searchLoading && suggestions.length === 0 && filter.source.length >= 2 && (
-                                                    <div className="px-4 py-3 text-gray-400 text-sm">No results found. Try a different name.</div>
-                                                )}
-                                                {suggestions.map((place) => {
-                                                    const edu = place.type?.toLowerCase().includes('university') || place.type?.toLowerCase().includes('college') || place.type?.toLowerCase().includes('school');
-                                                    return (
-                                                        <div
-                                                            key={place.place_id}
-                                                            className="px-4 py-3 hover:bg-indigo-50 cursor-pointer border-b border-gray-50 last:border-0 flex items-start gap-3"
-                                                            onMouseDown={() => handleSelectSuggestion(place, 'source')}
-                                                        >
-                                                            <span className="text-base mt-0.5">{edu ? '🎓' : '📍'}</span>
-                                                            <div>
-                                                                <p className="font-semibold text-gray-900 text-sm">{place.display_name.split(',')[0]}</p>
-                                                                <p className="truncate text-xs text-gray-400">{place.display_name.split(',').slice(1, 3).join(', ')}</p>
-                                                            </div>
-                                                        </div>
-                                                    );
-                                                })}
-                                            </div>
-                                        )}
-                                    </div>
-                                    <div className="relative">
-                                        <div className="absolute left-3 top-3 w-2 h-2 rounded-full bg-green-500"></div>
-                                        <input
-                                            type="text"
-                                            name="destination"
-                                            placeholder="To"
-                                            className="w-full pl-8 pr-4 py-2 bg-gray-50 border-none rounded-lg focus:ring-2 focus:ring-black/5 text-sm font-medium"
-                                            value={filter.destination}
-                                            onChange={handleFilterChange}
-                                            onFocus={() => setShowSuggestions('destination')}
-                                        />
-                                        {/* Suggestions */}
-                                        {showSuggestions === 'destination' && (
-                                            <div className="absolute top-full left-0 w-full bg-white rounded-xl shadow-2xl z-50 mt-1 border border-gray-100 overflow-hidden">
-                                                {searchLoading && (
-                                                    <div className="px-4 py-3 flex items-center gap-2 text-gray-400 text-sm">
-                                                        <div className="w-4 h-4 border-2 border-indigo-400 border-t-transparent rounded-full animate-spin" />
-                                                        Searching…
-                                                    </div>
-                                                )}
-                                                {!searchLoading && suggestions.length === 0 && filter.destination.length >= 2 && (
-                                                    <div className="px-4 py-3 text-gray-400 text-sm">No results found. Try a different name.</div>
-                                                )}
-                                                {suggestions.map((place) => {
-                                                    const edu = place.type?.toLowerCase().includes('university') || place.type?.toLowerCase().includes('college') || place.type?.toLowerCase().includes('school');
-                                                    return (
-                                                        <div
-                                                            key={place.place_id}
-                                                            className="px-4 py-3 hover:bg-indigo-50 cursor-pointer border-b border-gray-50 last:border-0 flex items-start gap-3"
-                                                            onMouseDown={() => handleSelectSuggestion(place, 'destination')}
-                                                        >
-                                                            <span className="text-base mt-0.5">{edu ? '🎓' : '📍'}</span>
-                                                            <div>
-                                                                <p className="font-semibold text-gray-900 text-sm">{place.display_name.split(',')[0]}</p>
-                                                                <p className="truncate text-xs text-gray-400">{place.display_name.split(',').slice(1, 3).join(', ')}</p>
-                                                            </div>
-                                                        </div>
-                                                    );
-                                                })}
-                                            </div>
-                                        )}
-                                    </div>
-                                </div>
+                {/* ── Top Uber-style "Where to?" Search Bar ── */}
+                <div className="px-4 pt-3 pointer-events-auto" ref={searchRef}>
+                    <div className="max-w-lg mx-auto">
+                        <div className={`bg-white rounded-2xl shadow-xl flex items-center gap-3 px-4 py-3 transition-all ${searchFocused ? 'ring-2 ring-indigo-500' : ''}`}>
+                            <div className="w-8 h-8 bg-black rounded-full flex items-center justify-center flex-shrink-0">
+                                <span className="text-white text-sm">🔍</span>
                             </div>
+                            <input
+                                type="text"
+                                value={searchText}
+                                onChange={handleSearchInput}
+                                onFocus={() => setSearchFocused(true)}
+                                placeholder="Where do you want to go?"
+                                className="flex-1 outline-none text-base font-medium text-gray-800 placeholder-gray-400 bg-transparent"
+                                autoComplete="off"
+                            />
+                            {searchLoading && (
+                                <div className="w-5 h-5 border-2 border-indigo-400 border-t-transparent rounded-full animate-spin flex-shrink-0" />
+                            )}
+                            {searchText && !searchLoading && (
+                                <button onClick={() => { setSearchText(''); setSuggestions([]); setFilteredRides(rides); setPanelOpen(false); }}
+                                    className="text-gray-400 hover:text-gray-600 flex-shrink-0">✕</button>
+                            )}
+                        </div>
 
-                            {/* List */}
-                            <div className="flex-grow overflow-y-auto p-4 space-y-4">
-                                {filteredRides.length > 0 ? (
-                                    filteredRides.map((ride) => (
-                                        <div key={ride._id}
-                                            className="bg-white p-4 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition cursor-pointer group"
-                                            onClick={() => {
-                                                if (ride.sourceLat) setMapCenter([ride.sourceLat, ride.sourceLng]);
-                                            }}
-                                        >
-                                            <div className="flex justify-between items-start mb-2">
-                                                <div>
-                                                    <h3 className="font-bold text-gray-900">{ride.source}</h3>
-                                                    <div className="h-4 border-l-2 border-dashed border-gray-300 ml-1 my-1"></div>
-                                                    <h3 className="font-bold text-gray-900">{ride.destination}</h3>
-                                                </div>
-                                                <div className="text-right">
-                                                    <span className="text-lg font-bold text-gray-900">{ride.time}</span>
-                                                    <p className="text-xs text-gray-400">{new Date(ride.date).toLocaleDateString()}</p>
-                                                </div>
-                                            </div>
-
-                                            <div className="flex items-center justify-between mt-4">
-                                                <div className="flex flex-col gap-2 mt-4 w-full">
-                                                    <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl border border-gray-100">
-                                                        <div className={`p-2 rounded-full ${ride.vehicleType === 'Car' ? 'bg-blue-100 text-blue-600' : 'bg-orange-100 text-orange-600'}`}>
-                                                            <span className="text-xl">
-                                                                {ride.vehicleType === 'Car' ? '🚗' : '🏍'}
-                                                            </span>
-                                                        </div>
-                                                        <div className="flex flex-col">
-                                                            <span className="text-sm font-bold text-gray-800">
-                                                                {ride.vehicleType} — <span className="text-green-600">₹{ride.price || 0}</span>
-                                                            </span>
-                                                            <span className="text-xs text-gray-500 font-medium">
-                                                                Payable: ₹{ride.price || 0}
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                {ride && ride.availableSeats > 0 && ride.createdBy?._id !== currentUser?._id && !ride.riders.includes(currentUser?._id) && !ride.pendingRiders?.includes(currentUser?._id) ? (
-                                                    <button
-                                                        onClick={(e) => { e.stopPropagation(); handleJoinClick(ride); }}
-                                                        className="bg-black text-white px-6 py-2 rounded-xl text-sm font-bold hover:bg-gray-800 transition ml-2 shadow-lg flex items-center gap-2"
-                                                    >
-                                                        <span>Book Ride</span>
-                                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                                                        </svg>
-                                                    </button>
-                                                ) : (
-                                                    <span className="text-xs font-bold text-gray-400 uppercase tracking-wider py-2 ml-2">
-                                                        {ride.createdBy?._id === currentUser?._id ? 'Yours' : ride.riders.includes(currentUser?._id) ? 'Booked' : ride.pendingRiders?.includes(currentUser?._id) ? 'Request Sent' : 'Full'}
-                                                    </span>
-                                                )}
-                                            </div>
-                                        </div>
-                                    ))
-                                ) : (
-                                    <div className="text-center py-10">
-                                        <p className="text-gray-400">No rides found.</p>
+                        {/* Suggestions dropdown */}
+                        {searchFocused && (suggestions.length > 0 || searchLoading || searchText.length >= 2) && (
+                            <div className="mt-1 bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden max-h-80 overflow-y-auto">
+                                {searchLoading && (
+                                    <div className="flex items-center gap-3 px-4 py-3 text-gray-400 text-sm">
+                                        <div className="w-4 h-4 border-2 border-indigo-400 border-t-transparent rounded-full animate-spin" />
+                                        Searching places…
                                     </div>
                                 )}
+                                {!searchLoading && suggestions.length === 0 && searchText.length >= 2 && (
+                                    <div className="px-4 py-3 text-gray-400 text-sm">No places found. Try a different name.</div>
+                                )}
+                                {suggestions.map((place, i) => {
+                                    const edu = isEdu(place);
+                                    return (
+                                        <div key={place.place_id || i}
+                                            className={`flex items-start gap-3 px-4 py-3 cursor-pointer border-b border-gray-50 last:border-0 ${edu ? 'hover:bg-indigo-50' : 'hover:bg-gray-50'}`}
+                                            onMouseDown={() => handlePickDestination(place)}>
+                                            <div className={`w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 text-base ${edu ? 'bg-indigo-100' : 'bg-gray-100'}`}>
+                                                {edu ? '🎓' : '📍'}
+                                            </div>
+                                            <div className="min-w-0">
+                                                <p className={`text-sm font-semibold truncate ${edu ? 'text-indigo-700' : 'text-gray-900'}`}>
+                                                    {place.display_name.split(',')[0]}
+                                                </p>
+                                                {edu && <span className="text-[10px] font-bold text-indigo-500 bg-indigo-50 px-1.5 py-0.5 rounded-full">University / College</span>}
+                                                <p className="text-xs text-gray-400 truncate">{place.display_name.split(',').slice(1, 3).join(', ')}</p>
+                                            </div>
+                                        </div>
+                                    );
+                                })}
                             </div>
+                        )}
+                    </div>
+                </div>
+
+                {/* ── Floating ride count badge ── */}
+                {!panelOpen && filteredRides.length > 0 && (
+                    <div className="flex justify-center mt-3 pointer-events-auto">
+                        <button onClick={() => setPanelOpen(true)}
+                            className="bg-black text-white px-5 py-2.5 rounded-full shadow-xl text-sm font-bold flex items-center gap-2 hover:bg-gray-800 transition">
+                            <span>🚗</span>
+                            {filteredRides.length} ride{filteredRides.length !== 1 ? 's' : ''} available — tap to view
+                            <span>↑</span>
+                        </button>
+                    </div>
+                )}
+
+                {/* ── Bottom Panel: ride list ── */}
+                <div className={`pointer-events-auto mt-auto transition-all duration-300 ${panelOpen ? 'translate-y-0' : 'translate-y-[calc(100%-56px)]'}`}>
+                    <div className="bg-white rounded-t-3xl shadow-2xl max-w-2xl mx-auto w-full">
+                        {/* Handle + toggle */}
+                        <button onClick={() => setPanelOpen(p => !p)} className="w-full pt-3 pb-1 flex flex-col items-center">
+                            <div className="w-10 h-1 bg-gray-200 rounded-full" />
+                            <p className="text-xs text-gray-400 mt-1 font-medium">
+                                {panelOpen ? 'Hide rides ↓' : `${filteredRides.length} rides ↑`}
+                            </p>
+                        </button>
+
+                        <div className="overflow-y-auto max-h-[55vh] px-4 pb-6 space-y-3">
+                            {filteredRides.length === 0 ? (
+                                <div className="text-center py-12">
+                                    <div className="text-4xl mb-3">🚗</div>
+                                    <p className="text-gray-500 font-semibold">No rides available right now</p>
+                                    <p className="text-gray-400 text-sm mt-1">Try a different destination or check back soon</p>
+                                </div>
+                            ) : filteredRides.map(ride => {
+                                const mine = ride.createdBy?._id === currentUser?._id;
+                                const booked = ride.riders?.includes(currentUser?._id);
+                                const pending = ride.pendingRiders?.includes(currentUser?._id);
+                                const full = ride.availableSeats <= 0;
+                                const joinable = !mine && !booked && !pending && !full;
+
+                                return (
+                                    <div key={ride._id}
+                                        onClick={() => handleSelectRide(ride)}
+                                        className={`bg-white border-2 rounded-2xl p-4 cursor-pointer transition-all ${selectedRide?._id === ride._id ? 'border-indigo-500 shadow-lg shadow-indigo-100' : 'border-gray-100 hover:border-gray-200 hover:shadow-md'}`}>
+
+                                        {/* Route */}
+                                        <div className="flex items-start gap-3 mb-3">
+                                            <div className="flex flex-col items-center pt-1 gap-1">
+                                                <span className="w-2.5 h-2.5 rounded-full bg-green-500" />
+                                                <span className="w-0.5 h-6 bg-gray-200" />
+                                                <span className="w-2.5 h-2.5 rounded-full bg-red-500" />
+                                            </div>
+                                            <div className="flex-1 min-w-0">
+                                                <p className="text-sm font-bold text-gray-900 truncate">{ride.source}</p>
+                                                <p className="text-xs text-gray-400 mt-1 mb-1">→ Drop</p>
+                                                <p className="text-sm font-bold text-gray-900 truncate">{ride.destination}</p>
+                                            </div>
+                                            <div className="text-right flex-shrink-0">
+                                                <p className="text-xl font-black text-gray-900">₹{ride.price || 0}</p>
+                                                <p className="text-xs text-gray-400">{ride.time}</p>
+                                                <p className="text-xs text-gray-400">{new Date(ride.date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })}</p>
+                                            </div>
+                                        </div>
+
+                                        {/* Driver + vehicle row */}
+                                        <div className="flex items-center justify-between">
+                                            <div className="flex items-center gap-2">
+                                                <div className="w-8 h-8 rounded-full bg-indigo-100 text-indigo-700 font-bold text-sm flex items-center justify-center">
+                                                    {ride.createdBy?.name?.[0]?.toUpperCase() || 'D'}
+                                                </div>
+                                                <div>
+                                                    <p className="text-xs font-semibold text-gray-800">{ride.createdBy?.name || 'Driver'}</p>
+                                                    <Stars rating={ride.createdBy?.averageRating} />
+                                                </div>
+                                            </div>
+                                            <div className="flex items-center gap-2">
+                                                <span className={`text-xs font-bold px-2 py-1 rounded-lg ${VEHICLE_COLOR[ride.vehicleType] || 'bg-gray-100 text-gray-600'}`}>
+                                                    {VEHICLE_ICON[ride.vehicleType] || '🚗'} {ride.vehicleType}
+                                                </span>
+                                                <span className="text-xs text-gray-500 font-medium">{ride.availableSeats} seat{ride.availableSeats !== 1 ? 's' : ''}</span>
+                                                {joinable && (
+                                                    <button onClick={(e) => { e.stopPropagation(); handleSelectRide(ride); }}
+                                                        className="bg-black text-white text-xs font-bold px-3 py-1.5 rounded-xl hover:bg-gray-800 transition">
+                                                        Book
+                                                    </button>
+                                                )}
+                                                {mine   && <span className="text-xs font-bold text-indigo-600 bg-indigo-50 px-2 py-1 rounded-lg">Your Ride</span>}
+                                                {booked && <span className="text-xs font-bold text-green-600 bg-green-50 px-2 py-1 rounded-lg">✓ Booked</span>}
+                                                {pending && <span className="text-xs font-bold text-amber-600 bg-amber-50 px-2 py-1 rounded-lg">Pending</span>}
+                                                {full && !mine && !booked && !pending && <span className="text-xs font-bold text-red-500 bg-red-50 px-2 py-1 rounded-lg">Full</span>}
+                                            </div>
+                                        </div>
+                                    </div>
+                                );
+                            })}
                         </div>
                     </div>
                 </div>
             </div>
 
-            {/* Booking Confirmation Modal */}
+            {/* ── Booking Confirmation Modal ── */}
             {selectedRide && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm animate-fade-in-up">
-                    <div className="bg-white rounded-3xl shadow-2xl w-full max-w-md overflow-hidden relative">
-                        {/* Header - Dynamic Color based on Vehicle */}
-                        <div className={`p-6 text-white text-center relative ${selectedRide.vehicleType === 'Car'
-                            ? 'bg-gradient-to-r from-gray-900 to-gray-800'
-                            : 'bg-gradient-to-r from-orange-600 to-red-600'
-                            }`}>
-                            <h3 className="text-xl font-bold flex items-center justify-center gap-2">
-                                {selectedRide.vehicleType === 'Car' ? '🚗' : '🏍'} Review {selectedRide.vehicleType} Booking
+                <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/50 backdrop-blur-sm">
+                    <div className="bg-white rounded-t-3xl sm:rounded-3xl shadow-2xl w-full max-w-md overflow-hidden">
+
+                        {/* Header */}
+                        <div className={`px-6 py-5 text-white relative ${selectedRide.vehicleType === 'Bike' ? 'bg-gradient-to-r from-orange-500 to-red-500' : selectedRide.vehicleType === 'Auto' ? 'bg-gradient-to-r from-green-500 to-teal-500' : 'bg-gradient-to-r from-gray-900 to-gray-800'}`}>
+                            <button onClick={() => setSelectedRide(null)} className="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center text-sm transition">✕</button>
+                            <h3 className="text-lg font-bold flex items-center gap-2">
+                                {VEHICLE_ICON[selectedRide.vehicleType]} Confirm Your Ride
                             </h3>
-                            <button
-                                onClick={() => setSelectedRide(null)}
-                                className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 transition text-sm"
-                            >
-                                ✕
-                            </button>
+                            <p className="text-white/70 text-sm mt-0.5">{selectedRide.source} → {selectedRide.destination}</p>
                         </div>
 
-                        {/* Body */}
                         <div className="p-6">
                             {bookingSuccess ? (
                                 <div className="text-center py-8">
-                                    <div className="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-4 animate-bounce">
-                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-                                        </svg>
-                                    </div>
-                                    <h3 className="text-2xl font-bold text-gray-900 mb-2">Request Sent!</h3>
-                                    <p className="text-gray-500">Waiting for driver to accept...</p>
-                                    <p className="text-sm text-gray-400 mt-4">Check "My Rides" for status</p>
+                                    <div className="text-5xl mb-3">🎉</div>
+                                    <h3 className="text-xl font-bold text-gray-900 mb-1">Ride Requested!</h3>
+                                    <p className="text-gray-500 text-sm">Waiting for driver to accept your request.</p>
+                                    <p className="text-gray-400 text-xs mt-2">Check "My Rides" for real-time updates</p>
                                 </div>
                             ) : (
                                 <>
-                                    {/* Route Visual */}
-                                    <div className="flex items-start gap-4 mb-8 relative">
-                                        <div className="flex flex-col items-center mt-1">
-                                            <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
-                                            <div className="w-0.5 h-12 bg-gray-200 my-1"></div>
-                                            <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                                    {bookingError && (
+                                        <div className="bg-red-50 text-red-600 text-sm px-4 py-3 rounded-xl mb-4">{bookingError}</div>
+                                    )}
+
+                                    {/* Route visual */}
+                                    <div className="flex items-start gap-4 mb-5">
+                                        <div className="flex flex-col items-center mt-1 gap-1">
+                                            <span className="w-3 h-3 rounded-full bg-green-500" />
+                                            <span className="w-0.5 h-10 bg-gray-200" />
+                                            <span className="w-3 h-3 rounded-full bg-red-500" />
                                         </div>
-                                        <div className="flex-1 space-y-8">
+                                        <div className="flex-1 space-y-4">
                                             <div>
-                                                <p className="text-xs text-gray-400 uppercase font-bold tracking-wider">Pick Up</p>
-                                                <h4 className="font-bold text-gray-900">{selectedRide.source}</h4>
-                                                <p className="text-xs text-gray-500">{selectedRide.time}, {new Date(selectedRide.date).toLocaleDateString()}</p>
+                                                <p className="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Pickup</p>
+                                                <p className="font-bold text-gray-900 text-sm">{selectedRide.source}</p>
+                                                <p className="text-xs text-gray-500">{selectedRide.time} · {new Date(selectedRide.date).toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric', month: 'short' })}</p>
                                             </div>
                                             <div>
-                                                <p className="text-xs text-gray-400 uppercase font-bold tracking-wider">Drop Off</p>
-                                                <h4 className="font-bold text-gray-900">{selectedRide.destination}</h4>
+                                                <p className="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Drop</p>
+                                                <p className="font-bold text-gray-900 text-sm">{selectedRide.destination}</p>
                                             </div>
                                         </div>
                                     </div>
 
-                                    {/* Driver & Car Info */}
-                                    <div className="bg-gray-50 rounded-2xl p-4 mb-6 border border-gray-100">
-                                        <div className="flex items-center gap-4 mb-4 pb-4 border-b border-gray-100">
-                                            <div className={`w-12 h-12 rounded-full flex items-center justify-center font-bold text-lg ${selectedRide.vehicleType === 'Car' ? 'bg-indigo-100 text-indigo-600' : 'bg-orange-100 text-orange-600'
-                                                }`}>
-                                                {selectedRide.createdBy?.name?.[0] || 'D'}
-                                            </div>
-                                            <div>
-                                                <p className="font-bold text-gray-900">{selectedRide.createdBy?.name || 'Driver'}</p>
-                                                <p className="text-xs text-gray-500">Verified Driver • 4.8 ★</p>
-                                            </div>
+                                    {/* Driver */}
+                                    <div className="bg-gray-50 rounded-2xl p-4 mb-5 flex items-center gap-4">
+                                        <div className="w-12 h-12 rounded-full bg-indigo-100 text-indigo-700 font-bold flex items-center justify-center text-lg">
+                                            {selectedRide.createdBy?.name?.[0]?.toUpperCase() || 'D'}
                                         </div>
-                                        <div className="flex justify-between items-center text-sm">
-                                            <span className="text-gray-600 flex items-center gap-2">
-                                                {selectedRide.vehicleType === 'Car' ? '🚗 Sedan/Hatchback' : '🏍 Motorbike'}
-                                            </span>
-                                            <span className="font-bold text-gray-900">{selectedRide.availableSeats} seats left</span>
+                                        <div className="flex-1">
+                                            <p className="font-bold text-gray-900">{selectedRide.createdBy?.name || 'Driver'}</p>
+                                            <Stars rating={selectedRide.createdBy?.averageRating} />
+                                            <p className="text-xs text-gray-500 mt-0.5">{selectedRide.availableSeats} seat{selectedRide.availableSeats !== 1 ? 's' : ''} left · {selectedRide.vehicleType}</p>
+                                        </div>
+                                        <div className="text-right">
+                                            <p className="text-2xl font-black text-gray-900">₹{selectedRide.price}</p>
+                                            <p className="text-xs text-gray-400">per seat</p>
                                         </div>
                                     </div>
 
-                                    {/* Price Breakdown */}
-                                    <div className="space-y-2 mb-8">
-                                        <div className="flex justify-between text-sm text-gray-600">
-                                            <span>Price per seat</span>
-                                            <span>₹{selectedRide.price}</span>
-                                        </div>
-                                        <div className="flex justify-between text-sm text-gray-600">
-                                            <span>Booking Fee</span>
-                                            <span>₹0</span>
-                                        </div>
-                                        <div className="pt-2 border-t border-gray-100 flex justify-between items-center">
-                                            <span className="font-bold text-gray-900">Total</span>
-                                            <span className="text-2xl font-bold text-green-600">₹{selectedRide.price}</span>
-                                        </div>
-                                    </div>
-
-
-                                    {/* Action */}
-                                    <button
-                                        onClick={confirmBooking}
-                                        disabled={isBooking}
-                                        className={`w-full text-white py-4 rounded-xl font-bold text-lg hover:opacity-90 transition disabled:opacity-70 disabled:cursor-not-allowed flex justify-center items-center gap-2 ${selectedRide.vehicleType === 'Car' ? 'bg-black' : 'bg-orange-600'
-                                            }`}
-                                    >
-                                        {isBooking ? (
-                                            <>
-                                                <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                                                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                                                </svg>
-                                                <span>Sending Request...</span>
-                                            </>
-                                        ) : (
-                                            <>
-                                                <span>Send Request</span>
-                                                <span>➔</span>
-                                            </>
-                                        )}
+                                    <button onClick={confirmBooking} disabled={isBooking}
+                                        className="w-full bg-black text-white py-4 rounded-2xl font-bold text-base hover:bg-gray-800 transition disabled:opacity-60 flex items-center justify-center gap-2">
+                                        {isBooking
+                                            ? <><div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" /> Sending Request…</>
+                                            : <>Send Ride Request →</>
+                                        }
                                     </button>
                                 </>
                             )}
