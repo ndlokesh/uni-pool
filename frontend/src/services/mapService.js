@@ -4,73 +4,127 @@ import axios from 'axios';
 const PHOTON_URL    = 'https://photon.komoot.io/api/';
 const NOMINATIM_URL = 'https://nominatim.openstreetmap.org';
 
-// ── Hyderabad geographic constants ────────────────────────────────────────────
-// Bounding box: covers all of Greater Hyderabad + surrounding districts
-const HYD_LAT  = 17.385;
-const HYD_LON  = 78.4867;
-// Photon bbox: [minLon, minLat, maxLon, maxLat]  — entire GHMC + suburbs
-const HYD_BBOX = '77.9,16.9,79.2,17.9';
+// ── Hyderabad geographic center (Panjagutta) ──────────────────────────────────
+const HYD_LAT = 17.4065;
+const HYD_LON = 78.4772;
 
-// ── College / university alias dictionary ─────────────────────────────────────
+// ── Popular Hyderabad locations — instant local suggestions ───────────────────
+// These appear instantly without an API call when query matches
+const HYD_LOCATIONS = [
+    // GHMC Circles / Main Areas
+    'Banjara Hills','Jubilee Hills','Madhapur','Gachibowli','Kondapur','Kukatpally',
+    'Miyapur','KPHB Colony','Hitech City','Cyberabad','Begumpet','Secunderabad',
+    'Ameerpet','Dilsukhnagar','LB Nagar','Mehdipatnam','Attapur','Tolichowki',
+    'Manikonda','Narsingi','Kokapet','Financial District','Nanakramguda',
+    'Raidurgam','Hafeezpet','Chandanagar','Lingampally','Nizampet','Bachupally',
+    'Kompally','Medchal','Shamirpet','Quthbullapur','Jeedimetla','Balanagar',
+    'Bowenpally','Trimulgherry','Malkajgiri','Uppal','LB Nagar','Vanasthalipuram',
+    'Hayathnagar','Nagole','Boduppal','Ghatkesar','Keesara','Medipally',
+    'Peerzadiguda','Yapral','AS Rao Nagar','ECIL','Nacharam','Kushaiguda',
+    'Ramanthapur','Tarnaka','Sainikpuri','Kapra','Cherlapally','Alwal',
+    'Old Town Secunderabad','Marredpally','Karkhana','Chilkalguda',
+    'Padmarao Nagar','Musheerabad','Gandhinagar Hyderabad','Himayathnagar',
+    'Narayanguda','Basheerbagh','Nampally','Abids','Koti','Charminar',
+    'Falaknuma','Santoshnagar','Malakpet','Amberpet','Nallakunta',
+    'Vidyanagar Hyderabad','Saidabad','Chandrayangutta','Bahadurpura',
+    'Rajendranagar','Shamshabad','Narsingi','Tellapur','Gopanpally',
+    'Khajaguda','Puppalaguda','Manikonda','Langer Houz','Kismatpur',
+    'Gandipet','Mokila','Tukkuguda','Adibatla','Kothur','Maheshwaram',
+    // Famous Roads & Junctions
+    'Road No 36 Jubilee Hills','Road No 45 Jubilee Hills','Panjagutta',
+    'Punjagutta Circle','Film Nagar','Masab Tank','Lakdikapul',
+    'Khairatabad','Yellareddiguda','Erragadda','Sanathnagar',
+    'Moosapet','Sultan Bazar','Secunderabad Station','Hyderabad Station',
+    'Kacheguda Station','Nampally Station','Hitech City Metro','MGBS',
+    // Landmarks
+    'Hussain Sagar','Tank Bund','Lumbini Park','NTR Gardens','Birla Temple',
+    'Golconda Fort','Charminar','Mecca Masjid','Chowmahalla Palace',
+    'Salar Jung Museum','Nehru Zoological Park','Ramoji Film City',
+    'IKEA Hyderabad','INORBIT Mall','GVK One Mall','Forum Mall Kukatpally',
+    'PVP Mall Vijayawada','City Centre Mall','Shilparamam','Lad Bazaar',
+    'Laad Bazaar','Paradise Biryani','Hotel Taj Krishna','Novotel Hitech City',
+    // Colleges & Universities
+    'SNIST Ghatkesar','NNRG Ghatkesar','Anurag University Venkatapur',
+    'CVR College Hyderabad','GRIET Bachupally','VNR VJIET Bachupally',
+    'CBIT Gandipet','JNTUH Kukatpally','Osmania University Hyderabad',
+    'IIT Hyderabad Kandi','University of Hyderabad Gachibowli',
+    'MGIT Hyderabad','MRCET Hyderabad','Sreenidhi Institute Ghatkesar',
+    'Stanley College Hyderabad','MLR Institute Dundigal',
+];
+
+// ── College / university short alias → full name ──────────────────────────────
 const COLLEGE_ALIASES = {
-    // Hyderabad colleges
-    'nnrg':    'Nalla Narasimha Reddy Group of Institutions Hyderabad',
+    'nnrg':    'Nalla Narasimha Reddy Group of Institutions Ghatkesar Hyderabad',
     'snist':   'Sreenidhi Institute of Science and Technology Ghatkesar',
     'anurag':  'Anurag University Venkatapur Hyderabad',
-    'cvr':     'CVR College of Engineering Hyderabad',
+    'cvr':     'CVR College of Engineering Ibrahimpatan Hyderabad',
     'mrcet':   'Malla Reddy College of Engineering Technology Hyderabad',
     'griet':   'Gokaraju Rangaraju Institute of Engineering Technology Bachupally',
     'vnr':     'VNR Vignana Jyothi Institute Engineering Technology Bachupally',
+    'vnrvjiet':'VNR Vignana Jyothi Institute Engineering Technology Bachupally',
     'cbit':    'Chaitanya Bharathi Institute of Technology Gandipet',
-    'mgit':    'Mahatma Gandhi Institute of Technology Hyderabad',
+    'mgit':    'Mahatma Gandhi Institute of Technology Kokapet Hyderabad',
     'mjcet':   'Muffakham Jah College of Engineering Hyderabad',
     'mlrit':   'MLR Institute of Technology Dundigal Hyderabad',
     'vbit':    'Vignana Bharathi Institute of Technology Hyderabad',
-    'cmr':     'CMR College of Engineering Technology Hyderabad',
-    'stanley': 'Stanley College of Engineering Hyderabad',
-    'lords':   'Lords Institute of Engineering Hyderabad',
-    'bvrit':   'B V Raju Institute of Technology Narsapur',
-    'klh':     'KL University Hyderabad',
-    'iith':    'Indian Institute of Technology Hyderabad Kandi',
+    'cmr':     'CMR College of Engineering Technology Medchal',
+    'stanley': 'Stanley College of Engineering Abids Hyderabad',
+    'lords':   'Lords Institute of Engineering Himayatnagar Hyderabad',
+    'bvrit':   'B V Raju Institute of Technology Narsapur Medak',
+    'klh':     'KL University Hyderabad Bachupally',
+    'iith':    'Indian Institute of Technology Hyderabad Kandi Sangareddy',
     'nitw':    'National Institute of Technology Warangal',
-    'jntu':    'Jawaharlal Nehru Technological University Kukatpally',
-    'jntuh':   'Jawaharlal Nehru Technological University Kukatpally',
-    'osmania': 'Osmania University Hyderabad',
-    'ou':      'Osmania University Hyderabad',
-    // Pan-India
-    'iit':  'Indian Institute of Technology',
-    'nit':  'National Institute of Technology',
-    'bits': 'BITS Pilani',
-    'vit':  'Vellore Institute of Technology',
-    'iisc': 'Indian Institute of Science Bangalore',
-    'dtu':  'Delhi Technological University',
-    'jnu':  'Jawaharlal Nehru University Delhi',
-    'du':   'University of Delhi',
-    'anna': 'Anna University Chennai',
+    'jntu':    'Jawaharlal Nehru Technological University Kukatpally Hyderabad',
+    'jntuh':   'Jawaharlal Nehru Technological University Kukatpally Hyderabad',
+    'osmania': 'Osmania University Amberpet Hyderabad',
+    'ou':      'Osmania University Amberpet Hyderabad',
+    'uoh':     'University of Hyderabad Gachibowli',
+    'iit':     'Indian Institute of Technology',
+    'nit':     'National Institute of Technology',
+    'bits':    'BITS Pilani',
+    'vit':     'Vellore Institute of Technology',
+    'iisc':    'Indian Institute of Science Bangalore',
+    'anna':    'Anna University Chennai',
 };
 
 const expandAlias = (q) => COLLEGE_ALIASES[q.trim().toLowerCase()] || q;
 
-// ── Parse a Photon feature to our common shape ────────────────────────────────
+// ── Match against local HYD_LOCATIONS list ────────────────────────────────────
+const localSuggest = (query) => {
+    const q = query.toLowerCase().trim();
+    if (q.length < 2) return [];
+    const matches = HYD_LOCATIONS.filter(loc => loc.toLowerCase().includes(q));
+    return matches.slice(0, 5).map((name, i) => ({
+        place_id:     `local-${i}-${name}`,
+        display_name: `${name}, Hyderabad, Telangana`,
+        short_name:   name,
+        lat:          String(HYD_LAT + (Math.random() - 0.5) * 0.01), // approx center
+        lon:          String(HYD_LON + (Math.random() - 0.5) * 0.01),
+        type:         'locality',
+        class:        'place',
+        importance:   0.9,
+        isLocalHint:  true, // flag: coordinates will be geocoded properly
+    }));
+};
+
+// ── Parse Photon feature → common shape ──────────────────────────────────────
 const parsePhoton = (feature) => {
     const p = feature.properties;
-    // Build a human display name: Name, Street, Suburb/Neighbourhood, City
-    const parts = [
+    const nameParts = [
         p.name,
         p.street && p.street !== p.name ? p.street : null,
         p.suburb || p.neighbourhood || p.village || p.quarter,
-        p.city || p.town || p.county,
+        p.city    || p.town    || p.county,
         p.state,
     ].filter(Boolean);
-    const display_name = parts.join(', ');
 
     return {
         place_id:     `photon-${p.osm_id}`,
-        display_name,
-        short_name:   p.name || parts[0] || display_name,
+        display_name: nameParts.join(', '),
+        short_name:   p.name || p.suburb || nameParts[0] || '',
         lat:          String(feature.geometry.coordinates[1]),
         lon:          String(feature.geometry.coordinates[0]),
-        type:         p.type || p.osm_value || '',
+        type:         p.type  || p.osm_value || '',
         class:        p.osm_key || '',
         importance:   p.extent ? 1 : 0.5,
     };
@@ -83,7 +137,6 @@ const isEduResult = (r) => EDU_TYPES.some(t =>
     (r.display_name || '').toLowerCase().includes(t)
 );
 
-// ── Sort: educational institutions first, then by importance ─────────────────
 const sortResults = (results) =>
     [...results].sort((a, b) => {
         const ae = isEduResult(a), be = isEduResult(b);
@@ -92,37 +145,26 @@ const sortResults = (results) =>
         return (b.importance || 0) - (a.importance || 0);
     });
 
-// ── Photon search (Hyderabad-biased via bbox) ─────────────────────────────────
+// ── Photon — biased to Hyderabad, NO hard bbox so ALL areas are reachable ─────
 const photonSearch = async (query) => {
     try {
         const res = await axios.get(PHOTON_URL, {
             params: {
-                q:    query,
-                limit: 10,
-                lang: 'en',
-                lat:  HYD_LAT,
-                lon:  HYD_LON,
-                bbox: HYD_BBOX,   // Restrict to Hyderabad region
+                q:     query,
+                limit: 12,
+                lang:  'en',
+                lat:   HYD_LAT,   // bias center = Hyderabad
+                lon:   HYD_LON,
+                // No bbox — so Warangal, Mahbubnagar suburbs are reachable too
             },
-            timeout: 3500,
+            timeout: 4000,
         });
-        return (res.data?.features || []).map(parsePhoton);
-    } catch {
-        return [];
-    }
-};
-
-// ── Wider India search (fallback when bbox returns nothing) ───────────────────
-const photonSearchIndia = async (query) => {
-    try {
-        const res = await axios.get(PHOTON_URL, {
-            params: { q: query, limit: 8, lang: 'en', lat: HYD_LAT, lon: HYD_LON },
-            timeout: 3500,
-        });
-        // Filter to India bbox
+        // Soft-filter: prefer results within a generous radius of Hyderabad city
+        // (Hyderabad Metro region: ~150 km radius still makes sense)
         return (res.data?.features || [])
             .filter(f => {
                 const [lon, lat] = f.geometry.coordinates;
+                // Keep India only (prevents European cities with similar names)
                 return lat >= 6 && lat <= 37 && lon >= 68 && lon <= 98;
             })
             .map(parsePhoton);
@@ -131,11 +173,18 @@ const photonSearchIndia = async (query) => {
     }
 };
 
-// ── Nominatim search (last resort) ───────────────────────────────────────────
+// ── Nominatim (last resort) ───────────────────────────────────────────────────
 const nominatimSearch = async (query) => {
     try {
         const res = await axios.get(`${NOMINATIM_URL}/search`, {
-            params: { q: query, format: 'json', addressdetails: 1, limit: 8, countrycodes: 'in' },
+            params: {
+                q:             query,
+                format:        'json',
+                addressdetails: 1,
+                limit:          8,
+                countrycodes:  'in',
+                'accept-language': 'en',
+            },
             headers: { 'Accept-Language': 'en' },
             timeout: 5000,
         });
@@ -149,36 +198,57 @@ const nominatimSearch = async (query) => {
 };
 
 /**
- * Main location search — prioritises Hyderabad results.
- * Falls back: Photon (Hyderabad bbox) → Photon (all India) → Nominatim
+ * Main search function.
+ * Priority:
+ *   1. Local HYD_LOCATIONS dictionary (instant)
+ *   2. Photon API (Hyderabad-biased, covers entire Hyderabad metro)
+ *   3. Nominatim (fallback)
  */
 export const searchLocation = async (query) => {
     if (!query || query.length < 2) return [];
 
     const expandedQuery = expandAlias(query);
 
-    let results = await photonSearch(expandedQuery);
+    // Instant local matches (no API call needed)
+    const localMatches = localSuggest(query);
 
-    // If alias expansion helped and bbox returned results → use them
-    // Otherwise try the raw query inside bbox
-    if (!results.length) results = await photonSearch(query);
+    // API search in parallel for speed
+    const photonPromise = photonSearch(expandedQuery);
 
-    // Still nothing → widen to all India
-    if (!results.length) results = await photonSearchIndia(expandedQuery);
-    if (!results.length && expandedQuery !== query) results = await photonSearchIndia(query);
+    // Only start Nominatim if Photon might fail (run in parallel as backup)
+    const nominatimPromise = (expandedQuery !== query)
+        ? photonSearch(query)      // try original query too
+        : nominatimSearch(expandedQuery);
 
-    // Last resort → Nominatim
-    if (!results.length) results = await nominatimSearch(expandedQuery);
+    const [photonResults, backupResults] = await Promise.all([photonPromise, nominatimPromise]);
 
-    return sortResults(results).slice(0, 7);
+    let results = photonResults.length > 0 ? photonResults : backupResults;
+
+    if (results.length === 0) {
+        results = await nominatimSearch(query);
+    }
+
+    // Merge: local matches first, then API results (dedup by name)
+    const seenNames = new Set(localMatches.map(l => l.short_name.toLowerCase()));
+    const apiFiltered = results.filter(r => !seenNames.has((r.short_name || r.display_name.split(',')[0]).toLowerCase()));
+
+    const merged = [...localMatches, ...apiFiltered];
+    return sortResults(merged).slice(0, 8);
 };
 
 /**
- * Resolve text → {lat, lng}.
+ * Resolve text → {lat, lng, displayName}
  */
 export const resolveCoordinates = async (query) => {
     const results = await searchLocation(query);
     if (results?.length) {
+        // For local hints use Nominatim to get exact coords
+        if (results[0].isLocalHint) {
+            const nom = await nominatimSearch(results[0].short_name + ' Hyderabad');
+            if (nom?.length) {
+                return { lat: parseFloat(nom[0].lat), lng: parseFloat(nom[0].lon), displayName: nom[0].display_name };
+            }
+        }
         return {
             lat:         parseFloat(results[0].lat),
             lng:         parseFloat(results[0].lon),
@@ -189,12 +259,12 @@ export const resolveCoordinates = async (query) => {
 };
 
 /**
- * Reverse geocode: lat/lng → human-readable location name.
+ * Reverse geocode lat/lng → human-readable address.
  * Tries Nominatim first, falls back to Photon reverse.
- * NEVER returns raw coordinates — always returns a meaningful string.
+ * NEVER returns raw coordinates.
  */
 export const reverseGeocode = async (lat, lng) => {
-    // ── Try Nominatim reverse ─────────────────────────────────────────────────
+    // ── Nominatim reverse ─────────────────────────────────────────────────────
     try {
         const res = await axios.get(`${NOMINATIM_URL}/reverse`, {
             params: { lat, lon: lng, format: 'json', addressdetails: 1, zoom: 18 },
@@ -205,45 +275,42 @@ export const reverseGeocode = async (lat, lng) => {
         if (res.data && !res.data.error) {
             const addr = res.data.address || {};
 
-            // Build the most human-readable name we can
             const placeName =
-                res.data.name ||
-                addr.amenity ||
-                addr.building ||
-                addr.shop ||
-                addr.leisure ||
-                addr.tourism ||
+                res.data.name      ||
+                addr.amenity       ||
+                addr.building      ||
+                addr.shop          ||
+                addr.leisure       ||
+                addr.tourism       ||
                 null;
 
             const area =
-                addr.road ||
-                addr.pedestrian ||
-                addr.path ||
+                addr.road          ||
+                addr.pedestrian    ||
+                addr.path          ||
                 null;
 
             const locale =
-                addr.suburb ||
+                addr.suburb        ||
                 addr.neighbourhood ||
-                addr.village ||
-                addr.quarter ||
+                addr.village       ||
+                addr.quarter       ||
                 null;
 
             const city =
-                addr.city ||
-                addr.town ||
+                addr.city   ||
+                addr.town   ||
                 addr.county ||
                 null;
 
-            // Combine into a readable short name
             const parts = [placeName, area, locale, city].filter(Boolean);
             if (parts.length > 0) return parts.slice(0, 3).join(', ');
 
-            // Fallback: first 3 parts of full display name
             return res.data.display_name.split(',').slice(0, 3).join(', ').trim();
         }
     } catch { /* try next */ }
 
-    // ── Try Photon reverse ────────────────────────────────────────────────────
+    // ── Photon reverse ────────────────────────────────────────────────────────
     try {
         const res = await axios.get(`${PHOTON_URL}reverse`, {
             params: { lat, lon: lng, lang: 'en' },
@@ -256,6 +323,6 @@ export const reverseGeocode = async (lat, lng) => {
         }
     } catch { /* silent */ }
 
-    // ── Absolute last resort: return area description not raw coords ──────────
-    return `Near ${lat.toFixed(3)}°N, ${lng.toFixed(3)}°E`;
+    // ── Last resort ───────────────────────────────────────────────────────────
+    return 'Hyderabad, Telangana';
 };
