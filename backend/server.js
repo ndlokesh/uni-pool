@@ -38,12 +38,41 @@ app.use(helmet({
     contentSecurityPolicy: {
         directives: {
             defaultSrc: ["'self'"],
-            scriptSrc: ["'self'", "'unsafe-inline'", "https://*.googleapis.com", "https://*.gstatic.com"], // Allow Google Maps scripts if ever needed
-            imgSrc: ["'self'", "data:", "https://*.openstreetmap.org", "https://*.cartocdn.com", "https://*.flaticon.com", "https://*.githubusercontent.com"], // Allow map tiles & icons
-            connectSrc: ["'self'", "ws:", "wss:", "https://*.googleapis.com", "http://router.project-osrm.org"], // Allow WebSockets & OSRM
+            scriptSrc: [
+                "'self'",
+                "'unsafe-inline'",
+                "https://*.googleapis.com",
+                "https://*.gstatic.com",
+                "https://checkout.razorpay.com",  // Razorpay payment popup
+                "https://*.razorpay.com"
+            ],
+            imgSrc: [
+                "'self'",
+                "data:",
+                "https://*.openstreetmap.org",
+                "https://*.cartocdn.com",
+                "https://*.flaticon.com",
+                "https://*.githubusercontent.com",
+                "https://*.razorpay.com"
+            ],
+            connectSrc: [
+                "'self'",
+                "ws:",
+                "wss:",
+                "https://*.googleapis.com",
+                "http://router.project-osrm.org",
+                "https://photon.komoot.io",         // Photon geocoding (fast, Uber-like)
+                "https://nominatim.openstreetmap.org", // Nominatim reverse geocoding
+                "https://*.razorpay.com",
+                "https://lumberjack.razorpay.com"
+            ],
+            frameSrc: [
+                "https://*.razorpay.com"             // Razorpay iframe
+            ],
         },
     },
 }));
+
 
 // Rate Limiting (Prevent Brute Force)
 const limiter = rateLimit({
