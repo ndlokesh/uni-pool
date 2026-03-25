@@ -96,7 +96,8 @@ const CreateRide = () => {
     const pickSuggestion = useCallback((place) => {
         const lat = parseFloat(place.lat);
         const lng = parseFloat(place.lon);
-        const name = place.display_name.split(',').slice(0, 2).join(', ');
+        // Prefer short_name (just the place name) over full display_name
+        const name = place.short_name || place.display_name.split(',').slice(0, 2).join(', ');
         const field = activeInput;
 
         setMarkers(prev => [...prev.filter(m => m.id !== field), { id: field, lat, lng, label: name, type: 'location' }]);
@@ -115,19 +116,20 @@ const CreateRide = () => {
 
     // ── Map click → reverse geocode ────────────────────────────────────────────
     const handleMapClick = useCallback(async (latlng) => {
-        if (step > 2) return; // Only allow pinning in steps 1-2
+        if (step > 2) return;
         const { lat, lng } = latlng;
         const field = step === 1 ? 'source' : 'destination';
 
-        setMarkers(prev => [...prev.filter(m => m.id !== field), { id: field, lat, lng, label: 'Fetching…', type: 'location' }]);
+        // Show 'Locating…' immediately — NEVER show raw coordinates to user
+        setMarkers(prev => [...prev.filter(m => m.id !== field), { id: field, lat, lng, label: 'Locating…', type: 'location' }]);
         setFormData(prev => ({
             ...prev,
-            [field]: 'Fetching location name…',
+            [field]: 'Locating address…',
             ...(field === 'source'      ? { sourceLat: lat, sourceLng: lng } : {}),
             ...(field === 'destination' ? { destLat: lat,   destLng: lng   } : {}),
         }));
 
-        const name = await reverseGeocode(lat, lng) || `${lat.toFixed(4)}, ${lng.toFixed(4)}`;
+        const name = await reverseGeocode(lat, lng);
         setMarkers(prev => [...prev.filter(m => m.id !== field), { id: field, lat, lng, label: name, type: 'location' }]);
         setFormData(prev => ({ ...prev, [field]: name }));
 

@@ -87,7 +87,8 @@ const SearchRide = () => {
     const handlePickDestination = useCallback((place) => {
         const lat  = parseFloat(place.lat);
         const lng  = parseFloat(place.lon);
-        const name = place.display_name.split(',').slice(0, 2).join(', ');
+        // Use the short name — just the place/area name, not the full address string
+        const name = place.short_name || place.display_name.split(',')[0];
 
         setSearchText(name);
         setDestCoords({ lat, lng });
@@ -96,11 +97,11 @@ const SearchRide = () => {
         setSearchFocused(false);
         setPanelOpen(true);
 
-        // Filter rides by destination text similarity
-        const lower = name.toLowerCase();
+        // Filter rides that go to/from this place
+        const lowerName = name.toLowerCase();
         const filtered = rides.filter(r =>
-            r.destination?.toLowerCase().includes(lower.split(',')[0].toLowerCase()) ||
-            r.source?.toLowerCase().includes(lower.split(',')[0].toLowerCase())
+            r.destination?.toLowerCase().includes(lowerName) ||
+            r.source?.toLowerCase().includes(lowerName)
         );
         setFilteredRides(filtered.length > 0 ? filtered : rides);
 
@@ -114,7 +115,10 @@ const SearchRide = () => {
     // ── Map click ─────────────────────────────────────────────────────────────
     const handleMapClick = useCallback(async (latlng) => {
         const { lat, lng } = latlng;
-        setMapMarkers(prev => [...prev.filter(m => m.id !== '__dest__'), { id: '__dest__', lat, lng, label: 'Destination', type: 'location' }]);
+        // Never show raw coords — show 'Locating…' first
+        setSearchText('Locating address…');
+        setMapMarkers(prev => [...prev.filter(m => m.id !== '__dest__'), { id: '__dest__', lat, lng, label: 'Locating…', type: 'location' }]);
+
         const name = await reverseGeocode(lat, lng);
         const displayName = name || `${lat.toFixed(4)}, ${lng.toFixed(4)}`;
         setSearchText(displayName);

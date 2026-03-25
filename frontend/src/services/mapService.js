@@ -1,89 +1,73 @@
 import axios from 'axios';
 
-// ── Photon (by Komoot) – much faster than Nominatim, no API key needed ─────────
-// Docs: https://photon.komoot.io
-const PHOTON_URL = 'https://photon.komoot.io/api/';
+// ── API endpoints ─────────────────────────────────────────────────────────────
+const PHOTON_URL    = 'https://photon.komoot.io/api/';
+const NOMINATIM_URL = 'https://nominatim.openstreetmap.org';
 
-// ── Nominatim as secondary fallback ─────────────────────────────────────────────
-const NOMINATIM_URL = 'https://nominatim.openstreetmap.org/search';
+// ── Hyderabad geographic constants ────────────────────────────────────────────
+// Bounding box: covers all of Greater Hyderabad + surrounding districts
+const HYD_LAT  = 17.385;
+const HYD_LON  = 78.4867;
+// Photon bbox: [minLon, minLat, maxLon, maxLat]  — entire GHMC + suburbs
+const HYD_BBOX = '77.9,16.9,79.2,17.9';
 
-// ── India geographic center bias ──────────────────────────────────────────────
-const INDIA_LAT = 20.5937;
-const INDIA_LON = 78.9629;
-
-// ── College / university shorthand → full name ───────────────────────────────
+// ── College / university alias dictionary ─────────────────────────────────────
 const COLLEGE_ALIASES = {
-    // Hyderabad
+    // Hyderabad colleges
     'nnrg':    'Nalla Narasimha Reddy Group of Institutions Hyderabad',
-    'snist':   'Sreenidhi Institute of Science and Technology Hyderabad',
-    'anurag':  'Anurag University Hyderabad',
-    'anurag college': 'Anurag College of Engineering Hyderabad',
+    'snist':   'Sreenidhi Institute of Science and Technology Ghatkesar',
+    'anurag':  'Anurag University Venkatapur Hyderabad',
     'cvr':     'CVR College of Engineering Hyderabad',
     'mrcet':   'Malla Reddy College of Engineering Technology Hyderabad',
-    'griet':   'Gokaraju Rangaraju Institute of Engineering Technology Hyderabad',
-    'vnr':     'VNR Vignana Jyothi Institute Engineering Technology Hyderabad',
-    'vnrvjiet':'VNR Vignana Jyothi Institute Engineering Technology Hyderabad',
-    'cbit':    'Chaitanya Bharathi Institute of Technology Hyderabad',
+    'griet':   'Gokaraju Rangaraju Institute of Engineering Technology Bachupally',
+    'vnr':     'VNR Vignana Jyothi Institute Engineering Technology Bachupally',
+    'cbit':    'Chaitanya Bharathi Institute of Technology Gandipet',
     'mgit':    'Mahatma Gandhi Institute of Technology Hyderabad',
     'mjcet':   'Muffakham Jah College of Engineering Hyderabad',
-    'mlrit':   'MLR Institute of Technology Hyderabad',
+    'mlrit':   'MLR Institute of Technology Dundigal Hyderabad',
     'vbit':    'Vignana Bharathi Institute of Technology Hyderabad',
     'cmr':     'CMR College of Engineering Technology Hyderabad',
     'stanley': 'Stanley College of Engineering Hyderabad',
     'lords':   'Lords Institute of Engineering Hyderabad',
-    'vignan':  'Vignan Institute of Technology Hyderabad',
-    'bvrit':   'B V Raju Institute of Technology',
+    'bvrit':   'B V Raju Institute of Technology Narsapur',
     'klh':     'KL University Hyderabad',
-    'hit':     'Hyderabad Institute of Technology and Management',
-    'jntu':    'Jawaharlal Nehru Technological University Hyderabad',
-    'jntuh':   'Jawaharlal Nehru Technological University Hyderabad',
-    'jntuk':   'Jawaharlal Nehru Technological University Kakinada',
-    'jntua':   'Jawaharlal Nehru Technological University Anantapur',
-    'osmania': 'Osmania University Hyderabad',
-    'iith':    'Indian Institute of Technology Hyderabad',
+    'iith':    'Indian Institute of Technology Hyderabad Kandi',
     'nitw':    'National Institute of Technology Warangal',
-    'kcet':    'Kakatiya College of Engineering Warangal',
-    'klu':     'KL University Vijayawada',
+    'jntu':    'Jawaharlal Nehru Technological University Kukatpally',
+    'jntuh':   'Jawaharlal Nehru Technological University Kukatpally',
+    'osmania': 'Osmania University Hyderabad',
+    'ou':      'Osmania University Hyderabad',
     // Pan-India
-    'iit':     'Indian Institute of Technology',
-    'nit':     'National Institute of Technology',
-    'bits':    'BITS Pilani',
-    'vit':     'Vellore Institute of Technology',
-    'iitb':    'Indian Institute of Technology Bombay',
-    'iitd':    'Indian Institute of Technology Delhi',
-    'iitm':    'Indian Institute of Technology Madras',
-    'iitk':    'Indian Institute of Technology Kanpur',
-    'iisc':    'Indian Institute of Science Bangalore',
-    'dtu':     'Delhi Technological University',
-    'nsit':    'Netaji Subhas University of Technology Delhi',
-    'jnu':     'Jawaharlal Nehru University Delhi',
-    'du':      'University of Delhi',
-    'jamia':   'Jamia Millia Islamia Delhi',
-    'coep':    'College of Engineering Pune',
-    'vjti':    'Veermata Jijabai Technological Institute Mumbai',
-    'rvce':    'RV College of Engineering Bangalore',
-    'msrit':   'MS Ramaiah Institute of Technology Bangalore',
-    'pes':     'PES University Bangalore',
-    'nitk':    'National Institute of Technology Karnataka Surathkal',
-    'anna':    'Anna University Chennai',
-    'nitt':    'National Institute of Technology Tiruchirappalli',
-    'psg':     'PSG College of Technology Coimbatore',
-    'au':      'Andhra University Visakhapatnam',
-    'rgukt':   'Rajiv Gandhi University of Knowledge Technologies',
-    'ju':      'Jadavpur University Kolkata',
-    'aiims':   'AIIMS New Delhi',
+    'iit':  'Indian Institute of Technology',
+    'nit':  'National Institute of Technology',
+    'bits': 'BITS Pilani',
+    'vit':  'Vellore Institute of Technology',
+    'iisc': 'Indian Institute of Science Bangalore',
+    'dtu':  'Delhi Technological University',
+    'jnu':  'Jawaharlal Nehru University Delhi',
+    'du':   'University of Delhi',
+    'anna': 'Anna University Chennai',
 };
 
 const expandAlias = (q) => COLLEGE_ALIASES[q.trim().toLowerCase()] || q;
 
-// ── Parse Photon feature into a common shape ─────────────────────────────────
+// ── Parse a Photon feature to our common shape ────────────────────────────────
 const parsePhoton = (feature) => {
     const p = feature.properties;
-    const name = [p.name, p.street, p.city, p.state, p.country]
-        .filter(Boolean).join(', ');
+    // Build a human display name: Name, Street, Suburb/Neighbourhood, City
+    const parts = [
+        p.name,
+        p.street && p.street !== p.name ? p.street : null,
+        p.suburb || p.neighbourhood || p.village || p.quarter,
+        p.city || p.town || p.county,
+        p.state,
+    ].filter(Boolean);
+    const display_name = parts.join(', ');
+
     return {
-        place_id:     `photon-${feature.properties.osm_id}`,
-        display_name: name,
+        place_id:     `photon-${p.osm_id}`,
+        display_name,
+        short_name:   p.name || parts[0] || display_name,
         lat:          String(feature.geometry.coordinates[1]),
         lon:          String(feature.geometry.coordinates[0]),
         type:         p.type || p.osm_value || '',
@@ -93,24 +77,50 @@ const parsePhoton = (feature) => {
 };
 
 const EDU_TYPES = ['university', 'college', 'school', 'institute', 'campus'];
-const isEdu = (r) => EDU_TYPES.some(t => r.type?.toLowerCase().includes(t) || r.class?.toLowerCase().includes(t));
+const isEduResult = (r) => EDU_TYPES.some(t =>
+    (r.type || '').toLowerCase().includes(t) ||
+    (r.class || '').toLowerCase().includes(t) ||
+    (r.display_name || '').toLowerCase().includes(t)
+);
 
-// ── Primary search using Photon ───────────────────────────────────────────────
+// ── Sort: educational institutions first, then by importance ─────────────────
+const sortResults = (results) =>
+    [...results].sort((a, b) => {
+        const ae = isEduResult(a), be = isEduResult(b);
+        if (ae && !be) return -1;
+        if (!ae && be) return 1;
+        return (b.importance || 0) - (a.importance || 0);
+    });
+
+// ── Photon search (Hyderabad-biased via bbox) ─────────────────────────────────
 const photonSearch = async (query) => {
     try {
         const res = await axios.get(PHOTON_URL, {
             params: {
-                q:       query,
-                limit:   10,
-                lang:    'en',
-                lat:     INDIA_LAT,
-                lon:     INDIA_LON,
+                q:    query,
+                limit: 10,
+                lang: 'en',
+                lat:  HYD_LAT,
+                lon:  HYD_LON,
+                bbox: HYD_BBOX,   // Restrict to Hyderabad region
             },
-            timeout: 3000,
+            timeout: 3500,
         });
-        if (!res.data?.features?.length) return [];
-        // Filter to India only (bbox: lon 68–98, lat 6–37)
-        return res.data.features
+        return (res.data?.features || []).map(parsePhoton);
+    } catch {
+        return [];
+    }
+};
+
+// ── Wider India search (fallback when bbox returns nothing) ───────────────────
+const photonSearchIndia = async (query) => {
+    try {
+        const res = await axios.get(PHOTON_URL, {
+            params: { q: query, limit: 8, lang: 'en', lat: HYD_LAT, lon: HYD_LON },
+            timeout: 3500,
+        });
+        // Filter to India bbox
+        return (res.data?.features || [])
             .filter(f => {
                 const [lon, lat] = f.geometry.coordinates;
                 return lat >= 6 && lat <= 37 && lon >= 68 && lon <= 98;
@@ -121,66 +131,57 @@ const photonSearch = async (query) => {
     }
 };
 
-// ── Fallback search using Nominatim ──────────────────────────────────────────
+// ── Nominatim search (last resort) ───────────────────────────────────────────
 const nominatimSearch = async (query) => {
     try {
-        const res = await axios.get(NOMINATIM_URL, {
+        const res = await axios.get(`${NOMINATIM_URL}/search`, {
             params: { q: query, format: 'json', addressdetails: 1, limit: 8, countrycodes: 'in' },
             headers: { 'Accept-Language': 'en' },
             timeout: 5000,
         });
-        return res.data || [];
+        return (res.data || []).map(r => ({
+            ...r,
+            short_name: r.display_name.split(',')[0],
+        }));
     } catch {
         return [];
     }
 };
 
-// ── Sort: educational institutions first, then by importance ─────────────────
-const sortResults = (results) =>
-    [...results].sort((a, b) => {
-        const ae = isEdu(a), be = isEdu(b);
-        if (ae && !be) return -1;
-        if (!ae && be) return 1;
-        return (b.importance || 0) - (a.importance || 0);
-    });
-
 /**
- * Main location search — tries Photon first, falls back to Nominatim.
- * Automatically expands college abbreviations.
+ * Main location search — prioritises Hyderabad results.
+ * Falls back: Photon (Hyderabad bbox) → Photon (all India) → Nominatim
  */
 export const searchLocation = async (query) => {
     if (!query || query.length < 2) return [];
 
     const expandedQuery = expandAlias(query);
 
-    // Try Photon with expanded query first
     let results = await photonSearch(expandedQuery);
 
-    // If alias expansion changed the query and Photon returned nothing, try original
-    if (!results.length && expandedQuery !== query) {
-        results = await photonSearch(query);
-    }
+    // If alias expansion helped and bbox returned results → use them
+    // Otherwise try the raw query inside bbox
+    if (!results.length) results = await photonSearch(query);
 
-    // If Photon failed entirely, fall back to Nominatim
-    if (!results.length) {
-        results = await nominatimSearch(expandedQuery);
-        if (!results.length && expandedQuery !== query) {
-            results = await nominatimSearch(query);
-        }
-    }
+    // Still nothing → widen to all India
+    if (!results.length) results = await photonSearchIndia(expandedQuery);
+    if (!results.length && expandedQuery !== query) results = await photonSearchIndia(query);
 
-    return sortResults(results).slice(0, 6);
+    // Last resort → Nominatim
+    if (!results.length) results = await nominatimSearch(expandedQuery);
+
+    return sortResults(results).slice(0, 7);
 };
 
 /**
- * Resolve a text query to {lat, lng}. Returns null if not found.
+ * Resolve text → {lat, lng}.
  */
 export const resolveCoordinates = async (query) => {
     const results = await searchLocation(query);
     if (results?.length) {
         return {
-            lat: parseFloat(results[0].lat),
-            lng: parseFloat(results[0].lon),
+            lat:         parseFloat(results[0].lat),
+            lng:         parseFloat(results[0].lon),
             displayName: results[0].display_name,
         };
     }
@@ -188,28 +189,73 @@ export const resolveCoordinates = async (query) => {
 };
 
 /**
- * Reverse geocode: converts {lat, lng} → human-readable address string.
- * Returns a short name like "Sreenidhi Institute, Ghatkesar, Hyderabad".
+ * Reverse geocode: lat/lng → human-readable location name.
+ * Tries Nominatim first, falls back to Photon reverse.
+ * NEVER returns raw coordinates — always returns a meaningful string.
  */
 export const reverseGeocode = async (lat, lng) => {
+    // ── Try Nominatim reverse ─────────────────────────────────────────────────
     try {
-        const res = await axios.get('https://nominatim.openstreetmap.org/reverse', {
-            params: { lat, lon: lng, format: 'json', addressdetails: 1, zoom: 17 },
+        const res = await axios.get(`${NOMINATIM_URL}/reverse`, {
+            params: { lat, lon: lng, format: 'json', addressdetails: 1, zoom: 18 },
             headers: { 'Accept-Language': 'en' },
             timeout: 4000,
         });
-        if (res.data?.display_name) {
-            // Build a short, readable name: "Name, Area, City"
+
+        if (res.data && !res.data.error) {
             const addr = res.data.address || {};
-            const parts = [
-                res.data.name || addr.amenity || addr.building || addr.road,
-                addr.suburb || addr.neighbourhood || addr.village,
-                addr.city || addr.town || addr.county,
-            ].filter(Boolean);
-            return parts.length ? parts.join(', ') : res.data.display_name.split(',').slice(0, 2).join(', ');
+
+            // Build the most human-readable name we can
+            const placeName =
+                res.data.name ||
+                addr.amenity ||
+                addr.building ||
+                addr.shop ||
+                addr.leisure ||
+                addr.tourism ||
+                null;
+
+            const area =
+                addr.road ||
+                addr.pedestrian ||
+                addr.path ||
+                null;
+
+            const locale =
+                addr.suburb ||
+                addr.neighbourhood ||
+                addr.village ||
+                addr.quarter ||
+                null;
+
+            const city =
+                addr.city ||
+                addr.town ||
+                addr.county ||
+                null;
+
+            // Combine into a readable short name
+            const parts = [placeName, area, locale, city].filter(Boolean);
+            if (parts.length > 0) return parts.slice(0, 3).join(', ');
+
+            // Fallback: first 3 parts of full display name
+            return res.data.display_name.split(',').slice(0, 3).join(', ').trim();
         }
-    } catch {
-        // silently fall back
-    }
-    return null;
+    } catch { /* try next */ }
+
+    // ── Try Photon reverse ────────────────────────────────────────────────────
+    try {
+        const res = await axios.get(`${PHOTON_URL}reverse`, {
+            params: { lat, lon: lng, lang: 'en' },
+            timeout: 3500,
+        });
+        const features = res.data?.features || [];
+        if (features.length > 0) {
+            const parsed = parsePhoton(features[0]);
+            if (parsed.display_name) return parsed.display_name;
+        }
+    } catch { /* silent */ }
+
+    // ── Absolute last resort: return area description not raw coords ──────────
+    return `Near ${lat.toFixed(3)}°N, ${lng.toFixed(3)}°E`;
 };
