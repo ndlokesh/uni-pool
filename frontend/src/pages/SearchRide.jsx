@@ -13,7 +13,8 @@ const SearchRide = () => {
     const currentUser = authService.getCurrentUser();
     const [mapCenter, setMapCenter] = useState([28.5457, 77.2732]);
     const [suggestions, setSuggestions] = useState([]);
-    const [showSuggestions, setShowSuggestions] = useState(null); // 'source' or 'destination' or null
+    const [showSuggestions, setShowSuggestions] = useState(null);
+    const [searchLoading, setSearchLoading] = useState(false);
 
     // Booking Modal States
     const [selectedRide, setSelectedRide] = useState(null);
@@ -23,7 +24,6 @@ const SearchRide = () => {
     useEffect(() => {
         const fetchRides = async () => {
             try {
-                // Fetch only active (future/available) rides
                 const data = await rideService.getRides({ active: true });
                 setRides(data);
                 setFilteredRides(data);
@@ -37,11 +37,13 @@ const SearchRide = () => {
     const handleFilterChange = async (e) => {
         const { name, value } = e.target;
         setFilter({ ...filter, [name]: value });
-
         setShowSuggestions(name);
-        if (value.length > 2) {
+
+        if (value.length >= 2) {
+            setSearchLoading(true);
             const results = await searchLocation(value);
             setSuggestions(results);
+            setSearchLoading(false);
         } else {
             setSuggestions([]);
         }
@@ -168,18 +170,33 @@ const SearchRide = () => {
                                             onFocus={() => setShowSuggestions('source')}
                                         />
                                         {/* Suggestions */}
-                                        {showSuggestions === 'source' && suggestions.length > 0 && (
-                                            <div className="absolute top-full left-0 w-full bg-white rounded-lg shadow-xl z-50 mt-1 max-h-40 overflow-y-auto border border-gray-100">
-                                                {suggestions.map((place) => (
-                                                    <div
-                                                        key={place.place_id}
-                                                        className="p-2 hover:bg-gray-50 cursor-pointer text-xs text-gray-700 border-b border-gray-50 last:border-0"
-                                                        onClick={() => handleSelectSuggestion(place, 'source')}
-                                                    >
-                                                        <p className="font-bold text-gray-800">{place.display_name.split(',')[0]}</p>
-                                                        <p className="truncate text-[10px] text-gray-500">{place.display_name}</p>
+                                        {showSuggestions === 'source' && (
+                                            <div className="absolute top-full left-0 w-full bg-white rounded-xl shadow-2xl z-50 mt-1 border border-gray-100 overflow-hidden">
+                                                {searchLoading && (
+                                                    <div className="px-4 py-3 flex items-center gap-2 text-gray-400 text-sm">
+                                                        <div className="w-4 h-4 border-2 border-indigo-400 border-t-transparent rounded-full animate-spin" />
+                                                        Searching…
                                                     </div>
-                                                ))}
+                                                )}
+                                                {!searchLoading && suggestions.length === 0 && filter.source.length >= 2 && (
+                                                    <div className="px-4 py-3 text-gray-400 text-sm">No results found. Try a different name.</div>
+                                                )}
+                                                {suggestions.map((place) => {
+                                                    const edu = place.type?.toLowerCase().includes('university') || place.type?.toLowerCase().includes('college') || place.type?.toLowerCase().includes('school');
+                                                    return (
+                                                        <div
+                                                            key={place.place_id}
+                                                            className="px-4 py-3 hover:bg-indigo-50 cursor-pointer border-b border-gray-50 last:border-0 flex items-start gap-3"
+                                                            onMouseDown={() => handleSelectSuggestion(place, 'source')}
+                                                        >
+                                                            <span className="text-base mt-0.5">{edu ? '🎓' : '📍'}</span>
+                                                            <div>
+                                                                <p className="font-semibold text-gray-900 text-sm">{place.display_name.split(',')[0]}</p>
+                                                                <p className="truncate text-xs text-gray-400">{place.display_name.split(',').slice(1, 3).join(', ')}</p>
+                                                            </div>
+                                                        </div>
+                                                    );
+                                                })}
                                             </div>
                                         )}
                                     </div>
@@ -195,18 +212,33 @@ const SearchRide = () => {
                                             onFocus={() => setShowSuggestions('destination')}
                                         />
                                         {/* Suggestions */}
-                                        {showSuggestions === 'destination' && suggestions.length > 0 && (
-                                            <div className="absolute top-full left-0 w-full bg-white rounded-lg shadow-xl z-50 mt-1 max-h-40 overflow-y-auto border border-gray-100">
-                                                {suggestions.map((place) => (
-                                                    <div
-                                                        key={place.place_id}
-                                                        className="p-2 hover:bg-gray-50 cursor-pointer text-xs text-gray-700 border-b border-gray-50 last:border-0"
-                                                        onClick={() => handleSelectSuggestion(place, 'destination')}
-                                                    >
-                                                        <p className="font-bold text-gray-800">{place.display_name.split(',')[0]}</p>
-                                                        <p className="truncate text-[10px] text-gray-500">{place.display_name}</p>
+                                        {showSuggestions === 'destination' && (
+                                            <div className="absolute top-full left-0 w-full bg-white rounded-xl shadow-2xl z-50 mt-1 border border-gray-100 overflow-hidden">
+                                                {searchLoading && (
+                                                    <div className="px-4 py-3 flex items-center gap-2 text-gray-400 text-sm">
+                                                        <div className="w-4 h-4 border-2 border-indigo-400 border-t-transparent rounded-full animate-spin" />
+                                                        Searching…
                                                     </div>
-                                                ))}
+                                                )}
+                                                {!searchLoading && suggestions.length === 0 && filter.destination.length >= 2 && (
+                                                    <div className="px-4 py-3 text-gray-400 text-sm">No results found. Try a different name.</div>
+                                                )}
+                                                {suggestions.map((place) => {
+                                                    const edu = place.type?.toLowerCase().includes('university') || place.type?.toLowerCase().includes('college') || place.type?.toLowerCase().includes('school');
+                                                    return (
+                                                        <div
+                                                            key={place.place_id}
+                                                            className="px-4 py-3 hover:bg-indigo-50 cursor-pointer border-b border-gray-50 last:border-0 flex items-start gap-3"
+                                                            onMouseDown={() => handleSelectSuggestion(place, 'destination')}
+                                                        >
+                                                            <span className="text-base mt-0.5">{edu ? '🎓' : '📍'}</span>
+                                                            <div>
+                                                                <p className="font-semibold text-gray-900 text-sm">{place.display_name.split(',')[0]}</p>
+                                                                <p className="truncate text-xs text-gray-400">{place.display_name.split(',').slice(1, 3).join(', ')}</p>
+                                                            </div>
+                                                        </div>
+                                                    );
+                                                })}
                                             </div>
                                         )}
                                     </div>

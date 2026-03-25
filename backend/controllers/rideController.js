@@ -50,7 +50,7 @@ const createRide = async (req, res) => {
 
         // Check if driver verification is complete
         const verificationStatus = user.driverVerification?.status;
-        if (verificationStatus !== 'fully_verified' && verificationStatus !== 'license_approved') {
+        if (verificationStatus !== 'fully_verified' && verificationStatus !== 'license_approved' && verificationStatus !== 'vehicle_pending') {
             return res.status(403).json({
                 message: 'Your driver profile verification is incomplete. Please complete verification first.',
                 verificationStatus: verificationStatus || 'not_started',

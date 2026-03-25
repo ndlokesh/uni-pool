@@ -45,7 +45,10 @@ const DriverVerification = () => {
                 if (status === 'fully_verified') {
                     setIsFullyVerified(true);
                     setCurrentStep(4); // Profile view
-                } else if (status === 'license_approved' || status === 'vehicle_pending') {
+                } else if (status === 'vehicle_pending') {
+                    setIsFullyVerified(false);
+                    setCurrentStep(4); // Send to final "pending review" view
+                } else if (status === 'license_approved') {
                     setCurrentStep(2); // Vehicle upload
                 } else if (status === 'license_pending') {
                     setCurrentStep(1); // Still on license
