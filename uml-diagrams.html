@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Uni-Pool — UML Diagrams</title>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #f4f6fb;
+      color: #1a1a2e;
+      padding: 40px 32px;
+    }
+
+    /* ── Cover / Title ─────────────────────────────────────── */
+    .cover {
+      text-align: center;
+      padding: 60px 40px;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 60%, #0f3460 100%);
+      border-radius: 18px;
+      color: #fff;
+      margin-bottom: 48px;
+      page-break-after: always;
+    }
+    .cover .badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 999px;
+      padding: 6px 20px;
+      font-size: 12px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #a8d8ea;
+      margin-bottom: 24px;
+    }
+    .cover h1 {
+      font-size: 48px;
+      font-weight: 800;
+      letter-spacing: -1px;
+      margin-bottom: 12px;
+      background: linear-gradient(90deg, #e0e0e0, #ffffff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .cover p {
+      font-size: 16px;
+      color: #a8d8ea;
+      margin-bottom: 6px;
+    }
+    .cover .subtitle {
+      font-size: 14px;
+      color: rgba(255,255,255,0.5);
+      margin-top: 20px;
+    }
+    .cover .divider {
+      width: 60px;
+      height: 3px;
+      background: linear-gradient(90deg, #e94560, #0f3460);
+      border-radius: 999px;
+      margin: 20px auto;
+    }
+
+    /* ── Diagram Card ───────────────────────────────────────── */
+    .diagram-card {
+      background: #ffffff;
+      border-radius: 18px;
+      box-shadow: 0 4px 32px rgba(0,0,0,0.07);
+      margin-bottom: 48px;
+      overflow: hidden;
+      page-break-inside: avoid;
+      page-break-after: always;
+    }
+    .diagram-card:last-child {
+      page-break-after: auto;
+    }
+
+    .card-header {
+      background: linear-gradient(135deg, #1a1a2e 0%, #0f3460 100%);
+      color: #fff;
+      padding: 28px 36px 22px;
+    }
+    .card-header .diagram-num {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #a8d8ea;
+      margin-bottom: 6px;
+    }
+    .card-header h2 {
+      font-size: 26px;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+    .card-header p {
+      font-size: 14px;
+      color: rgba(255,255,255,0.6);
+      line-height: 1.5;
+    }
+
+    .card-body {
+      padding: 36px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      background: #fafbfe;
+    }
+
+    .card-body .mermaid {
+      width: 100%;
+      max-width: 900px;
+    }
+
+    /* ── Summary table ──────────────────────────────────────── */
+    .summary-card {
+      background: #ffffff;
+      border-radius: 18px;
+      box-shadow: 0 4px 32px rgba(0,0,0,0.07);
+      padding: 36px;
+      page-break-inside: avoid;
+    }
+    .summary-card h2 {
+      font-size: 22px;
+      font-weight: 800;
+      margin-bottom: 20px;
+      color: #1a1a2e;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    th {
+      background: #1a1a2e;
+      color: #fff;
+      padding: 12px 16px;
+      text-align: left;
+      font-weight: 600;
+    }
+    th:first-child { border-radius: 8px 0 0 0; }
+    th:last-child  { border-radius: 0 8px 0 0; }
+    td {
+      padding: 12px 16px;
+      border-bottom: 1px solid #eef0f7;
+      vertical-align: top;
+    }
+    tr:last-child td { border-bottom: none; }
+    tr:nth-child(even) td { background: #f8f9ff; }
+    td strong { color: #0f3460; }
+
+    /* ── Print Overrides ────────────────────────────────────── */
+    @media print {
+      body { background: #fff; padding: 0; }
+      .cover, .diagram-card, .summary-card {
+        box-shadow: none;
+        border-radius: 0;
+      }
+      .cover { border-radius: 0; }
+      .no-print { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Print button (hidden on print) ─── -->
+  <div class="no-print" style="text-align:right; margin-bottom:20px;">
+    <button onclick="window.print()" style="
+      background: linear-gradient(135deg,#0f3460,#e94560);
+      color:#fff; border:none; padding:12px 28px;
+      border-radius:999px; font-size:15px; font-weight:700;
+      cursor:pointer; box-shadow:0 4px 18px rgba(233,69,96,0.4);
+    ">🖨️ Print / Save as PDF</button>
+  </div>
+
+  <!-- ── Cover Page ─── -->
+  <div class="cover">
+    <div class="badge">University Project — UML Documentation</div>
+    <h1>🚗 Uni-Pool</h1>
+    <p>Carpooling Application for University Students</p>
+    <div class="divider"></div>
+    <p style="font-size:15px; color:rgba(255,255,255,0.75);">5 UML Diagrams — System Design &amp; Architecture</p>
+    <div class="subtitle">Use Case · Class · Sequence · Activity · Deployment</div>
+  </div>
+
+  <!-- ── Diagram 1: Use Case ─── -->
+  <div class="diagram-card">
+    <div class="card-header">
+      <div class="diagram-num">Diagram 1 of 5</div>
+      <h2>Use Case Diagram</h2>
+      <p>Shows WHO uses the system (Student, Driver, Admin) and WHAT actions each actor can perform.</p>
+    </div>
+    <div class="card-body">
+      <div class="mermaid">
+flowchart TD
+    subgraph Actors
+        S["🧑‍🎓 Student"]
+        D["🚗 Driver\n(Verified Student)"]
+        A["🛡️ Admin"]
+    end
+
+    subgraph UniPool["🎓 Uni-Pool System"]
+        direction TB
+        UC1["Register / Login"]
+        UC2["Search for a Ride"]
+        UC3["Book a Ride"]
+        UC4["Create a Ride"]
+        UC5["Upload ID & License\n(Driver Verification)"]
+        UC6["Track Ride Live on Map"]
+        UC7["Chat with Rider / Driver"]
+        UC8["Pay for Ride\n(UPI / Card / Wallet)"]
+        UC9["Give a Rating & Review"]
+        UC10["View Earnings"]
+        UC11["Approve / Reject Driver"]
+        UC12["Receive Notifications"]
+    end
+
+    S --> UC1
+    S --> UC2
+    S --> UC3
+    S --> UC6
+    S --> UC7
+    S --> UC8
+    S --> UC9
+    S --> UC12
+
+    D --> UC1
+    D --> UC4
+    D --> UC5
+    D --> UC6
+    D --> UC7
+    D --> UC10
+    D --> UC9
+    D --> UC12
+
+    A --> UC11
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Diagram 2: Class ─── -->
+  <div class="diagram-card">
+    <div class="card-header">
+      <div class="diagram-num">Diagram 2 of 5</div>
+      <h2>Class Diagram</h2>
+      <p>Shows the main data models (User, Ride, Payment, Review, Message, Notification) and their relationships in MongoDB.</p>
+    </div>
+    <div class="card-body">
+      <div class="mermaid">
+classDiagram
+    class User {
+        +String name
+        +String email
+        +String password_hashed
+        +String studentNumber
+        +String collegeName
+        +String phoneNumber
+        +Boolean isDriver
+        +Number averageRating
+        +Object driverVerification
+        +matchPassword()
+    }
+
+    class Ride {
+        +String source
+        +String destination
+        +Date date
+        +String time
+        +Number availableSeats
+        +String vehicleType
+        +Number price
+        +Number driverEarnings
+        +List pendingRiders
+        +List riders
+        +List passengers
+    }
+
+    class Payment {
+        +Number amount
+        +String status
+        +String method
+        +String transactionId
+    }
+
+    class Review {
+        +Number rating
+        +String comment
+    }
+
+    class Message {
+        +String content
+        +List readBy
+    }
+
+    class Notification {
+        +String message
+        +Boolean isRead
+    }
+
+    User "1" --> "many" Ride : creates
+    User "many" --> "many" Ride : books
+    User "1" --> "many" Payment : makes
+    Ride "1" --> "many" Payment : linked to
+    User "1" --> "many" Review : writes
+    User "1" --> "many" Review : receives
+    Ride "1" --> "many" Review : belongs to
+    Ride "1" --> "many" Message : has chat
+    User "1" --> "many" Message : sends
+    User "1" --> "many" Notification : receives
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Diagram 3: Sequence ─── -->
+  <div class="diagram-card">
+    <div class="card-header">
+      <div class="diagram-num">Diagram 3 of 5</div>
+      <h2>Sequence Diagram</h2>
+      <p>Step-by-step flow showing how a Student logs in, searches, books a ride, tracks it live, pays, and leaves a review.</p>
+    </div>
+    <div class="card-body">
+      <div class="mermaid">
+sequenceDiagram
+    actor Student
+    participant App as React App (Frontend)
+    participant Server as Express Server (Backend)
+    participant DB as MongoDB (Database)
+    participant Socket as Socket.IO (Live Tracking)
+
+    Student->>App: Open app & Login
+    App->>Server: POST /api/login
+    Server->>DB: Find user by email
+    DB-->>Server: User found
+    Server-->>App: Login success + JWT Token
+
+    Student->>App: Search for a ride
+    App->>Server: GET /api/rides/search
+    Server->>DB: Query matching rides
+    DB-->>Server: List of available rides
+    Server-->>App: Show ride results
+
+    Student->>App: Click "Book Ride"
+    App->>Server: POST /api/rides/:id/request
+    Server->>DB: Add student to pendingRiders
+    DB-->>Server: Saved
+    Server-->>App: Booking requested!
+
+    Note over Server,App: Driver accepts the booking
+
+    Student->>App: Open Ride Tracking page
+    App->>Socket: Join ride room (rideId)
+    Socket-->>App: Snapshot of current locations
+    Socket-->>App: Live location updates
+    App-->>Student: Show live map with driver & co-passengers
+
+    Student->>App: Pay for ride
+    App->>Server: POST /api/payments
+    Server->>DB: Save payment record
+    DB-->>Server: Payment done
+    Server-->>App: Payment confirmed!
+
+    Student->>App: Leave a rating
+    App->>Server: POST /api/reviews
+    Server->>DB: Save review
+    DB-->>Server: Saved
+    Server-->>App: Thank you for rating!
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Diagram 4: Activity ─── -->
+  <div class="diagram-card">
+    <div class="card-header">
+      <div class="diagram-num">Diagram 4 of 5</div>
+      <h2>Activity Diagram</h2>
+      <p>Complete workflow of a Driver — from login and verification, to creating a ride, picking up passengers, and receiving payment.</p>
+    </div>
+    <div class="card-body">
+      <div class="mermaid">
+flowchart TD
+    Start(["🟢 Driver Opens App"]) --> Login["Login with Email & Password"]
+    Login --> Verified{"Is Driver\nVerified?"}
+
+    Verified -- No --> Upload["Upload Driving License\n& Vehicle Documents"]
+    Upload --> Wait["Wait for Admin Approval"]
+    Wait --> Approved{"Approved?"}
+    Approved -- No --> Rejected["Show Rejection Reason"]
+    Rejected --> End1(["🔴 End"])
+    Approved -- Yes --> Dashboard
+
+    Verified -- Yes --> Dashboard["Go to Driver Dashboard"]
+    Dashboard --> CreateRide["Fill Ride Details:\nSource, Destination, Date, Seats"]
+    CreateRide --> PostRide["Post the Ride"]
+    PostRide --> WaitForBookings["Wait for Booking Requests"]
+
+    WaitForBookings --> NewRequest{"New\nRequest?"}
+    NewRequest -- Yes --> AcceptOrReject{"Accept or\nReject?"}
+    AcceptOrReject -- Accept --> ConfirmRider["Confirm Passenger"]
+    AcceptOrReject -- Reject --> RejectRider["Reject Request"]
+    RejectRider --> WaitForBookings
+    ConfirmRider --> WaitForBookings
+
+    NewRequest -- "No — Ride Day" --> StartRide["Start the Ride"]
+    StartRide --> ShareLocation["Share Live Location\nvia Socket.IO"]
+    ShareLocation --> PickupPassenger["Pick up Passenger\n& Verify OTP"]
+    PickupPassenger --> Drive["Drive to Destination"]
+    Drive --> DropPassenger["Drop Passenger"]
+    DropPassenger --> MorePassengers{"More\nPassengers?"}
+    MorePassengers -- Yes --> PickupPassenger
+    MorePassengers -- No --> RideComplete["Mark Ride as Complete"]
+    RideComplete --> GetPaid["Receive Payment"]
+    GetPaid --> GetReview["Receive Rating & Review"]
+    GetReview --> ViewEarnings["View Earnings Dashboard"]
+    ViewEarnings --> End2(["🔴 End"])
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Diagram 5: Deployment ─── -->
+  <div class="diagram-card">
+    <div class="card-header">
+      <div class="diagram-num">Diagram 5 of 5</div>
+      <h2>Deployment Diagram</h2>
+      <p>Shows where each component lives — Vercel (frontend), Render (backend + Socket.IO), MongoDB Atlas (database), and external map APIs.</p>
+    </div>
+    <div class="card-body">
+      <div class="mermaid">
+flowchart TB
+    subgraph USER["👤 Student's Device (Browser / Mobile)"]
+        React["⚛️ React App\n(HTML + CSS + JavaScript)\nHosted on Vercel"]
+    end
+
+    subgraph VERCEL["☁️ Vercel — Frontend Hosting"]
+        ReactBuild["React Build Files\n(Static Pages)"]
+    end
+
+    subgraph RENDER["🖥️ Render — Backend Server"]
+        direction TB
+        Express["🟢 Node.js + Express\nREST API Server\nPort: 5000"]
+        SocketIO["🔌 Socket.IO Server\n(Live Location Updates)"]
+        Express <--> SocketIO
+    end
+
+    subgraph ATLAS["🍃 MongoDB Atlas — Cloud Database"]
+        DB["MongoDB Collections:\nUsers · Rides · Payments\nReviews · Messages · Notifications"]
+    end
+
+    subgraph MAPS["🗺️ Third-Party Map Services"]
+        OSM["OpenStreetMap\n(Map Tiles)"]
+        OSRM["OSRM Router\n(Route & Distance)"]
+        Nominatim["Nominatim\n(Location Search)"]
+    end
+
+    React -- "HTTPS REST API\n(JWT Token Auth)" --> Express
+    React -- "WebSocket\nfor live tracking" --> SocketIO
+    React -- "Map tiles & search" --> OSM
+    React -- "Routing requests" --> OSRM
+    React -- "Address search" --> Nominatim
+    Express -- "Read / Write data" --> DB
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Summary Table ─── -->
+  <div class="summary-card">
+    <h2>📋 Summary — Why These 5 Diagrams?</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Diagram</th>
+          <th>Purpose</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td><strong>Use Case</strong></td>
+          <td>Explains who uses the app and what features they get — great for intro presentations</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td><strong>Class</strong></td>
+          <td>Shows all 6 database models and their relationships — good for database design explanation</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td><strong>Sequence</strong></td>
+          <td>Step-by-step ride booking flow with all system parts — great for demo walkthroughs</td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td><strong>Activity</strong></td>
+          <td>Driver's complete journey from login to earning — shows all decision points clearly</td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td><strong>Deployment</strong></td>
+          <td>Shows where React, Node.js, MongoDB, and Maps live — essential for architecture explanation</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'default',
+      themeVariables: {
+        primaryColor: '#0f3460',
+        primaryTextColor: '#1a1a2e',
+        primaryBorderColor: '#0f3460',
+        lineColor: '#0f3460',
+        secondaryColor: '#e8f4fd',
+        tertiaryColor: '#f0f4ff',
+        fontSize: '14px'
+      },
+      flowchart: { curve: 'basis', useMaxWidth: true },
+      sequence: { useMaxWidth: true }
+    });
+  </script>
+</body>
+</html>
