@@ -127,10 +127,7 @@ const getRides = async (req, res) => {
 
             query = {
                 date: { $gte: today },
-                availableSeats: { $gt: 0 }, // Only show rides with seats
-                createdBy: { $ne: req.user.id }, // Don't show own rides in search
-                'riders': { $ne: req.user.id }, // Don't show rides already joined
-                'pendingRiders': { $ne: req.user.id } // Don't show rides with pending request
+                availableSeats: { $gt: 0 } // Only show rides with seats
             };
         }
 
