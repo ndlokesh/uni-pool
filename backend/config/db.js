@@ -70,17 +70,23 @@ const connectDB = async () => {
         console.log(`MongoDB Connected: ${conn.connection.host}`);
     } catch (err) {
         console.error(`Error: ${err.message}`);
-        console.log('Attemping to fallback to In-Memory Database (for testing/demo)...');
-
-        try {
-            const { MongoMemoryServer } = require('mongodb-memory-server');
-            const mongod = await MongoMemoryServer.create();
-            const uri = mongod.getUri();
-            await mongoose.connect(uri);
-            console.log(`Fallback Connected: In-Memory MongoDB running at ${uri}`);
-        } catch (fallbackErr) {
-            console.error(`Fallback failed: ${fallbackErr.message}`);
-            process.exit(1);
+        
+        if (process.env.NODE_ENV !== 'production') {
+            console.log('Attemping to fallback to In-Memory Database (for testing/demo)...');
+            try {
+                const { MongoMemoryServer } = require('mongodb-memory-server');
+                const mongod = await MongoMemoryServer.create();
+                const uri = mongod.getUri();
+                await mongoose.connect(uri);
+                console.log(`Fallback Connected: In-Memory MongoDB running at ${uri}`);
+            } catch (fallbackErr) {
+                console.error(`Fallback failed: ${fallbackErr.message}`);
+                process.exit(1);
+            }
+        } else {
+            console.error('CRITICAL: MongoDB Failed to Connect in Production. Please check MONGO_URI in Render Dashboard and ensure IP is whitelisted (0.0.0.0/0) in MongoDB Atlas.');
+            // Do not exit the process, otherwise Render will show 502 Bad Gateway. 
+            // We want it to stay awake to return API error messages.
         }
     }
 };
