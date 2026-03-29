@@ -1,11 +1,11 @@
 import { io } from 'socket.io-client';
 
 // Auto-detect backend URL: use REACT_APP_SOCKET_URL in .env, or fall back to
-// the current browser origin so it works on localhost AND deployed Render/Vercel.
+// the Render URL when deployed to production since Vercel cannot proxy WebSockets.
 const SOCKET_URL =
     process.env.REACT_APP_SOCKET_URL ||
     (process.env.NODE_ENV === 'production'
-        ? window.location.origin  // same host as frontend when deployed
+        ? 'https://uni-pool-backend.onrender.com'
         : 'http://localhost:5000');
 
 let socket;
