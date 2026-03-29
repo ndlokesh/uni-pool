@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Navbar from '../components/Navbar';
 import authService from '../services/authService';
-import axios from 'axios';
+import API from '../services/api';
 import { useNavigate } from 'react-router-dom';
 
 const DriverProfile = () => {
@@ -22,16 +22,11 @@ const DriverProfile = () => {
                 }
 
                 // Fetch full user profile (with verification images)
-                const token = JSON.parse(localStorage.getItem('user')).token;
-                const config = {
-                    headers: { Authorization: `Bearer ${token}` }
-                };
-
-                const userRes = await axios.get('http://localhost:5000/api/auth/me', config);
+                const userRes = await API.get('/auth/me');
                 setUser(userRes.data);
 
                 // Fetch reviews
-                const reviewsRes = await axios.get(`http://localhost:5000/api/reviews/${currentUser._id}`, config);
+                const reviewsRes = await API.get(`/reviews/${currentUser._id}`);
                 setReviews(reviewsRes.data);
 
                 // Fetch basic stats (optional, reusing similar logic from stats page if API available, else mock or skip)
