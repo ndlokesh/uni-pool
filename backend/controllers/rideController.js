@@ -145,28 +145,10 @@ const getRides = async (req, res) => {
             .populate('riders', 'name email phoneNumber')
             .sort(active === 'true' ? { date: 1, time: 1 } : { createdAt: -1 });
 
-        // Filter out past times if active is true
-        if (active === 'true') {
-            const now = new Date();
-            rides = rides.filter(ride => {
-                const rideDate = new Date(ride.date);
-                // Check if it's strictly future date
-                if (rideDate.setHours(0, 0, 0, 0) > now.setHours(0, 0, 0, 0)) return true;
-
-                // If it's today, check time
-                if (rideDate.getTime() === now.getTime()) {
-                    const [hours, minutes] = ride.time.split(':').map(Number);
-                    const currentHours = new Date().getHours();
-                    const currentMinutes = new Date().getMinutes();
-
-                    if (hours > currentHours) return true;
-                    if (hours === currentHours && minutes >= currentMinutes) return true;
-                    return false;
-                }
-                return false;
-            });
-        }
-
+        // We removed the javascript .filter() that dropped rides based on hours/minutes today,
+        // because it was causing valid Indian Standard Time (IST) rides to unexpectedly vanish 
+        // when checked against Render's UTC server clock.
+        
         res.status(200).json(rides);
     } catch (error) {
         res.status(500).json({ message: 'Server Error', error: error.message });
