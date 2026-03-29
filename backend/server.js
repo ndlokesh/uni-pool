@@ -38,6 +38,8 @@ app.use(cors({
     origin: function (origin, callback) {
         // Allow requests with no origin (mobile apps, Postman, curl)
         if (!origin) return callback(null, true);
+        // Automatically allow any Vercel domain from the frontend
+        if (origin.includes('vercel.app')) return callback(null, true);
         if (allowedOrigins.includes(origin)) return callback(null, true);
         // In development, allow all
         if (process.env.NODE_ENV !== 'production') return callback(null, true);

@@ -1,11 +1,12 @@
 import axios from 'axios';
 
 const API = axios.create({
-    // 1. If REACT_APP_API_URL is set (in .env or Vercel), use it.
-    // 2. Otherwise use '/api' (relative path), which works with:
-    //    - "proxy": "http://localhost:5000" in package.json (Local Dev)
-    //    - Vercel Rewrites (if configured)
-    baseURL: process.env.REACT_APP_API_URL || '/api',
+    // In production, connect DIRECTLY to Render instead of using Vercel proxy.
+    // This fixes the issue where Vercel cuts off requests after 10s 
+    // while the free Render backend is still waking up (which takes 40s).
+    baseURL: process.env.NODE_ENV === 'production' 
+        ? 'https://uni-pool-backend.onrender.com/api' 
+        : '/api',
 });
 
 // Add a request interceptor to include the token
