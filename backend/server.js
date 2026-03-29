@@ -28,10 +28,26 @@ const io = new Server(server, {
 const connectDB = require('./config/db');
 connectDB();
 
+// Allow both Vercel production frontend and localhost for dev
+const allowedOrigins = [
+    'http://localhost:3000',
+    process.env.FRONTEND_URL, // Set this in Render env variables to your Vercel URL
+].filter(Boolean);
+
 app.use(cors({
-    origin: process.env.NODE_ENV === 'production' ? 'https://your-frontend-domain.com' : 'http://localhost:3000', // Cannot use '*' with credentials: true
+    origin: function (origin, callback) {
+        // Allow requests with no origin (mobile apps, Postman, curl)
+        if (!origin) return callback(null, true);
+        if (allowedOrigins.includes(origin)) return callback(null, true);
+        // In development, allow all
+        if (process.env.NODE_ENV !== 'production') return callback(null, true);
+        callback(new Error('Not allowed by CORS'));
+    },
     credentials: true
 }));
+
+// Health check route - keeps Render from sleeping
+app.get('/health', (req, res) => res.status(200).json({ status: 'ok', time: new Date() }));
 
 // Security Middleware
 app.use(helmet({
