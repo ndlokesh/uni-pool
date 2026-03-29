@@ -29,7 +29,7 @@ const connectDB = require('./config/db');
 connectDB();
 
 app.use(cors({
-    origin: process.env.NODE_ENV === 'production' ? 'https://your-frontend-domain.com' : '*', // Restrict in production
+    origin: process.env.NODE_ENV === 'production' ? 'https://your-frontend-domain.com' : 'http://localhost:3000', // Cannot use '*' with credentials: true
     credentials: true
 }));
 
@@ -82,8 +82,8 @@ const limiter = rateLimit({
 });
 app.use('/api/', limiter);
 
-app.use(express.json({ limit: '10mb' }));
-app.use(express.urlencoded({ extended: false, limit: '10mb' }));
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ extended: false, limit: '50mb' }));
 
 // In-memory store: rideId -> { userId -> { lat, lng, heading, role } }
 // This lets late joiners instantly see where everyone is.
@@ -153,6 +153,15 @@ app.use('/api/messages', require('./routes/messageRoutes'));
 app.use('/api/payments', require('./routes/paymentRoutes'));
 app.use('/api/reviews', require('./routes/reviewRoutes'));
 app.use('/api/driver-verification', require('./routes/driverVerificationRoutes'));
+
+// Global Error Handler to guarantee JSON responses (prevents HTML stack traces)
+app.use((err, req, res, next) => {
+    console.error('Unhandled Error:', err.message || err);
+    res.status(err.status || 500).json({
+        message: err.message || 'Internal Server Error',
+        stack: process.env.NODE_ENV === 'production' ? null : err.stack,
+    });
+});
 
 // Serve Frontend (Client Build)
 const frontendBuildPath = path.join(__dirname, '../frontend/build');
